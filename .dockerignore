@@ -55,7 +55,7 @@ Thumbs.db
 # Documentation
 *.md
 !README.md
-docs/
+# docs/  # Commented out - needed for OpenAPI documentation
 
 # Test files
 test/

@@ -22,6 +22,8 @@ RUN npm ci --omit=optional --legacy-peer-deps
 COPY src/ ./src/
 # Copy jest.config.js if it exists (tests are optional in production build)
 COPY jest.config.js* ./
+# Copy docs directory for OpenAPI specs
+COPY docs ./docs
 
 # Skip tests in production build to save memory
 # Build the application
@@ -62,8 +64,8 @@ COPY --from=builder --chown=$USER:$GROUP /app/package*.json ./
 # Copy data files
 COPY --chown=$USER:$GROUP src/data ./dist/data
 
-# Copy docs files for Swagger
-COPY --chown=$USER:$GROUP docs ./docs
+# Copy docs files from builder stage
+COPY --from=builder --chown=$USER:$GROUP /app/docs ./docs
 
 # Create logs directory
 RUN mkdir -p logs
