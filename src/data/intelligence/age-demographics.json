@@ -202,7 +202,8 @@
           "usage": "complete_wardrobe",
           "shopping_efficiency": "high"
         }
-      },
+      ]
+    },
       "shopping_evolution": {
         "from_trendy_to_classic": "82%",
         "fabric_quality_priority": "highest",
@@ -297,8 +298,7 @@
         "timeless_styles": true,
         "quality_focus": "durability"
       }
-    }
-  },
+    },
   "cross_generational_insights": {
     "style_evolution": {
       "slim_fit_peak": "25-34",
