@@ -158,6 +158,33 @@ class DatabaseService {
         throw error;
       }
     }
+
+    // Add foreign key constraints after all tables are created (PostgreSQL only)
+    if (this.config.type === 'postgresql') {
+      const constraints = [
+        `ALTER TABLE conversation_messages 
+         ADD CONSTRAINT conversation_messages_conversation_id_fkey 
+         FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE`,
+        `ALTER TABLE conversation_state 
+         ADD CONSTRAINT conversation_state_conversation_id_fkey 
+         FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE`,
+        `ALTER TABLE conversation_outcomes 
+         ADD CONSTRAINT conversation_outcomes_conversation_id_fkey 
+         FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE`
+      ];
+
+      for (const constraint of constraints) {
+        try {
+          await this.execute(constraint);
+          logger.info(`✅ Added foreign key constraint`);
+        } catch (error: any) {
+          // Ignore if constraint already exists
+          if (!error.message?.includes('already exists')) {
+            logger.warn(`⚠️ Could not add foreign key constraint: ${error.message}`);
+          }
+        }
+      }
+    }
   }
 
   private getDatabaseSchema(): string[] {
@@ -184,7 +211,7 @@ class DatabaseService {
       // Messages table
       `CREATE TABLE IF NOT EXISTS conversation_messages (
         id ${isPostgreSQL ? 'UUID PRIMARY KEY DEFAULT gen_random_uuid()' : 'TEXT PRIMARY KEY'},
-        conversation_id TEXT ${isPostgreSQL ? 'REFERENCES conversations(id) ON DELETE CASCADE' : ''},
+        conversation_id TEXT ${isPostgreSQL ? '' : ''},
         role TEXT CHECK (role IN ('user', 'assistant')) NOT NULL,
         content TEXT NOT NULL,
         intent TEXT,
@@ -197,7 +224,7 @@ class DatabaseService {
       // Conversation state table
       `CREATE TABLE IF NOT EXISTS conversation_state (
         id ${isPostgreSQL ? 'UUID PRIMARY KEY DEFAULT gen_random_uuid()' : 'TEXT PRIMARY KEY'},
-        conversation_id TEXT ${isPostgreSQL ? 'REFERENCES conversations(id) ON DELETE CASCADE' : ''},
+        conversation_id TEXT ${isPostgreSQL ? '' : ''},
         state_key TEXT NOT NULL,
         state_value ${isPostgreSQL ? 'JSONB' : 'TEXT'},
         updated_at TIMESTAMP DEFAULT ${isPostgreSQL ? 'NOW()' : 'CURRENT_TIMESTAMP'},
@@ -220,7 +247,7 @@ class DatabaseService {
       // Outcomes table for metrics tracking
       `CREATE TABLE IF NOT EXISTS conversation_outcomes (
         id ${isPostgreSQL ? 'UUID PRIMARY KEY DEFAULT gen_random_uuid()' : 'TEXT PRIMARY KEY'},
-        conversation_id TEXT ${isPostgreSQL ? 'REFERENCES conversations(id) ON DELETE CASCADE' : ''},
+        conversation_id TEXT ${isPostgreSQL ? '' : ''},
         outcome_type TEXT CHECK (outcome_type IN ('conversion', 'satisfaction', 'resolution', 'escalation')),
         outcome_value DECIMAL(10,2),
         metadata ${isPostgreSQL ? 'JSONB' : 'TEXT'},
