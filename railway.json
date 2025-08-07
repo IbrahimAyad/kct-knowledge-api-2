@@ -2,12 +2,20 @@
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
     "builder": "NIXPACKS",
-    "buildCommand": "npm install && npm run build"
+    "buildCommand": "npm ci --production --no-optional --legacy-peer-deps && npm run build",
+    "dockerfile": "Dockerfile.railway"
   },
   "deploy": {
     "numReplicas": 1,
     "startCommand": "npm start",
     "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 10
+    "restartPolicyMaxRetries": 10,
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 60
+  },
+  "environments": {
+    "production": {
+      "NODE_OPTIONS": "--max-old-space-size=512"
+    }
   }
 }

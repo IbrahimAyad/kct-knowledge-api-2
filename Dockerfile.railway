@@ -1,0 +1,38 @@
+# Simplified Dockerfile for Railway deployment
+# Optimized for Railway's build constraints
+
+FROM node:18-alpine
+
+# Set production environment
+ENV NODE_ENV=production
+
+# Install only essential dependencies
+RUN apk add --no-cache curl tini
+
+# Create app directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install production dependencies only
+RUN npm ci --production --no-optional --legacy-peer-deps
+
+# Copy pre-built files (Railway will build these)
+COPY . .
+
+# Create logs directory
+RUN mkdir -p logs
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# Use tini for proper signal handling
+ENTRYPOINT ["/sbin/tini", "--"]
+
+# Start the application
+CMD ["npm", "start"]
