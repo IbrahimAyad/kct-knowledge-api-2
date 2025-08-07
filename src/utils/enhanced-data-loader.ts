@@ -5,7 +5,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import * as csvParser from 'csv-parser';
+import csvParser from 'csv-parser';
 import {
   BodyLanguageFitPreferences,
   CulturalNuances,
@@ -88,7 +88,7 @@ export class EnhancedDataLoader {
             this.cacheExpiry.set(cacheKey, now + this.CACHE_DURATION);
             resolve(results);
           })
-          .on('error', (error) => {
+          .on('error', (error: Error) => {
             console.warn(`Failed to load CSV file ${filePath}: ${error.message}`);
             resolve([]); // Return empty array on error
           });

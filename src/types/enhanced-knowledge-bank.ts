@@ -510,6 +510,5 @@ export type ProfessionalType = 'Lawyers' | 'Investment_Bankers' | 'Consultants' 
 export type GenerationType = 'Gen_Z_Men' | 'Millennial_Men' | 'Gen_X_Men' | 'Baby_Boomers';
 export type AgeGroup = 'Young_Men_18_29' | 'Professional_Men_30_54' | 'Mature_Men_55_Plus';
 export type DecisionFatigueRisk = 'low' | 'medium' | 'high' | 'critical';
-export type CareerAdvancementStage = 'entry_level' | 'establishing' | 'advancing' | 'leadership' | 'executive';
-export type CulturalSensitivityLevel = 'low' | 'medium' | 'high';
+// CareerAdvancementStage and CulturalSensitivityLevel are already defined above
 export type FabricUsageFrequency = 'occasional' | 'regular' | 'frequent';

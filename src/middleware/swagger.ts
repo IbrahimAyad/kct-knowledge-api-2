@@ -7,9 +7,65 @@ import { Request, Response, NextFunction } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import path from 'path';
+import fs from 'fs';
 
-// Load OpenAPI specification
-const swaggerDocument = YAML.load(path.join(__dirname, '../../docs/openapi.yaml'));
+// Load OpenAPI specification with fallback
+let swaggerDocument: any = null;
+const openApiPath = path.join(__dirname, '../../docs/openapi.yaml');
+
+try {
+  if (fs.existsSync(openApiPath)) {
+    swaggerDocument = YAML.load(openApiPath);
+  } else {
+    console.warn('OpenAPI specification not found at:', openApiPath);
+    // Create a minimal OpenAPI spec as fallback
+    swaggerDocument = {
+      openapi: '3.0.0',
+      info: {
+        title: 'KCT Knowledge API',
+        version: '2.0.0',
+        description: 'AI-powered fashion intelligence API'
+      },
+      servers: [
+        { url: '/api', description: 'API Server' }
+      ],
+      paths: {},
+      components: {
+        securitySchemes: {
+          ApiKeyAuth: {
+            type: 'apiKey',
+            in: 'header',
+            name: 'X-API-Key'
+          }
+        }
+      }
+    };
+  }
+} catch (error) {
+  console.error('Error loading OpenAPI specification:', error);
+  // Use minimal spec as fallback
+  swaggerDocument = {
+    openapi: '3.0.0',
+    info: {
+      title: 'KCT Knowledge API',
+      version: '2.0.0',
+      description: 'AI-powered fashion intelligence API'
+    },
+    servers: [
+      { url: '/api', description: 'API Server' }
+    ],
+    paths: {},
+    components: {
+      securitySchemes: {
+        ApiKeyAuth: {
+          type: 'apiKey',
+          in: 'header',
+          name: 'X-API-Key'
+        }
+      }
+    }
+  };
+}
 
 // Custom CSS for branding
 const customCss = `

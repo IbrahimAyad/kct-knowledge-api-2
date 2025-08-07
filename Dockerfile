@@ -62,6 +62,9 @@ COPY --from=builder --chown=$USER:$GROUP /app/package*.json ./
 # Copy data files
 COPY --chown=$USER:$GROUP src/data ./dist/data
 
+# Copy docs files for Swagger
+COPY --chown=$USER:$GROUP docs ./docs
+
 # Create logs directory
 RUN mkdir -p logs
 

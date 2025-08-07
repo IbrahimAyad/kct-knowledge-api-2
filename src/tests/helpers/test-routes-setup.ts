@@ -290,7 +290,7 @@ export async function setupIntelligenceRoutes(app: Express): Promise<void> {
     ],
     async (req, res, next) => {
       try {
-        const result = await culturalAdaptationService.analyzeColorSignificance(
+        const result = await culturalAdaptationService.analyzeColorCulturalSignificance(
           req.body.color,
           req.body.cultural_context
         );

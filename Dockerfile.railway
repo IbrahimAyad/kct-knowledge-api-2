@@ -21,8 +21,11 @@ RUN npm ci --production --omit=optional --legacy-peer-deps
 # Copy pre-built files (Railway will build these)
 COPY . .
 
-# Create logs directory
-RUN mkdir -p logs
+# Create necessary directories
+RUN mkdir -p logs docs
+
+# Ensure docs files are accessible
+RUN if [ ! -f docs/openapi.yaml ] && [ -f src/docs/openapi.yaml ]; then cp src/docs/openapi.yaml docs/; fi
 
 # Expose port
 EXPOSE 3000
