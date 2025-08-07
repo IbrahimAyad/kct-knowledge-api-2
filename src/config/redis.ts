@@ -20,7 +20,18 @@ export interface RedisConfig {
   commandTimeout: number;
 }
 
-const createRedisConfig = (): RedisConfig => {
+const createRedisConfig = (): RedisConfig | string | null => {
+  // If REDIS_URL is provided (Railway format), use it directly
+  if (process.env.REDIS_URL) {
+    return process.env.REDIS_URL;
+  }
+
+  // If REDIS_ENABLED is explicitly false, disable Redis
+  if (process.env.REDIS_ENABLED === 'false') {
+    return null;
+  }
+
+  // Otherwise use individual config
   const config: RedisConfig = {
     host: process.env.REDIS_HOST || 'localhost',
     port: parseInt(process.env.REDIS_PORT || '6379'),
@@ -41,24 +52,35 @@ const createRedisConfig = (): RedisConfig => {
 
 export class RedisConnection {
   private static instance: Redis | null = null;
-  private static config: RedisConfig;
+  private static config: RedisConfig | string | null;
   private static isConnected = false;
   private static connectionAttempts = 0;
   private static maxConnectionAttempts = 5;
+  private static isDisabled = false;
 
-  static getInstance(): Redis {
+  static getInstance(): Redis | null {
     if (!this.instance) {
       this.config = createRedisConfig();
+      if (this.config === null) {
+        console.log('🔌 Redis is disabled (REDIS_ENABLED=false or no configuration)');
+        this.isDisabled = true;
+        return null;
+      }
       this.instance = this.createConnection();
     }
     return this.instance;
   }
 
   private static createConnection(): Redis {
-    const redis = new Redis({
-      ...this.config,
-      enableOfflineQueue: false,
-    });
+    const redisOptions = typeof this.config === 'string' 
+      ? this.config // Use Redis URL directly
+      : {
+          ...this.config,
+          enableOfflineQueue: false,
+        };
+    
+    console.log('🔌 Attempting to connect to Redis...');
+    const redis = new Redis(redisOptions);
 
     redis.on('connect', () => {
       console.log('🔌 Redis connected successfully');
