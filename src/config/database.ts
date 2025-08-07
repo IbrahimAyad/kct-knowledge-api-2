@@ -15,14 +15,28 @@ class DatabaseService {
   async initialize(): Promise<void> {
     const databaseUrl = process.env.DATABASE_URL;
     const databaseType = process.env.DATABASE_TYPE as 'postgresql' | 'sqlite' || 'sqlite';
+    const databaseEnabled = process.env.DATABASE_ENABLED !== 'false';
+
+    if (!databaseEnabled) {
+      logger.info('📊 Database is disabled (DATABASE_ENABLED=false)');
+      return;
+    }
 
     if (databaseType === 'postgresql' && databaseUrl) {
       await this.initializePostgreSQL(databaseUrl);
-    } else {
-      await this.initializeSQLite();
+    } else if (databaseType === 'sqlite') {
+      try {
+        await this.initializeSQLite();
+      } catch (error) {
+        logger.warn('⚠️ SQLite initialization failed, continuing without database:', error);
+        // Don't throw - allow app to run without database
+        return;
+      }
     }
 
-    logger.info(`✅ Database initialized with ${databaseType}`);
+    if (this.config) {
+      logger.info(`✅ Database initialized with ${databaseType}`);
+    }
   }
 
   private async initializePostgreSQL(connectionString: string): Promise<void> {
@@ -54,7 +68,7 @@ class DatabaseService {
 
   private async initializeSQLite(): Promise<void> {
     return new Promise((resolve, reject) => {
-      const dbPath = process.env.SQLITE_PATH || './data/chat.db';
+      const dbPath = process.env.SQLITE_PATH || ':memory:'; // Use in-memory DB in production
       
       this.sqlite = new sqlite3.Database(dbPath, (err) => {
         if (err) {
@@ -65,7 +79,7 @@ class DatabaseService {
             type: 'sqlite',
             connection: this.sqlite
           };
-          logger.info('SQLite connection established successfully');
+          logger.info(`SQLite connection established successfully (${dbPath === ':memory:' ? 'in-memory' : 'file-based'})`);
           resolve();
         }
       });
