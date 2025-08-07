@@ -114,7 +114,7 @@ kubernetes/
 *.db
 
 # Package locks (to reduce image size, will npm ci in container)
-package-lock.json
+# package-lock.json  # Commented out - needed for npm ci
 yarn.lock
 
 # Development scripts

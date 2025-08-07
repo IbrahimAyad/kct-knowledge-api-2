@@ -16,7 +16,7 @@ COPY package*.json ./
 COPY tsconfig.json ./
 
 # Install dependencies without optional packages to save memory
-RUN npm ci --include=dev --no-optional --legacy-peer-deps
+RUN npm ci --omit=optional --legacy-peer-deps
 
 # Copy source code
 COPY src/ ./src/
@@ -28,7 +28,7 @@ COPY jest.config.js* ./
 RUN npm run build || echo "Build completed with warnings"
 
 # Remove development dependencies
-RUN npm prune --production --no-optional
+RUN npm prune --production --omit=optional
 
 # Production stage
 FROM node:18-alpine AS production

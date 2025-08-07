@@ -2,7 +2,7 @@
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
     "builder": "NIXPACKS",
-    "buildCommand": "npm ci --production --no-optional --legacy-peer-deps && npm run build",
+    "buildCommand": "npm ci --production --omit=optional --legacy-peer-deps && npm run build",
     "dockerfile": "Dockerfile.railway"
   },
   "deploy": {

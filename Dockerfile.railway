@@ -16,7 +16,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install production dependencies only
-RUN npm ci --production --no-optional --legacy-peer-deps
+RUN npm ci --production --omit=optional --legacy-peer-deps
 
 # Copy pre-built files (Railway will build these)
 COPY . .
