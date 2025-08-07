@@ -1,0 +1,13 @@
+Month,Primary_Events,Weather_Sensitivity,Inventory_Priority,Purchase_Urgency_Score
+January,"New Year, Returns",6,"Clearance, Basics",4
+February,"Valentines, Presidents Day",7,Spring Preview,5
+March,Spring Prep,9,Lightweight,7
+April,"Easter, Spring Formal",8,Versatile,8
+May,Graduation Peak,7,"Formal, Grad",9
+June,Wedding Season,6,"Wedding, Summer",8
+July,Summer Events,8,Breathable,6
+August,Back-to-School,7,Transitional,7
+September,Fall Transition,9,Fall Prep,8
+October,Homecoming,8,Layering,7
+November,"Black Friday, Thanksgiving",7,Holiday Prep,8
+December,Holiday Parties,6,"Festive, Formal",9

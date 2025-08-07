@@ -1,0 +1,26 @@
+Slang_Term,Meaning,Context_Usage,AI_Recognition_Rate,Training_Priority
+Fire fit,Excellent outfit,"""That suit is fire""",15,9
+Drip,Stylish appearance,"""Your drip is insane""",25,9
+Clean,Well-dressed/sharp,"""Looking clean today""",30,8
+Fresh,Stylish/new,"""Fresh new blazer""",40,8
+Sharp,Well-dressed,"""Sharp dressed man""",35,7
+Boxy,Oversized/unfitted,"""Jacket looks boxy on me""",60,7
+Baggy,Too loose,"""Pants are too baggy""",65,6
+Tight,Too fitted,"""Shirt feels tight""",70,6
+Loose,Comfortable fit,"""Loose comfortable fit""",55,6
+Fitted,Well-tailored,"""Perfectly fitted suit""",45,7
+Flex,Show off style,"""About to flex this new outfit""",20,8
+Lowkey,Somewhat/slightly,"""Lowkey need new pants""",10,9
+Highkey,Very/extremely,"""Highkey love this jacket""",10,9
+Mid,Average/mediocre,"""This shirt is mid""",5,8
+Basic,Plain/boring,"""Too basic for me""",25,6
+Vibe,Style/feeling,"""Love this whole vibe""",30,8
+Mood,Style preference,"""That's the mood""",20,8
+Aesthetic,Visual style,"""Clean aesthetic""",35,7
+Look,Outfit/appearance,"""Great look""",50,6
+Lewk,Stylized look,"""Serving lewks""",15,8
+Cop,Buy/purchase,"""Need to cop that jacket""",40,7
+Copped,Bought,"""Just copped new shoes""",35,7
+Drop,Release/launch,"""When does it drop?""",30,6
+Piece,Item/garment,"""Nice piece""",45,6
+Grail,Desired item,"""This is my grail item""",10,8

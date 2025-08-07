@@ -1,0 +1,342 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2024-01-09",
+    "description": "Texture compatibility matrix for suits, shirts, and ties",
+    "scoring_system": "0-100 compatibility score based on visual harmony and style rules"
+  },
+  "texture_definitions": {
+    "suits": {
+      "smooth_worsted": {
+        "description": "Classic smooth wool, year-round weight",
+        "finish": "Flat, minimal texture",
+        "formality": 90,
+        "seasons": ["all"],
+        "care_level": "low"
+      },
+      "tweed": {
+        "description": "Rough, nubby texture with visible weave",
+        "finish": "Highly textured",
+        "formality": 60,
+        "seasons": ["fall", "winter"],
+        "care_level": "medium"
+      },
+      "flannel": {
+        "description": "Soft, brushed wool with fuzzy surface",
+        "finish": "Matte, warm texture",
+        "formality": 70,
+        "seasons": ["fall", "winter"],
+        "care_level": "high"
+      },
+      "velvet": {
+        "description": "Plush pile fabric with rich depth",
+        "finish": "Luxurious, light-catching",
+        "formality": 85,
+        "seasons": ["fall", "winter"],
+        "care_level": "very_high"
+      },
+      "linen": {
+        "description": "Natural fiber with visible slubs",
+        "finish": "Casual, breathable",
+        "formality": 40,
+        "seasons": ["spring", "summer"],
+        "care_level": "high"
+      },
+      "seersucker": {
+        "description": "Puckered striped cotton",
+        "finish": "Textured stripes",
+        "formality": 45,
+        "seasons": ["summer"],
+        "care_level": "low"
+      },
+      "herringbone": {
+        "description": "V-shaped weaving pattern",
+        "finish": "Subtle texture pattern",
+        "formality": 80,
+        "seasons": ["all"],
+        "care_level": "medium"
+      },
+      "sharkskin": {
+        "description": "Smooth with subtle sheen",
+        "finish": "Sleek, slightly shiny",
+        "formality": 85,
+        "seasons": ["all"],
+        "care_level": "medium"
+      }
+    },
+    "shirts": {
+      "poplin": {
+        "description": "Smooth, crisp cotton weave",
+        "finish": "Flat, professional",
+        "formality": 90,
+        "wrinkle_resistance": "low"
+      },
+      "oxford": {
+        "description": "Basketweave cotton, slightly textured",
+        "finish": "Casual texture",
+        "formality": 70,
+        "wrinkle_resistance": "medium"
+      },
+      "twill": {
+        "description": "Diagonal weave pattern",
+        "finish": "Subtle texture",
+        "formality": 85,
+        "wrinkle_resistance": "high"
+      },
+      "end_on_end": {
+        "description": "Fine texture from alternating threads",
+        "finish": "Subtle variation",
+        "formality": 80,
+        "wrinkle_resistance": "medium"
+      },
+      "chambray": {
+        "description": "Lightweight plain weave",
+        "finish": "Casual, denim-like",
+        "formality": 50,
+        "wrinkle_resistance": "low"
+      },
+      "royal_oxford": {
+        "description": "Dressy version of oxford cloth",
+        "finish": "Lustrous texture",
+        "formality": 85,
+        "wrinkle_resistance": "medium"
+      },
+      "pinpoint": {
+        "description": "Fine oxford weave",
+        "finish": "Smooth with hint of texture",
+        "formality": 88,
+        "wrinkle_resistance": "medium"
+      }
+    },
+    "ties": {
+      "silk_satin": {
+        "description": "Smooth, shiny silk",
+        "finish": "High shine",
+        "formality": 95,
+        "knot_hold": "excellent"
+      },
+      "silk_twill": {
+        "description": "Diagonal weave silk",
+        "finish": "Subtle texture",
+        "formality": 90,
+        "knot_hold": "excellent"
+      },
+      "grenadine": {
+        "description": "Loose weave with visible texture",
+        "finish": "Matte, textured",
+        "formality": 85,
+        "knot_hold": "superior"
+      },
+      "knit": {
+        "description": "Knitted silk or wool",
+        "finish": "Casual texture",
+        "formality": 60,
+        "knot_hold": "good"
+      },
+      "wool": {
+        "description": "Textured wool fabric",
+        "finish": "Matte, warm",
+        "formality": 70,
+        "knot_hold": "good"
+      },
+      "velvet": {
+        "description": "Plush pile fabric",
+        "finish": "Rich texture",
+        "formality": 80,
+        "knot_hold": "fair"
+      },
+      "linen": {
+        "description": "Casual summer fabric",
+        "finish": "Natural texture",
+        "formality": 45,
+        "knot_hold": "fair"
+      },
+      "raw_silk": {
+        "description": "Textured silk with slubs",
+        "finish": "Irregular texture",
+        "formality": 75,
+        "knot_hold": "good"
+      }
+    }
+  },
+  "compatibility_matrix": {
+    "smooth_worsted_suit": {
+      "best_shirts": [
+        {"texture": "poplin", "score": 100, "reason": "Classic perfection"},
+        {"texture": "twill", "score": 95, "reason": "Subtle interest"},
+        {"texture": "pinpoint", "score": 98, "reason": "Refined elegance"}
+      ],
+      "best_ties": [
+        {"texture": "silk_satin", "score": 100, "reason": "Formal excellence"},
+        {"texture": "silk_twill", "score": 98, "reason": "Perfect balance"},
+        {"texture": "grenadine", "score": 90, "reason": "Textural interest"}
+      ],
+      "avoid": ["knit_tie_with_oxford_shirt", "chambray_shirt"]
+    },
+    "tweed_suit": {
+      "best_shirts": [
+        {"texture": "oxford", "score": 95, "reason": "Casual harmony"},
+        {"texture": "chambray", "score": 85, "reason": "Rustic charm"},
+        {"texture": "end_on_end", "score": 90, "reason": "Subtle complement"}
+      ],
+      "best_ties": [
+        {"texture": "wool", "score": 100, "reason": "Perfect match"},
+        {"texture": "knit", "score": 95, "reason": "Textural harmony"},
+        {"texture": "grenadine", "score": 88, "reason": "Sophisticated contrast"}
+      ],
+      "avoid": ["silk_satin_tie", "poplin_shirt_formal"]
+    },
+    "velvet_suit": {
+      "best_shirts": [
+        {"texture": "poplin", "score": 95, "reason": "Clean contrast"},
+        {"texture": "royal_oxford", "score": 90, "reason": "Luxe pairing"},
+        {"texture": "twill", "score": 92, "reason": "Rich combination"}
+      ],
+      "best_ties": [
+        {"texture": "silk_satin", "score": 85, "reason": "Luxe on luxe"},
+        {"texture": "velvet", "score": 70, "reason": "Bold if same color"},
+        {"texture": "silk_twill", "score": 95, "reason": "Perfect balance"}
+      ],
+      "avoid": ["knit_tie", "chambray_shirt", "wool_tie"]
+    },
+    "linen_suit": {
+      "best_shirts": [
+        {"texture": "chambray", "score": 95, "reason": "Summer perfection"},
+        {"texture": "oxford", "score": 90, "reason": "Casual elegance"},
+        {"texture": "poplin", "score": 85, "reason": "Crisp contrast"}
+      ],
+      "best_ties": [
+        {"texture": "linen", "score": 90, "reason": "Tonal harmony"},
+        {"texture": "raw_silk", "score": 95, "reason": "Natural textures"},
+        {"texture": "knit", "score": 100, "reason": "Perfect casual blend"}
+      ],
+      "avoid": ["silk_satin_tie", "velvet_tie", "formal_accessories"]
+    }
+  },
+  "texture_mixing_rules": {
+    "golden_rules": [
+      {
+        "rule": "Mix smooth with textured",
+        "example": "Smooth suit + textured tie",
+        "success_rate": "92%"
+      },
+      {
+        "rule": "Match formality levels",
+        "example": "Casual textures together",
+        "success_rate": "88%"
+      },
+      {
+        "rule": "Limit to 2 strong textures",
+        "example": "Textured suit + smooth shirt + medium tie",
+        "success_rate": "95%"
+      }
+    ],
+    "seasonal_guidelines": {
+      "summer": {
+        "preferred": ["linen", "seersucker", "poplin", "chambray"],
+        "avoid": ["velvet", "flannel", "heavy_wool"],
+        "texture_weight": "light"
+      },
+      "winter": {
+        "preferred": ["velvet", "flannel", "tweed", "wool"],
+        "avoid": ["linen", "seersucker"],
+        "texture_weight": "heavy"
+      },
+      "transitional": {
+        "preferred": ["worsted", "twill", "grenadine"],
+        "versatile": true,
+        "texture_weight": "medium"
+      }
+    }
+  },
+  "visual_balance": {
+    "texture_hierarchy": {
+      "principle": "One texture should dominate",
+      "examples": [
+        {
+          "combination": "Textured suit + smooth shirt + smooth tie",
+          "balance": "excellent",
+          "visual_weight": "suit_focused"
+        },
+        {
+          "combination": "Smooth suit + smooth shirt + textured tie",
+          "balance": "excellent",
+          "visual_weight": "tie_focused"
+        },
+        {
+          "combination": "All smooth textures",
+          "balance": "good",
+          "visual_weight": "color_dependent"
+        },
+        {
+          "combination": "All textured items",
+          "balance": "poor",
+          "visual_weight": "overwhelming"
+        }
+      ]
+    },
+    "pattern_texture_interaction": {
+      "rules": [
+        "Heavily textured items work best in solid colors",
+        "Smooth textures can handle bold patterns",
+        "Medium textures pair with subtle patterns"
+      ],
+      "scoring_modifiers": {
+        "texture_plus_pattern": -15,
+        "smooth_plus_pattern": +10,
+        "solid_textured": +5
+      }
+    }
+  },
+  "care_compatibility": {
+    "texture_groups": {
+      "dry_clean_only": ["velvet", "flannel", "fine_wool"],
+      "machine_washable": ["oxford", "chambray", "some_knits"],
+      "hand_wash": ["silk_ties", "delicate_knits"],
+      "professional_press": ["linen", "poplin"]
+    },
+    "maintenance_scoring": {
+      "all_same_care": 100,
+      "mixed_care_levels": 70,
+      "high_maintenance_combo": 50
+    }
+  },
+  "photography_performance": {
+    "texture_visibility": {
+      "high_visibility": {
+        "textures": ["tweed", "herringbone", "seersucker"],
+        "photography_tips": "Side lighting essential",
+        "social_media_performance": "excellent"
+      },
+      "medium_visibility": {
+        "textures": ["oxford", "grenadine", "flannel"],
+        "photography_tips": "Good lighting important",
+        "social_media_performance": "good"
+      },
+      "low_visibility": {
+        "textures": ["smooth_worsted", "poplin"],
+        "photography_tips": "Focus on fit and color",
+        "social_media_performance": "color_dependent"
+      }
+    }
+  },
+  "ai_recommendation_logic": {
+    "texture_scoring_weights": {
+      "visual_harmony": 0.4,
+      "formality_match": 0.3,
+      "seasonal_appropriateness": 0.2,
+      "care_compatibility": 0.1
+    },
+    "decision_tree": {
+      "first_check": "formality_level_match",
+      "second_check": "visual_balance",
+      "third_check": "seasonal_appropriate",
+      "final_check": "care_requirements"
+    },
+    "override_conditions": [
+      "Customer specifies texture preference",
+      "Wedding theme requires specific texture",
+      "Climate considerations override seasonal rules"
+    ]
+  }
+}

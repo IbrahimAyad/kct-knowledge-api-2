@@ -1,0 +1,213 @@
+{
+  "version": "1.0",
+  "last_updated": "2024-01-09",
+  "seasonal_champions": {
+    "spring": {
+      "2023": {
+        "champion": {
+          "suit": "light_blue",
+          "shirt": "white",
+          "tie": "coral",
+          "popularity": 85,
+          "roi": 94,
+          "search_volume": 12500,
+          "conversion_rate": "14.2%"
+        },
+        "runner_up": {
+          "suit": "beige",
+          "shirt": "white",
+          "tie": "sage_green",
+          "popularity": 82
+        },
+        "trending_colors": ["coral", "sage", "lavender", "mint"],
+        "fabric_focus": "lightweight_wool_linen_blend"
+      },
+      "2024": {
+        "champion": {
+          "suit": "sage_green",
+          "shirt": "white",
+          "tie": "blush_pink",
+          "popularity": 92,
+          "growth": "+30%",
+          "social_mentions": 45000,
+          "sustainability_score": 88
+        },
+        "runner_up": {
+          "suit": "light_grey",
+          "shirt": "light_blue",
+          "tie": "mustard",
+          "popularity": 88
+        },
+        "trending_colors": ["sage", "blush", "dusty_blue", "peach"],
+        "breakthrough": "Nature-inspired palettes"
+      },
+      "2025": {
+        "champion": {
+          "suit": "tan",
+          "shirt": "white",
+          "tie": "peach",
+          "popularity": 85,
+          "fabric": "organic_cotton",
+          "eco_friendly": true
+        },
+        "runner_up": {
+          "suit": "pastel_mint",
+          "shirt": "light_pink",
+          "tie": "lavender",
+          "popularity": 78,
+          "note": "Bold pastel experimentation"
+        }
+      },
+      "all_time_spring": {
+        "absolute_winner": "sage_green_white_blush",
+        "consistency_score": 89,
+        "failure_rate": "2%"
+      }
+    },
+    "summer": {
+      "2023": {
+        "champion": {
+          "suit": "linen_beige",
+          "shirt": "white",
+          "tie": "navy",
+          "popularity": 90,
+          "beach_wedding_score": 98,
+          "breathability": "excellent"
+        },
+        "special_note": "90% approval in destination surveys"
+      },
+      "2024": {
+        "champion": {
+          "suit": "cream_linen",
+          "shirt": "ice_blue",
+          "tie": "midnight",
+          "popularity": 87,
+          "innovation": "Blue shirts for heat management"
+        }
+      },
+      "2025": {
+        "champion": {
+          "suit": "sage_green",
+          "shirt": "white",
+          "tie": "rust",
+          "popularity": 94,
+          "note": "Highest summer score ever recorded"
+        },
+        "runner_up": {
+          "suit": "coral",
+          "shirt": "white",
+          "tie": "teal",
+          "popularity": 91
+        }
+      },
+      "all_time_summer": {
+        "absolute_winner": "sage_green_white_rust",
+        "heat_performance": 95,
+        "photo_performance": 93
+      }
+    },
+    "fall": {
+      "2023": {
+        "champion": {
+          "suit": "burgundy",
+          "shirt": "white",
+          "tie": "mustard",
+          "popularity": 95,
+          "note": "Most-rented colorway of 2023",
+          "perfect_score_months": ["October", "November"]
+        }
+      },
+      "2024": {
+        "champion": {
+          "suit": "olive_green",
+          "shirt": "pale_blue",
+          "tie": "champagne",
+          "popularity": 88,
+          "milestone": "Green outsold navy for first time"
+        }
+      },
+      "2025": {
+        "champion": {
+          "suit": "chocolate_brown",
+          "shirt": "ecru",
+          "tie": "marigold",
+          "popularity": 87,
+          "fabric": "tweed",
+          "texture_trend": true
+        }
+      },
+      "all_time_fall": {
+        "absolute_winner": "burgundy_white_mustard",
+        "dominance_score": 95,
+        "seasonal_perfect_match": true
+      }
+    },
+    "winter": {
+      "2023": {
+        "champion": {
+          "suit": "midnight_navy_tux",
+          "shirt": "white_bib",
+          "tie": "burgundy_bow",
+          "popularity": 92,
+          "luxury_score": 96,
+          "note": "Navy overtook black for tux rentals"
+        }
+      },
+      "2024": {
+        "champion": {
+          "suit": "charcoal",
+          "shirt": "white",
+          "tie": "silver",
+          "popularity": 90,
+          "trend": "Metallic accents for holidays"
+        }
+      },
+      "2025": {
+        "champion": {
+          "suit": "emerald_velvet",
+          "shirt": "white_pleated",
+          "tie": "black_bow",
+          "popularity": 86,
+          "luxury_fabric": "cotton_silk_velvet",
+          "formal_inquiry_rate": "42%"
+        }
+      },
+      "all_time_winter": {
+        "absolute_winner": "midnight_navy_white_burgundy",
+        "formal_score": 94,
+        "versatility": "black_tie_to_cocktail"
+      }
+    }
+  },
+  "seasonal_insights": {
+    "spring": {
+      "color_philosophy": "Fresh, optimistic, nature-inspired",
+      "fabric_priority": "Breathable yet structured",
+      "top_venues": ["garden", "outdoor", "daytime"],
+      "avoid": ["heavy_fabrics", "dark_colors", "velvet"]
+    },
+    "summer": {
+      "color_philosophy": "Light, airy, ocean-inspired",
+      "fabric_priority": "Maximum breathability",
+      "top_venues": ["beach", "destination", "outdoor"],
+      "avoid": ["dark_colors", "heavy_wool", "velvet"]
+    },
+    "fall": {
+      "color_philosophy": "Rich, warm, harvest-inspired",
+      "fabric_priority": "Texture and warmth",
+      "top_venues": ["vineyard", "barn", "indoor"],
+      "texture_importance": "critical"
+    },
+    "winter": {
+      "color_philosophy": "Luxurious, deep, jewel-toned",
+      "fabric_priority": "Warmth and richness",
+      "top_venues": ["ballroom", "indoor", "evening"],
+      "metallic_accents": "highly_recommended"
+    }
+  },
+  "prediction_confidence": {
+    "methodology": "Based on search trends, sales data, and fashion week analysis",
+    "accuracy_rate": "87% for 6-month predictions",
+    "factors": ["climate_change", "sustainability", "social_media", "celebrity_influence"]
+  }
+}

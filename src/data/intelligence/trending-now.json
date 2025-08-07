@@ -1,0 +1,202 @@
+{
+  "version": "1.0",
+  "last_updated": "2024-01-09T14:30:00Z",
+  "update_frequency": "real_time",
+  "current_trends": {
+    "hot_right_now": [
+      {
+        "combination": {
+          "suit": "sage_green",
+          "shirt": "white",
+          "tie": "rust"
+        },
+        "trend_score": 94,
+        "growth_24h": "+12%",
+        "growth_7d": "+32%",
+        "growth_30d": "+67%",
+        "search_volume": 28500,
+        "social_mentions": 156000,
+        "influencer_posts": 234,
+        "hashtags": ["#SageGreenGroom", "#RustTieWedding", "#EarthToneWedding"],
+        "selling_velocity": "3.2x normal"
+      },
+      {
+        "combination": {
+          "suit": "powder_blue",
+          "shirt": "white",
+          "tie": "navy"
+        },
+        "trend_score": 88,
+        "growth_24h": "+8%",
+        "growth_7d": "+24%",
+        "search_volume": 19200,
+        "tiktok_views": "2.3M",
+        "celebrity_spotted": "Recent A-list wedding"
+      },
+      {
+        "combination": {
+          "suit": "burgundy",
+          "shirt": "light_grey",
+          "tie": "patterned"
+        },
+        "trend_score": 85,
+        "growth_24h": "+15%",
+        "reason": "Fashion Week influence",
+        "target_demographic": "25-35 urban professionals"
+      }
+    ],
+    "rising_fast": [
+      {
+        "color": "hunter_green",
+        "category": "suits",
+        "growth_rate": "+45% MoM",
+        "prediction": "Next big color for Fall 2024"
+      },
+      {
+        "color": "terracotta",
+        "category": "ties",
+        "growth_rate": "+38% MoM",
+        "pairs_well_with": ["navy", "charcoal", "tan"]
+      },
+      {
+        "pattern": "subtle_plaid",
+        "category": "suits",
+        "growth_rate": "+28% MoM",
+        "market": "Creative professionals"
+      }
+    ],
+    "declining": [
+      {
+        "combination": "black_suit_black_shirt",
+        "decline_rate": "-22% MoM",
+        "reason": "Oversaturation, dated look"
+      },
+      {
+        "color": "bright_yellow",
+        "category": "ties",
+        "decline_rate": "-18% MoM",
+        "reason": "Seasonal phase out"
+      }
+    ]
+  },
+  "by_category": {
+    "suits": {
+      "top_trending": ["sage_green", "powder_blue", "hunter_green"],
+      "steady_performers": ["navy", "charcoal", "burgundy"],
+      "emerging": ["terracotta", "dusty_rose", "deep_teal"]
+    },
+    "shirts": {
+      "dominant": "white (72% of combinations)",
+      "rising": ["light_blue", "pale_pink", "cream"],
+      "pattern_trend": "Micro patterns gaining traction"
+    },
+    "ties": {
+      "top_colors": ["burgundy", "navy", "rust", "sage"],
+      "texture_trend": "Knit ties up 34%",
+      "pattern_trend": "Subtle florals for spring"
+    }
+  },
+  "event_specific_trends": {
+    "weddings": {
+      "spring_2024": {
+        "trending": "sage_green_suits",
+        "growth": "+89% YoY"
+      },
+      "summer_2024": {
+        "trending": "linen_everything",
+        "specific": "Sage linen with rust ties"
+      }
+    },
+    "business": {
+      "current": "Navy with burgundy ties",
+      "emerging": "Charcoal with forest green"
+    },
+    "prom_2024": {
+      "top_choice": "Powder blue with patterns",
+      "bold_trend": "Velvet jackets"
+    }
+  },
+  "regional_trends": {
+    "northeast_us": {
+      "trending": "Classic navy dominance",
+      "emerging": "Hunter green adoption"
+    },
+    "west_coast": {
+      "trending": "Earth tones, sustainable fabrics",
+      "specific": "Sage green leading"
+    },
+    "southern_us": {
+      "trending": "Seersucker revival",
+      "colors": "Pastels and light blues"
+    },
+    "midwest": {
+      "trending": "Traditional with twists",
+      "specific": "Navy with unexpected tie colors"
+    }
+  },
+  "fabric_trends": {
+    "sustainable": {
+      "growth": "+68% YoY",
+      "materials": ["organic_cotton", "recycled_wool", "hemp_blend"],
+      "price_premium": "15-25%"
+    },
+    "performance": {
+      "growth": "+42% YoY",
+      "features": ["stretch", "moisture_wicking", "wrinkle_resistant"]
+    },
+    "luxury": {
+      "trending": "Velvet for evening",
+      "emerging": "Cashmere blends"
+    }
+  },
+  "ai_predictions": {
+    "next_7_days": {
+      "confidence": 89,
+      "predictions": [
+        "Sage green will plateau at 95% popularity",
+        "Hunter green will break into top 5",
+        "Metallic ties will spike for holiday events"
+      ]
+    },
+    "next_30_days": {
+      "confidence": 76,
+      "predictions": [
+        "Earth tones will dominate spring bookings",
+        "Texture mixing will become mainstream",
+        "Sustainable fabric searches will increase 40%"
+      ]
+    }
+  },
+  "shopping_behavior": {
+    "cart_additions_now": {
+      "top_combo": "sage_green_white_rust",
+      "average_cart": "$387",
+      "bundle_rate": "67%"
+    },
+    "browsing_patterns": {
+      "peak_time": "Tuesday 7-9 PM",
+      "mobile_percentage": "73%",
+      "comparison_shopping": "4.2 combinations average"
+    }
+  },
+  "alert_triggers": {
+    "stock_warning": [
+      {
+        "item": "sage_green_suit_42R",
+        "velocity": "Selling 5x normal rate",
+        "stock_days": 3
+      },
+      {
+        "item": "rust_tie_collection",
+        "velocity": "Selling 3x normal rate",
+        "stock_days": 7
+      }
+    ],
+    "opportunity": [
+      {
+        "trend": "Hunter green showing early adoption",
+        "action": "Increase inventory by 40%"
+      }
+    ]
+  }
+}

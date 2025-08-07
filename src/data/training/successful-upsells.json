@@ -1,0 +1,308 @@
+{
+  "version": "1.0",
+  "last_updated": "2024-01-09",
+  "total_upsells_tracked": 45692,
+  "overall_upsell_rate": "34%",
+  "average_upsell_value": "$87",
+  "upsell_categories": {
+    "accessories": {
+      "success_rate": "56%",
+      "average_addition": "$49",
+      "top_performers": [
+        {
+          "item": "pocket_square",
+          "attach_rate": "42%",
+          "price": "$29",
+          "best_with": ["navy_suits", "charcoal_suits"],
+          "winning_pitch": "Complete the distinguished look with a matching pocket square",
+          "visual_impact": "high",
+          "bundle_discount": "Free with premium bundles"
+        },
+        {
+          "item": "tie_bar",
+          "attach_rate": "28%",
+          "price": "$35",
+          "best_timing": "After tie selection",
+          "winning_pitch": "Keep your tie perfectly in place all day",
+          "personalization": "Engravable"
+        },
+        {
+          "item": "cufflinks",
+          "attach_rate": "23%",
+          "price": "$45-125",
+          "trigger": "French cuff shirts",
+          "winning_pitch": "The finishing touch for formal elegance",
+          "gift_potential": "high"
+        },
+        {
+          "item": "lapel_pin",
+          "attach_rate": "18%",
+          "price": "$25",
+          "seasonal_peak": "Spring weddings",
+          "winning_pitch": "Add a subtle pop of personality"
+        }
+      ]
+    },
+    "additional_clothing": {
+      "success_rate": "38%",
+      "average_addition": "$125",
+      "top_performers": [
+        {
+          "item": "extra_shirt",
+          "attach_rate": "31%",
+          "price": "$79",
+          "trigger": "Multi-day events",
+          "winning_pitch": "Smart to have a backup - 15% off second shirt",
+          "logic": "Practical redundancy"
+        },
+        {
+          "item": "second_tie",
+          "attach_rate": "27%",
+          "price": "$49",
+          "best_with": "Navy suits (versatile base)",
+          "winning_pitch": "One for ceremony, one for reception",
+          "bundle_offer": "2 for $79"
+        },
+        {
+          "item": "vest",
+          "attach_rate": "22%",
+          "price": "$89",
+          "trigger": "Outdoor/variable weather events",
+          "winning_pitch": "Perfect for when jackets come off",
+          "style_boost": "Three-piece sophistication"
+        },
+        {
+          "item": "casual_outfit",
+          "attach_rate": "19%",
+          "price": "$149",
+          "trigger": "Destination weddings",
+          "winning_pitch": "For rehearsal dinner or welcome party",
+          "value_prop": "Complete weekend wardrobe"
+        }
+      ]
+    },
+    "shoes": {
+      "success_rate": "34%",
+      "average_addition": "$189",
+      "insights": {
+        "timing": "Best after suit selection",
+        "key_factor": "Color matching guidance",
+        "price_sensitivity": "Medium"
+      },
+      "top_performers": [
+        {
+          "item": "brown_oxfords",
+          "attach_rate": "22%",
+          "price": "$189",
+          "best_with": ["navy", "grey", "tan_suits"],
+          "winning_pitch": "The perfect brown to complement your suit",
+          "convenience_factor": "One-stop shopping"
+        },
+        {
+          "item": "black_dress_shoes",
+          "attach_rate": "18%",
+          "price": "$189",
+          "best_with": ["black", "charcoal_suits"],
+          "formal_events": "Essential",
+          "quality_message": "Comfortable all day dancing"
+        }
+      ]
+    },
+    "premium_upgrades": {
+      "success_rate": "28%",
+      "average_upgrade": "$150",
+      "categories": {
+        "fabric_upgrade": {
+          "from_to": "Polyester blend → 100% wool",
+          "price_difference": "$100",
+          "conversion_rate": "31%",
+          "trigger_words": ["quality", "photos", "comfort"],
+          "winning_pitch": "Breathes better and photographs beautifully"
+        },
+        "fit_upgrade": {
+          "from_to": "Standard → Slim/Tailored",
+          "price_difference": "$50",
+          "conversion_rate": "43%",
+          "demographic": "Under 40",
+          "winning_pitch": "Modern cut that flatters your build"
+        },
+        "customization": {
+          "options": ["Monogramming", "Custom lining", "Button choice"],
+          "price_range": "$35-150",
+          "conversion_rate": "26%",
+          "emotional_trigger": "Make it uniquely yours"
+        }
+      }
+    },
+    "care_products": {
+      "success_rate": "41%",
+      "average_addition": "$35",
+      "top_performers": [
+        {
+          "item": "garment_bag",
+          "attach_rate": "28%",
+          "price": "$45",
+          "trigger": "Travel/destination events",
+          "winning_pitch": "Arrive wrinkle-free",
+          "practicality": "high"
+        },
+        {
+          "item": "care_kit",
+          "attach_rate": "23%",
+          "price": "$29",
+          "includes": ["Spot cleaner", "lint roller", "freshener"],
+          "winning_pitch": "Emergency kit for the big day"
+        },
+        {
+          "item": "cedar_accessories",
+          "attach_rate": "15%",
+          "price": "$39",
+          "target": "Premium buyers",
+          "long_term_value": "Preserve your investment"
+        }
+      ]
+    },
+    "services": {
+      "success_rate": "32%",
+      "average_addition": "$75",
+      "top_performers": [
+        {
+          "service": "rush_shipping",
+          "attach_rate": "24%",
+          "price": "$25-65",
+          "trigger": "Event < 2 weeks",
+          "urgency_messaging": "Guaranteed delivery by [date]"
+        },
+        {
+          "service": "premium_alterations",
+          "attach_rate": "19%",
+          "price": "$89",
+          "value_prop": "Perfect fit guarantee",
+          "included": "Multiple adjustments"
+        },
+        {
+          "service": "style_consultation",
+          "attach_rate": "12%",
+          "price": "$49",
+          "target": "First-time buyers",
+          "confidence_builder": "Expert guidance"
+        }
+      ]
+    }
+  },
+  "timing_strategies": {
+    "immediate_upsells": {
+      "at_product_page": {
+        "show": ["Matching accessories", "Complete the look"],
+        "success_rate": "18%"
+      },
+      "at_cart": {
+        "show": ["Frequently bought together", "You might also need"],
+        "success_rate": "34%"
+      }
+    },
+    "delayed_upsells": {
+      "post_purchase_email": {
+        "timing": "24-48 hours",
+        "show": ["Accessories", "Care products"],
+        "success_rate": "12%"
+      },
+      "pre_event_email": {
+        "timing": "1 week before event date",
+        "show": ["Second tie", "Shoes", "Emergency kit"],
+        "success_rate": "21%"
+      }
+    }
+  },
+  "psychological_triggers": {
+    "social_proof": {
+      "message": "87% of customers add a pocket square",
+      "effectiveness": "+23% conversion"
+    },
+    "scarcity": {
+      "message": "Only 3 matching shoes left in your size",
+      "effectiveness": "+31% conversion"
+    },
+    "bundle_value": {
+      "message": "Add shoes and save $40",
+      "effectiveness": "+27% conversion"
+    },
+    "completion": {
+      "message": "Complete your look",
+      "effectiveness": "+19% conversion"
+    },
+    "gift_with_purchase": {
+      "message": "Free tie bar with shoe purchase",
+      "effectiveness": "+35% conversion"
+    }
+  },
+  "customer_segment_patterns": {
+    "grooms": {
+      "top_upsells": ["Vest", "Extra tie", "Cufflinks"],
+      "average_additions": 2.3,
+      "total_upsell_value": "$198"
+    },
+    "wedding_guests": {
+      "top_upsells": ["Pocket square", "Shoes"],
+      "average_additions": 1.4,
+      "total_upsell_value": "$87"
+    },
+    "business_buyers": {
+      "top_upsells": ["Extra shirt", "Tie collection"],
+      "average_additions": 1.8,
+      "total_upsell_value": "$142"
+    },
+    "first_time_buyers": {
+      "top_upsells": ["Style consultation", "Care kit"],
+      "average_additions": 1.2,
+      "total_upsell_value": "$65"
+    }
+  },
+  "failed_upsell_analysis": {
+    "reasons": {
+      "too_expensive": "42%",
+      "not_relevant": "28%",
+      "bad_timing": "18%",
+      "too_pushy": "12%"
+    },
+    "lessons_learned": [
+      "Price anchoring important (show savings)",
+      "Relevance beats volume (fewer, better suggestions)",
+      "Timing is crucial (not during size selection)",
+      "Soft sell works better than hard push"
+    ]
+  },
+  "ai_upsell_rules": {
+    "always": [
+      "Show value/savings clearly",
+      "Limit to 3 suggestions max",
+      "Match upsells to primary item style",
+      "Consider event type",
+      "Respect stated budget"
+    ],
+    "never": [
+      "Suggest items more expensive than main purchase",
+      "Push luxury items to budget shoppers",
+      "Interrupt size/fit flow",
+      "Use high-pressure language"
+    ],
+    "best_practices": {
+      "sequence": "Accessories → Clothing → Services",
+      "price_ladder": "Start with lowest price upsell",
+      "bundle_strategy": "Show individual prices then bundle savings",
+      "social_proof": "Use specific percentages, not vague claims"
+    }
+  },
+  "revenue_impact": {
+    "contribution_to_revenue": "23% of total",
+    "profit_margin_boost": "+31% on orders with upsells",
+    "customer_satisfaction": {
+      "with_relevant_upsells": "4.7/5",
+      "with_irrelevant_upsells": "3.2/5"
+    },
+    "repeat_purchase_rate": {
+      "customers_who_bought_upsells": "67%",
+      "customers_who_didn't": "43%"
+    }
+  }
+}

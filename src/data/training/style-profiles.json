@@ -1,0 +1,324 @@
+{
+  "version": "1.0",
+  "last_updated": "2024-01-09",
+  "total_profiles": 8739,
+  "profile_categories": {
+    "classic_conservative": {
+      "percentage_of_customers": "42%",
+      "demographics": {
+        "age_range": "35-55",
+        "occupations": ["finance", "law", "corporate", "government"],
+        "shopping_behavior": "research_heavy",
+        "decision_time": "7-14 days"
+      },
+      "characteristics": {
+        "color_preferences": ["navy", "charcoal", "black", "grey"],
+        "pattern_tolerance": "low",
+        "adventure_level": "minimal",
+        "brand_loyalty": "high",
+        "price_sensitivity": "medium",
+        "quality_focus": "high"
+      },
+      "preferred_combinations": [
+        {
+          "combo": "navy_white_burgundy",
+          "confidence": 98
+        },
+        {
+          "combo": "charcoal_white_silver",
+          "confidence": 95
+        },
+        {
+          "combo": "black_white_black",
+          "confidence": 92
+        }
+      ],
+      "shopping_triggers": {
+        "trust_signals": ["established brand", "customer reviews", "quality guarantees"],
+        "decision_factors": ["fit", "versatility", "durability"],
+        "objections": ["too trendy", "poor quality", "complicated returns"]
+      },
+      "messaging_preferences": {
+        "tone": "professional and respectful",
+        "focus": "quality and tradition",
+        "avoid": "slang, urgency pressure, trend-speak"
+      },
+      "bundle_preferences": {
+        "essential": "35%",
+        "premium": "55%",
+        "luxury": "10%"
+      },
+      "ai_conversation_style": "Formal, detailed, quality-focused",
+      "upsell_receptivity": "medium - focus on quality and longevity"
+    },
+    "modern_adventurous": {
+      "percentage_of_customers": "23%",
+      "demographics": {
+        "age_range": "25-40",
+        "occupations": ["creative", "tech", "marketing", "entrepreneur"],
+        "shopping_behavior": "impulse_friendly",
+        "decision_time": "1-3 days"
+      },
+      "characteristics": {
+        "color_preferences": ["burgundy", "sage_green", "powder_blue", "unique_colors"],
+        "pattern_tolerance": "high",
+        "adventure_level": "high",
+        "brand_loyalty": "low",
+        "price_sensitivity": "low",
+        "style_focus": "high"
+      },
+      "preferred_combinations": [
+        {
+          "combo": "sage_green_white_rust",
+          "confidence": 94
+        },
+        {
+          "combo": "burgundy_pink_patterned",
+          "confidence": 89
+        },
+        {
+          "combo": "powder_blue_lavender_navy",
+          "confidence": 86
+        }
+      ],
+      "shopping_triggers": {
+        "trust_signals": ["instagram presence", "influencer wear", "limited edition"],
+        "decision_factors": ["uniqueness", "photo-worthy", "trend alignment"],
+        "objections": ["too common", "everyone has it", "boring"]
+      },
+      "messaging_preferences": {
+        "tone": "casual and energetic",
+        "focus": "trends and uniqueness",
+        "embrace": "emojis, urgency, exclusivity"
+      },
+      "bundle_preferences": {
+        "essential": "15%",
+        "premium": "45%",
+        "luxury": "40%"
+      },
+      "ai_conversation_style": "Friendly, enthusiastic, trend-aware",
+      "upsell_receptivity": "high - focus on exclusivity and style"
+    },
+    "practical_value_seeker": {
+      "percentage_of_customers": "20%",
+      "demographics": {
+        "age_range": "28-45",
+        "occupations": ["middle management", "sales", "education"],
+        "shopping_behavior": "comparison_shopper",
+        "decision_time": "3-7 days"
+      },
+      "characteristics": {
+        "color_preferences": ["navy", "grey", "versatile_colors"],
+        "pattern_tolerance": "medium",
+        "adventure_level": "low",
+        "brand_loyalty": "medium",
+        "price_sensitivity": "high",
+        "value_focus": "highest"
+      },
+      "preferred_combinations": [
+        {
+          "combo": "navy_white_multiple_ties",
+          "confidence": 91
+        },
+        {
+          "combo": "grey_blue_navy",
+          "confidence": 88
+        }
+      ],
+      "shopping_triggers": {
+        "trust_signals": ["sale prices", "bundle deals", "free shipping"],
+        "decision_factors": ["price", "versatility", "multi-use"],
+        "objections": ["too expensive", "single use", "no discounts"]
+      },
+      "messaging_preferences": {
+        "tone": "straightforward and honest",
+        "focus": "value and savings",
+        "highlight": "bundle savings, versatility, cost-per-wear"
+      },
+      "bundle_preferences": {
+        "essential": "70%",
+        "premium": "25%",
+        "luxury": "5%"
+      },
+      "ai_conversation_style": "Direct, value-focused, practical",
+      "upsell_receptivity": "low - must show clear value add"
+    },
+    "occasion_driven": {
+      "percentage_of_customers": "10%",
+      "demographics": {
+        "age_range": "22-65",
+        "occupations": ["varied"],
+        "shopping_behavior": "need_based",
+        "decision_time": "1-2 days"
+      },
+      "characteristics": {
+        "color_preferences": ["event_appropriate"],
+        "pattern_tolerance": "varies",
+        "adventure_level": "medium",
+        "brand_loyalty": "low",
+        "price_sensitivity": "medium",
+        "urgency": "high"
+      },
+      "preferred_combinations": [
+        {
+          "combo": "whatever_fits_dress_code",
+          "confidence": 85
+        }
+      ],
+      "shopping_triggers": {
+        "trust_signals": ["fast shipping", "fit guides", "easy returns"],
+        "decision_factors": ["delivery time", "appropriateness", "fit"],
+        "objections": ["won't arrive in time", "might not fit", "wrong for event"]
+      },
+      "messaging_preferences": {
+        "tone": "helpful and reassuring",
+        "focus": "event appropriateness",
+        "provide": "clear guidance, dress code help"
+      },
+      "bundle_preferences": {
+        "essential": "45%",
+        "premium": "40%",
+        "luxury": "15%"
+      },
+      "ai_conversation_style": "Solution-focused, reassuring, fast",
+      "upsell_receptivity": "medium - if solves problems"
+    },
+    "luxury_connoisseur": {
+      "percentage_of_customers": "5%",
+      "demographics": {
+        "age_range": "35-65",
+        "occupations": ["executive", "business owner", "professional"],
+        "shopping_behavior": "quality_first",
+        "decision_time": "varies"
+      },
+      "characteristics": {
+        "color_preferences": ["classic_with_perfect_execution"],
+        "pattern_tolerance": "selective",
+        "adventure_level": "calculated",
+        "brand_loyalty": "very_high",
+        "price_sensitivity": "very_low",
+        "quality_focus": "extreme"
+      },
+      "preferred_combinations": [
+        {
+          "combo": "bespoke_anything",
+          "confidence": 95
+        }
+      ],
+      "shopping_triggers": {
+        "trust_signals": ["craftsmanship", "heritage", "exclusivity"],
+        "decision_factors": ["quality", "customization", "service"],
+        "objections": ["mass produced", "poor service", "no customization"]
+      },
+      "messaging_preferences": {
+        "tone": "sophisticated and knowledgeable",
+        "focus": "craftsmanship and exclusivity",
+        "demonstrate": "expertise, attention to detail"
+      },
+      "bundle_preferences": {
+        "essential": "0%",
+        "premium": "20%",
+        "luxury": "80%"
+      },
+      "ai_conversation_style": "Sophisticated, detail-oriented, exclusive",
+      "upsell_receptivity": "high - for genuine quality"
+    }
+  },
+  "profile_identification": {
+    "quiz_mapping": {
+      "question_1_style_preference": {
+        "classic": "classic_conservative",
+        "trendy": "modern_adventurous",
+        "comfortable": "practical_value_seeker",
+        "depends": "occasion_driven"
+      },
+      "question_2_color_comfort": {
+        "navy_black": "classic_conservative",
+        "bright_colors": "modern_adventurous",
+        "earth_tones": "practical_value_seeker"
+      },
+      "question_3_shopping_style": {
+        "research_everything": "classic_conservative",
+        "see_it_buy_it": "modern_adventurous",
+        "compare_prices": "practical_value_seeker",
+        "need_it_now": "occasion_driven"
+      }
+    },
+    "behavioral_indicators": {
+      "views_5+_products": "practical_value_seeker",
+      "clicks_sale_section": "practical_value_seeker",
+      "views_new_arrivals": "modern_adventurous",
+      "reads_about_section": "classic_conservative",
+      "uses_size_guide": "classic_conservative",
+      "adds_to_cart_quickly": "occasion_driven"
+    }
+  },
+  "personalization_matrix": {
+    "classic_conservative": {
+      "homepage_hero": "Timeless Elegance Collection",
+      "product_sort": "best_sellers_first",
+      "messaging": "Invest in Quality",
+      "social_proof": "Worn by 10,000 professionals",
+      "bundle_push": "Premium"
+    },
+    "modern_adventurous": {
+      "homepage_hero": "Trending Now: Sage Green",
+      "product_sort": "new_arrivals_first",
+      "messaging": "Be the Trendsetter",
+      "social_proof": "As seen on Instagram",
+      "bundle_push": "Limited Edition"
+    },
+    "practical_value_seeker": {
+      "homepage_hero": "Best Value Bundles",
+      "product_sort": "price_low_to_high",
+      "messaging": "Smart Shopping",
+      "social_proof": "Our best deals",
+      "bundle_push": "Essential"
+    }
+  },
+  "conversion_optimization": {
+    "by_profile": {
+      "classic_conservative": {
+        "conversion_rate": "22%",
+        "average_order_value": "$412",
+        "return_rate": "8%"
+      },
+      "modern_adventurous": {
+        "conversion_rate": "16%",
+        "average_order_value": "$523",
+        "return_rate": "15%"
+      },
+      "practical_value_seeker": {
+        "conversion_rate": "14%",
+        "average_order_value": "$267",
+        "return_rate": "12%"
+      },
+      "occasion_driven": {
+        "conversion_rate": "28%",
+        "average_order_value": "$342",
+        "return_rate": "18%"
+      },
+      "luxury_connoisseur": {
+        "conversion_rate": "45%",
+        "average_order_value": "$1,247",
+        "return_rate": "3%"
+      }
+    }
+  },
+  "ai_adaptation_rules": {
+    "language_adaptation": {
+      "classic_conservative": "Use 'investment', 'quality', 'professional', 'timeless'",
+      "modern_adventurous": "Use 'trending', 'unique', 'bold', 'instagram-worthy'",
+      "practical_value_seeker": "Use 'value', 'versatile', 'savings', 'multi-use'",
+      "occasion_driven": "Use 'perfect for', 'appropriate', 'arrives quickly'",
+      "luxury_connoisseur": "Use 'craftsmanship', 'bespoke', 'exclusive', 'tailored'"
+    },
+    "recommendation_logic": {
+      "classic_conservative": "Start with navy, show quality details",
+      "modern_adventurous": "Start with trending colors, show what's new",
+      "practical_value_seeker": "Start with bundles, show savings",
+      "occasion_driven": "Start with event-appropriate, show fast shipping",
+      "luxury_connoisseur": "Start with customization, show craftsmanship"
+    }
+  }
+}

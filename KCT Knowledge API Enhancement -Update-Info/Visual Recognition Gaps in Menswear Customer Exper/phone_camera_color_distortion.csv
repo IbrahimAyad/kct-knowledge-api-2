@@ -1,0 +1,13 @@
+Phone_Model,Navy_Color_Accuracy,Gray_Color_Accuracy,Brown_Color_Accuracy,Black_Color_Accuracy,White_Balance_Performance,Skin_Tone_Accuracy,Overall_Suit_Color_Accuracy,HDR_Color_Distortion
+iPhone 15 Pro,85,88,82,90,87,89,87,15
+iPhone 14 Pro,82,85,79,87,84,86,84,18
+iPhone 13,78,80,75,83,80,82,80,22
+Samsung Galaxy S24 Ultra,88,90,85,92,89,91,89,12
+Samsung Galaxy S23,85,87,82,89,86,88,86,15
+Google Pixel 8 Pro,92,94,89,95,93,94,93,8
+Google Pixel 7,90,92,87,93,91,92,91,10
+OnePlus 12,80,82,77,85,81,83,81,20
+OnePlus 11,78,80,75,83,79,81,79,22
+Huawei P60 Pro,75,78,72,80,76,78,76,25
+Xiaomi 14 Ultra,83,85,80,88,84,86,84,17
+Sony Xperia 1 V,87,89,84,91,88,90,88,13

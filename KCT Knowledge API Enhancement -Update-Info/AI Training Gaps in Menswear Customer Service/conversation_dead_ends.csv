@@ -1,0 +1,18 @@
+Question_Category,Customer_Question,Why_AI_Fails,Abandonment_Rate,Escalation_Rate
+Fit & Sizing,Does this suit jacket make my shoulders look too broad?,Cannot assess visual appearance or body proportions,85,92
+Fit & Sizing,I'm between sizes - should I size up or down for this brand?,Lacks brand-specific sizing knowledge and comparison data,78,88
+Fit & Sizing,How does your slim fit compare to Brand X's tailored fit?,No access to competitor sizing standards or fit profiles,82,90
+Fit & Sizing,Will these pants shrink after washing?,Missing fabric care and shrinkage data integration,65,75
+Fit & Sizing,Can you alter the jacket sleeve length for me?,Cannot coordinate with tailoring services or provide location-specific info,88,95
+Style Guidance,What shoes go with this navy suit for a wedding?,Lacks nuanced understanding of dress codes and social context,75,82
+Style Guidance,Is this too formal for a business casual office?,Cannot interpret modern workplace culture variations,70,78
+Style Guidance,How do I style this blazer for different occasions?,Missing lifestyle and occasion-specific styling knowledge,80,85
+Style Guidance,What colors complement my skin tone?,No visual analysis capability for skin tone assessment,72,80
+Product Comparison,Which is better quality - this wool blend or 100% cotton?,Lacks comparative quality analysis across materials,68,72
+Product Comparison,How does this compare to similar items in my price range?,No real-time pricing and competitor comparison capability,74,78
+Product Comparison,What's the difference between your premium and standard lines?,Missing detailed product line differentiation knowledge,69,74
+Complex Requests,I need a complete outfit for a job interview next week,"Cannot handle multi-step, personalized outfit curation",90,95
+Complex Requests,Can you help me build a capsule wardrobe on a budget?,Lacks budget-conscious styling strategy and coordination,87,92
+Complex Requests,I want to upgrade my style but don't know where to start,Cannot provide comprehensive style transformation guidance,85,90
+Returns & Exchanges,This doesn't fit right - what are my options?,Missing integration with return/exchange systems,60,85
+Returns & Exchanges,I ordered the wrong size - can I exchange without returning?,Cannot handle complex policy exceptions and logistics,55,80

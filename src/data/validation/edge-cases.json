@@ -1,0 +1,475 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2024-01-09",
+    "description": "Edge cases and unusual requests to test system robustness",
+    "total_cases": 89,
+    "categories": ["unusual_requests", "system_limits", "cultural_considerations", "technical_edge_cases", "business_logic_challenges"]
+  },
+  "unusual_requests": {
+    "extreme_color_combinations": [
+      {
+        "case_id": "ECC001",
+        "request": "I want an all-purple outfit",
+        "current_inventory": "no_purple_suits",
+        "expected_handling": {
+          "response_type": "alternative_suggestion",
+          "suggested_alternatives": [
+            "purple_tie_with_grey_suit",
+            "purple_shirt_with_charcoal_suit",
+            "burgundy_as_closest_alternative"
+          ],
+          "tone": "helpful_not_dismissive",
+          "education": "explain_why_purple_suits_uncommon"
+        }
+      },
+      {
+        "case_id": "ECC002",
+        "request": "Neon colors for my wedding",
+        "context": "rave_themed_wedding",
+        "expected_handling": {
+          "response_type": "creative_accommodation",
+          "suggestions": [
+            "neon_accessories_with_black_suit",
+            "custom_neon_pocket_square",
+            "glow_in_dark_bow_tie_option"
+          ],
+          "flag_for": "human_stylist_consultation"
+        }
+      },
+      {
+        "case_id": "ECC003",
+        "request": "Match my girlfriend's rainbow dress",
+        "complexity": "multicolor_matching",
+        "expected_handling": {
+          "response_type": "strategic_guidance",
+          "approach": "pick_one_color_to_complement",
+          "avoid": "trying_to_match_all_colors",
+          "tone": "supportive_and_practical"
+        }
+      }
+    ],
+    "contradictory_requirements": [
+      {
+        "case_id": "CR001",
+        "request": "Most formal but also most comfortable",
+        "conflict": "formality_vs_comfort",
+        "expected_handling": {
+          "acknowledge_tradeoff": true,
+          "solutions": [
+            "luxury_fabrics_with_stretch",
+            "expert_tailoring_for_comfort",
+            "hidden_comfort_features"
+          ],
+          "education": "explain_balance_possible"
+        }
+      },
+      {
+        "case_id": "CR002",
+        "request": "Cheapest option but highest quality",
+        "conflict": "price_vs_quality",
+        "expected_handling": {
+          "honest_communication": true,
+          "options": [
+            "sale_items_of_higher_tier",
+            "classic_pieces_worth_investment",
+            "payment_plan_availability"
+          ],
+          "avoid": "false_promises"
+        }
+      },
+      {
+        "case_id": "CR003",
+        "request": "Trendy but timeless",
+        "conflict": "trend_vs_classic",
+        "expected_handling": {
+          "nuanced_approach": true,
+          "suggestions": [
+            "classic_cuts_trendy_colors",
+            "timeless_base_trendy_accessories",
+            "subtle_trend_incorporation"
+          ]
+        }
+      }
+    ],
+    "impossible_timelines": [
+      {
+        "case_id": "IT001",
+        "request": "Need custom suit by tomorrow",
+        "location": "remote_area",
+        "expected_handling": {
+          "empathetic_response": true,
+          "alternatives": [
+            "express_shipping_ready_to_wear",
+            "local_partner_options",
+            "rental_referral"
+          ],
+          "manage_expectations": "clear_on_possibilities"
+        }
+      },
+      {
+        "case_id": "IT002",
+        "request": "Alter suit to completely different size",
+        "size_change": "40R_to_48L",
+        "expected_handling": {
+          "technical_explanation": true,
+          "reality_check": "alteration_limits",
+          "solution": "new_suit_with_expedited_option"
+        }
+      }
+    ],
+    "cultural_specific_requests": [
+      {
+        "case_id": "CSR001",
+        "request": "Suit for Hindu wedding guest",
+        "requirements": ["appropriate_colors", "cultural_sensitivity"],
+        "expected_handling": {
+          "knowledgeable_response": true,
+          "suggestions": [
+            "vibrant_colors_encouraged",
+            "avoid_black_and_white",
+            "consider_mandarin_collar_options"
+          ],
+          "additional_service": "cultural_guidance_resource"
+        }
+      },
+      {
+        "case_id": "CSR002",
+        "request": "Modest options for religious reasons",
+        "specifications": ["longer_jacket", "higher_button_stance", "conservative_colors"],
+        "expected_handling": {
+          "respectful_accommodation": true,
+          "options": [
+            "traditional_cut_suits",
+            "appropriate_combinations",
+            "customization_available"
+          ]
+        }
+      }
+    ],
+    "unconventional_uses": [
+      {
+        "case_id": "UU001",
+        "request": "Suit for costume party as James Bond",
+        "expected_handling": {
+          "embrace_fun_request": true,
+          "suggestions": [
+            "classic_bond_tuxedo",
+            "casino_royale_inspiration",
+            "accessory_recommendations"
+          ],
+          "add_value": "bond_style_guide"
+        }
+      },
+      {
+        "case_id": "UU002",
+        "request": "Suit for my dog's wedding",
+        "unusual_factor": "pet_clothing",
+        "expected_handling": {
+          "professional_response": true,
+          "options": [
+            "matching_human_suit",
+            "pocket_square_from_same_fabric",
+            "photo_opportunity_tips"
+          ],
+          "avoid": "dismissive_attitude"
+        }
+      }
+    ]
+  },
+  "system_limits": {
+    "inventory_boundaries": [
+      {
+        "case_id": "IB001",
+        "scenario": "Requesting 50 identical suits",
+        "use_case": "large_wedding_party",
+        "expected_handling": {
+          "check_inventory": true,
+          "options": [
+            "phased_delivery",
+            "slight_variations_acceptable",
+            "special_order_process"
+          ],
+          "business_opportunity": "bulk_order_discount"
+        }
+      },
+      {
+        "case_id": "IB002",
+        "scenario": "Size not typically stocked",
+        "size_requested": "32XS_or_60XXL",
+        "expected_handling": {
+          "special_order_option": true,
+          "timeline_transparency": true,
+          "alternative_solutions": ["custom_tailoring", "partner_vendors"]
+        }
+      }
+    ],
+    "pricing_anomalies": [
+      {
+        "case_id": "PA001",
+        "scenario": "Bundle costs more than items separately",
+        "cause": "individual_items_on_sale",
+        "expected_handling": {
+          "honor_lower_price": true,
+          "automatic_adjustment": true,
+          "transparency": "explain_to_customer"
+        }
+      },
+      {
+        "case_id": "PA002",
+        "scenario": "Negative price after stacked discounts",
+        "cause": "multiple_promotions",
+        "expected_handling": {
+          "discount_caps": true,
+          "clear_rules": "maximum_discount_policy",
+          "prevent_exploitation": true
+        }
+      }
+    ],
+    "data_quality_issues": [
+      {
+        "case_id": "DQ001",
+        "scenario": "Conflicting size measurements",
+        "input": {
+          "chest": "40_inches",
+          "selected_size": "46R"
+        },
+        "expected_handling": {
+          "flag_discrepancy": true,
+          "request_clarification": true,
+          "offer_consultation": true
+        }
+      },
+      {
+        "case_id": "DQ002",
+        "scenario": "Impossible style preferences",
+        "quiz_answers": {
+          "q1": "hate_all_colors",
+          "q2": "never_wear_suits",
+          "q3": "must_wear_suit_daily"
+        },
+        "expected_handling": {
+          "detect_inconsistency": true,
+          "restart_option": true,
+          "human_intervention": "available"
+        }
+      }
+    ]
+  },
+  "technical_edge_cases": {
+    "api_abuse": [
+      {
+        "case_id": "AA001",
+        "scenario": "Rapid-fire identical requests",
+        "rate": "1000_requests_per_second",
+        "expected_handling": {
+          "rate_limiting": true,
+          "graceful_degradation": true,
+          "block_if_malicious": true
+        }
+      },
+      {
+        "case_id": "AA002",
+        "scenario": "Scraping attempt detected",
+        "pattern": "sequential_product_requests",
+        "expected_handling": {
+          "captcha_challenge": true,
+          "api_key_requirement": true,
+          "legal_notice": "terms_of_service"
+        }
+      }
+    ],
+    "data_corruption": [
+      {
+        "case_id": "DC001",
+        "scenario": "Malformed product data",
+        "example": "suit_color_is_null",
+        "expected_handling": {
+          "graceful_fallback": true,
+          "error_logging": true,
+          "customer_experience": "unaffected"
+        }
+      },
+      {
+        "case_id": "DC002",
+        "scenario": "Circular reference in recommendations",
+        "issue": "A_recommends_B_recommends_A",
+        "expected_handling": {
+          "loop_detection": true,
+          "break_condition": true,
+          "alternative_path": true
+        }
+      }
+    ],
+    "integration_failures": [
+      {
+        "case_id": "IF001",
+        "scenario": "Payment processor returns ambiguous response",
+        "response": "timeout_after_charge",
+        "expected_handling": {
+          "idempotency_key": true,
+          "verify_charge_status": true,
+          "prevent_double_charge": true,
+          "clear_communication": true
+        }
+      },
+      {
+        "case_id": "IF002",
+        "scenario": "Inventory sync during checkout",
+        "issue": "item_sold_during_checkout",
+        "expected_handling": {
+          "reservation_system": true,
+          "graceful_alternative": true,
+          "compensation_option": "discount_on_alternative"
+        }
+      }
+    ],
+    "browser_compatibility": [
+      {
+        "case_id": "BC001",
+        "scenario": "IE11 user accessing modern features",
+        "feature": "AR_try_on",
+        "expected_handling": {
+          "feature_detection": true,
+          "graceful_fallback": true,
+          "upgrade_prompt": "gentle"
+        }
+      },
+      {
+        "case_id": "BC002",
+        "scenario": "JavaScript disabled",
+        "impact": "core_functionality",
+        "expected_handling": {
+          "basic_html_version": true,
+          "essential_features_work": true,
+          "progressive_enhancement": true
+        }
+      }
+    ]
+  },
+  "business_logic_challenges": {
+    "return_abuse": [
+      {
+        "case_id": "RA001",
+        "scenario": "Serial returner pattern detected",
+        "behavior": "orders_and_returns_repeatedly",
+        "expected_handling": {
+          "pattern_detection": true,
+          "gentle_intervention": true,
+          "policy_enforcement": "if_necessary",
+          "customer_service_flag": true
+        }
+      },
+      {
+        "case_id": "RA002",
+        "scenario": "Worn item return attempt",
+        "evidence": "cologne_smell_and_deodorant_marks",
+        "expected_handling": {
+          "quality_check_process": true,
+          "documentation": true,
+          "firm_but_fair": true,
+          "escalation_path": "clear"
+        }
+      }
+    ],
+    "promotional_exploits": [
+      {
+        "case_id": "PE001",
+        "scenario": "Creating multiple accounts for first-time discount",
+        "detection": "same_address_different_emails",
+        "expected_handling": {
+          "fraud_detection": true,
+          "account_linking": true,
+          "honor_one_discount": true,
+          "education_not_punishment": true
+        }
+      },
+      {
+        "case_id": "PE002",
+        "scenario": "Referral program self-referral",
+        "pattern": "referring_own_emails",
+        "expected_handling": {
+          "automated_detection": true,
+          "disqualify_rewards": true,
+          "explain_policy": true
+        }
+      }
+    ],
+    "competitive_intelligence": [
+      {
+        "case_id": "CI001",
+        "scenario": "Competitor systematically checking prices",
+        "pattern": "regular_api_calls_all_products",
+        "expected_handling": {
+          "allow_public_data": true,
+          "rate_limit_appropriately": true,
+          "track_for_insights": true
+        }
+      },
+      {
+        "case_id": "CI002",
+        "scenario": "Price matching request with fake competitor price",
+        "verification": "competitor_shows_different_price",
+        "expected_handling": {
+          "verification_process": true,
+          "screenshot_requirement": true,
+          "terms_application": true
+        }
+      }
+    ]
+  },
+  "recovery_strategies": {
+    "customer_satisfaction": {
+      "when_things_go_wrong": {
+        "wrong_item_shipped": {
+          "immediate_action": "apologize_and_expedite_correct",
+          "compensation": "discount_or_credit",
+          "follow_up": "ensure_satisfaction"
+        },
+        "website_crash_during_purchase": {
+          "cart_recovery": true,
+          "honor_prices": true,
+          "priority_support": true
+        }
+      }
+    },
+    "data_recovery": {
+      "lost_customer_data": {
+        "backup_systems": "multiple_redundancy",
+        "recovery_time": "<4_hours",
+        "customer_communication": "transparent"
+      }
+    },
+    "reputation_management": {
+      "viral_complaint": {
+        "response_time": "<1_hour",
+        "public_response": "professional_and_empathetic",
+        "private_resolution": "go_above_and_beyond",
+        "learn_and_improve": true
+      }
+    }
+  },
+  "testing_priorities": {
+    "critical": [
+      "payment_edge_cases",
+      "inventory_accuracy",
+      "size_recommendation_accuracy",
+      "return_processing"
+    ],
+    "high": [
+      "unusual_color_requests",
+      "bulk_orders",
+      "international_scenarios",
+      "accessibility_compliance"
+    ],
+    "medium": [
+      "style_quiz_edge_cases",
+      "social_sharing_features",
+      "wishlist_functionality"
+    ],
+    "low": [
+      "cosmetic_ui_issues",
+      "rare_browser_versions"
+    ]
+  }
+}

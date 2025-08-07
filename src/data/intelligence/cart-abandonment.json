@@ -1,0 +1,390 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2024-01-09",
+    "description": "Cart abandonment analysis and recovery strategies",
+    "tracking_period": "2023-2024",
+    "total_abandoned_carts": 127849,
+    "recovery_rate": "23.4%"
+  },
+  "abandonment_overview": {
+    "overall_stats": {
+      "cart_abandonment_rate": "68.2%",
+      "average_abandoned_value": 743,
+      "total_lost_revenue": 94981707,
+      "recovered_revenue": 22225519,
+      "industry_benchmark": "69.8%"
+    },
+    "by_value_tier": {
+      "under_500": {
+        "abandonment_rate": "72.4%",
+        "recovery_rate": "18.2%",
+        "primary_reason": "shipping_cost"
+      },
+      "500_to_1000": {
+        "abandonment_rate": "66.8%",
+        "recovery_rate": "24.7%",
+        "primary_reason": "price_comparison"
+      },
+      "over_1000": {
+        "abandonment_rate": "58.3%",
+        "recovery_rate": "31.2%",
+        "primary_reason": "payment_options"
+      }
+    }
+  },
+  "abandonment_stages": {
+    "product_page_to_cart": {
+      "drop_rate": "43.2%",
+      "common_patterns": {
+        "size_uncertainty": {
+          "frequency": "34%",
+          "solution": "size_guide_prominence",
+          "improvement": "-12% abandonment"
+        },
+        "price_shock": {
+          "frequency": "28%",
+          "solution": "earlier_price_visibility",
+          "improvement": "-8% abandonment"
+        },
+        "incomplete_look": {
+          "frequency": "21%",
+          "solution": "bundle_suggestions",
+          "improvement": "-15% abandonment"
+        }
+      }
+    },
+    "cart_to_checkout": {
+      "drop_rate": "31.4%",
+      "friction_points": {
+        "unexpected_costs": {
+          "impact": "42% of drops",
+          "details": ["shipping", "taxes", "fees"],
+          "solution": "transparent_pricing"
+        },
+        "account_creation": {
+          "impact": "23% of drops",
+          "solution": "guest_checkout",
+          "improvement": "-18% abandonment"
+        },
+        "limited_payment": {
+          "impact": "19% of drops",
+          "solution": "add_payment_options",
+          "requested": ["PayPal", "Apple Pay", "Afterpay"]
+        }
+      }
+    },
+    "checkout_to_completion": {
+      "drop_rate": "24.6%",
+      "final_barriers": {
+        "payment_failure": {
+          "frequency": "31%",
+          "common_issues": ["declined_cards", "expired_cards"],
+          "solution": "better_error_handling"
+        },
+        "form_complexity": {
+          "frequency": "26%",
+          "problematic_fields": ["billing_address", "phone_format"],
+          "solution": "autofill_and_validation"
+        },
+        "security_concerns": {
+          "frequency": "18%",
+          "indicators": ["missing_badges", "unclear_policies"],
+          "solution": "trust_signals"
+        }
+      }
+    }
+  },
+  "abandonment_by_combination": {
+    "highest_abandonment": [
+      {
+        "combination": "custom_three_piece_suits",
+        "rate": "78.3%",
+        "reasons": ["complex_customization", "high_price", "long_delivery"],
+        "average_cart_value": 1567
+      },
+      {
+        "combination": "multiple_complete_outfits",
+        "rate": "74.2%",
+        "reasons": ["high_total", "decision_paralysis"],
+        "average_cart_value": 2134
+      },
+      {
+        "combination": "accessories_only",
+        "rate": "71.8%",
+        "reasons": ["shipping_cost_ratio", "impulse_reconsideration"],
+        "average_cart_value": 89
+      }
+    ],
+    "lowest_abandonment": [
+      {
+        "combination": "navy_white_burgundy_bundle",
+        "rate": "52.3%",
+        "reasons": ["clear_value", "popular_choice"],
+        "average_cart_value": 847
+      },
+      {
+        "combination": "wedding_day_essentials",
+        "rate": "54.7%",
+        "reasons": ["urgency", "emotional_investment"],
+        "average_cart_value": 923
+      },
+      {
+        "combination": "sale_items_bundle",
+        "rate": "56.2%",
+        "reasons": ["perceived_savings", "limited_time"],
+        "average_cart_value": 567
+      }
+    ]
+  },
+  "recovery_strategies": {
+    "email_campaigns": {
+      "immediate_reminder": {
+        "timing": "1_hour",
+        "subject_lines": {
+          "best_performer": "Did you forget something? Your suit is waiting",
+          "open_rate": "42.3%",
+          "click_rate": "18.7%",
+          "conversion_rate": "5.2%"
+        },
+        "content_strategy": "show_exact_items_with_images"
+      },
+      "incentive_email": {
+        "timing": "24_hours",
+        "offer_types": {
+          "free_shipping": {
+            "usage": "34%",
+            "conversion_rate": "8.9%",
+            "roi": "423%"
+          },
+          "percentage_discount": {
+            "usage": "28%",
+            "sweet_spot": "10%",
+            "conversion_rate": "7.2%"
+          },
+          "bundle_upgrade": {
+            "usage": "19%",
+            "example": "free_tie_with_suit",
+            "conversion_rate": "11.3%"
+          }
+        }
+      },
+      "urgency_email": {
+        "timing": "72_hours",
+        "tactics": {
+          "stock_alerts": "Only 3 left in your size",
+          "price_increase_warning": "Sale ends tonight",
+          "social_proof": "5 others viewing this combination"
+        },
+        "conversion_rate": "6.8%"
+      },
+      "win_back_email": {
+        "timing": "7_days",
+        "approach": "different_combinations_suggested",
+        "personalization_level": "high",
+        "conversion_rate": "3.4%"
+      }
+    },
+    "retargeting_ads": {
+      "platforms": {
+        "google": {
+          "roi": "387%",
+          "best_format": "dynamic_product_ads",
+          "conversion_window": "14_days"
+        },
+        "facebook": {
+          "roi": "298%",
+          "best_format": "carousel_with_similar_items",
+          "optimal_frequency": "4-6_impressions"
+        },
+        "instagram": {
+          "roi": "342%",
+          "best_format": "story_ads_with_countdown",
+          "peak_performance": "evening_hours"
+        }
+      },
+      "creative_strategies": {
+        "show_exact_cart": "highest_relevance",
+        "style_inspiration": "browse_abandoners",
+        "customer_testimonials": "trust_building",
+        "limited_time_offers": "urgency_creation"
+      }
+    },
+    "on_site_interventions": {
+      "exit_intent_popups": {
+        "trigger_sensitivity": "medium",
+        "offer_types": {
+          "email_capture_for_discount": {
+            "conversion_rate": "12.3%",
+            "email_value": 14.50
+          },
+          "chat_assistance": {
+            "engagement_rate": "8.7%",
+            "save_rate": "34%"
+          },
+          "size_help": {
+            "usage_rate": "6.2%",
+            "save_rate": "41%"
+          }
+        }
+      },
+      "persistent_cart": {
+        "cross_device_sync": true,
+        "reminder_badge": true,
+        "saved_for_later": true,
+        "impact": "-7.2% abandonment"
+      },
+      "trust_builders": {
+        "security_badges": {
+          "placement": ["checkout", "cart", "footer"],
+          "impact": "-4.1% abandonment"
+        },
+        "return_policy": {
+          "visibility": "prominent",
+          "terms": "60_day_free_returns",
+          "impact": "-8.3% abandonment"
+        },
+        "customer_service": {
+          "live_chat": "24/7",
+          "phone_visible": true,
+          "impact": "-6.7% abandonment"
+        }
+      }
+    }
+  },
+  "technical_issues": {
+    "identified_bugs": {
+      "mobile_checkout": {
+        "issue": "payment_form_validation",
+        "impact": "3.2% of mobile abandonment",
+        "status": "fixed"
+      },
+      "coupon_codes": {
+        "issue": "not_applying_to_bundles",
+        "impact": "1.8% of abandonment",
+        "status": "in_progress"
+      },
+      "inventory_sync": {
+        "issue": "showing_in_stock_when_not",
+        "impact": "2.4% of abandonment",
+        "status": "monitoring"
+      }
+    },
+    "performance_metrics": {
+      "page_load_times": {
+        "cart": "2.3s",
+        "checkout": "3.1s",
+        "impact": "1s delay = +7% abandonment"
+      },
+      "error_rates": {
+        "payment_processing": "0.8%",
+        "form_submission": "1.2%",
+        "api_timeouts": "0.3%"
+      }
+    }
+  },
+  "segmented_analysis": {
+    "new_vs_returning": {
+      "new_visitors": {
+        "abandonment_rate": "74.3%",
+        "primary_concerns": ["trust", "size_fit", "return_policy"],
+        "effective_interventions": ["reviews", "size_guide", "chat"]
+      },
+      "returning_visitors": {
+        "abandonment_rate": "61.2%",
+        "primary_concerns": ["price", "timing", "alternatives"],
+        "effective_interventions": ["loyalty_rewards", "exclusive_offers"]
+      }
+    },
+    "device_behavior": {
+      "mobile": {
+        "abandonment_rate": "72.8%",
+        "pain_points": ["form_filling", "payment_entry", "navigation"],
+        "solutions": ["apple_pay", "autofill", "simplified_checkout"]
+      },
+      "desktop": {
+        "abandonment_rate": "63.4%",
+        "behavior": "more_comparison_shopping",
+        "solutions": ["comparison_tools", "chat_support"]
+      }
+    },
+    "geographic_patterns": {
+      "urban": {
+        "abandonment_rate": "65.2%",
+        "key_factor": "delivery_speed",
+        "solution": "express_shipping_options"
+      },
+      "suburban": {
+        "abandonment_rate": "68.9%",
+        "key_factor": "price_sensitivity",
+        "solution": "financing_options"
+      },
+      "rural": {
+        "abandonment_rate": "71.3%",
+        "key_factor": "sizing_concerns",
+        "solution": "virtual_appointments"
+      }
+    }
+  },
+  "predictive_indicators": {
+    "high_abandonment_signals": [
+      {
+        "behavior": "repeated_size_chart_views",
+        "likelihood": "82%",
+        "intervention": "proactive_size_help"
+      },
+      {
+        "behavior": "multiple_payment_method_clicks",
+        "likelihood": "76%",
+        "intervention": "payment_options_highlight"
+      },
+      {
+        "behavior": "shipping_calculator_usage",
+        "likelihood": "71%",
+        "intervention": "free_shipping_threshold"
+      }
+    ],
+    "low_abandonment_signals": [
+      {
+        "behavior": "added_multiple_items",
+        "likelihood": "34%",
+        "strategy": "fast_track_checkout"
+      },
+      {
+        "behavior": "used_size_recommender",
+        "likelihood": "39%",
+        "strategy": "confidence_messaging"
+      },
+      {
+        "behavior": "came_from_email",
+        "likelihood": "42%",
+        "strategy": "maintain_momentum"
+      }
+    ]
+  },
+  "recovery_revenue_analysis": {
+    "channel_performance": {
+      "email": {
+        "revenue_recovered": 12847293,
+        "cost": 234000,
+        "roi": "5493%"
+      },
+      "retargeting": {
+        "revenue_recovered": 7823999,
+        "cost": 892000,
+        "roi": "877%"
+      },
+      "sms": {
+        "revenue_recovered": 1554227,
+        "cost": 67000,
+        "roi": "2319%"
+      }
+    },
+    "optimal_recovery_window": {
+      "0-24_hours": "43% of recoveries",
+      "1-3_days": "31% of recoveries",
+      "3-7_days": "18% of recoveries",
+      "7+_days": "8% of recoveries"
+    }
+  }
+}

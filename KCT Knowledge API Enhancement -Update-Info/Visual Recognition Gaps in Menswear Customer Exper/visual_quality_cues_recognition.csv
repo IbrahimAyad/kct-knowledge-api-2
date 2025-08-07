@@ -1,0 +1,21 @@
+Visual_Cue_Category,Specific_Visual_Cue,Customer_Recognition_Rate,Quality_Impact_Score,Photography_Visibility,AI_Recognition_Difficulty
+Construction Details,Hand-stitched buttonholes,45,9,60,8
+Construction Details,Lapel roll naturalness,65,8,75,7
+Construction Details,Canvas construction visibility,35,10,25,9
+Construction Details,Seam straightness,75,7,85,6
+Fabric Quality,Fabric drape quality,80,9,90,5
+Fabric Quality,Pattern matching precision,85,8,95,4
+Fabric Quality,Fabric weight appearance,70,8,80,6
+Fabric Quality,Surface texture consistency,72,7,82,7
+Finishing Details,Collar gap at neck,90,9,95,3
+Finishing Details,Sleeve button functionality,55,6,70,8
+Finishing Details,Lining quality visibility,40,7,50,9
+Finishing Details,Edge finishing cleanliness,68,8,78,7
+Fit Indicators,Shoulder line smoothness,95,10,98,2
+Fit Indicators,Jacket length proportion,88,9,92,3
+Fit Indicators,Trouser break positioning,82,8,88,4
+Fit Indicators,Waist suppression shape,78,9,85,5
+Hardware Quality,Button material quality,60,7,70,7
+Hardware Quality,Zipper brand/quality,50,6,60,8
+Hardware Quality,Hardware finish consistency,45,5,55,9
+Hardware Quality,Thread color matching,85,6,88,6

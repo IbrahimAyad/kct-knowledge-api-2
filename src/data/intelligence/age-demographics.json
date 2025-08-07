@@ -1,0 +1,393 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2024-01-09",
+    "description": "Age-based preferences and purchasing behavior for suits",
+    "total_customers_analyzed": 423892,
+    "age_verification_method": "account_data_and_analytics"
+  },
+  "age_segments": {
+    "18-24": {
+      "segment_name": "Digital Natives",
+      "percentage_of_customers": "12.3%",
+      "characteristics": {
+        "style_priority": "trendy_and_affordable",
+        "shopping_behavior": "mobile_first",
+        "decision_factors": ["price", "social_media_presence", "peer_approval"],
+        "average_income": "$25,000-40,000"
+      },
+      "top_combinations": [
+        {
+          "rank": 1,
+          "combination": "navy_suit_no_tie_casual",
+          "usage": "job_interviews_and_graduation",
+          "price_point": "entry"
+        },
+        {
+          "rank": 2,
+          "combination": "burgundy_statement_suit",
+          "usage": "special_events_and_parties",
+          "social_media_factor": "high"
+        },
+        {
+          "rank": 3,
+          "combination": "black_on_black_nightlife",
+          "usage": "clubs_and_social_events"
+        }
+      ],
+      "shopping_patterns": {
+        "first_suit_purchase": "68%",
+        "research_duration": "2-3 weeks",
+        "information_sources": ["TikTok", "Instagram", "YouTube"],
+        "peer_influence": "very_high",
+        "parent_involvement": "34%"
+      },
+      "preferred_styles": {
+        "fit": "slim_to_skinny",
+        "colors": ["navy", "black", "burgundy"],
+        "patterns": "solid_only",
+        "accessories": "minimal"
+      },
+      "purchase_behavior": {
+        "average_order_value": 389,
+        "payment_methods": ["buy_now_pay_later", "debit_card"],
+        "financing_usage": "42%",
+        "return_rate": "18.7%"
+      },
+      "marketing_response": {
+        "best_channels": ["TikTok", "Instagram_Stories"],
+        "influencer_impact": "highest",
+        "discount_sensitivity": "very_high",
+        "loyalty_potential": "building"
+      }
+    },
+    "25-34": {
+      "segment_name": "Young Professionals",
+      "percentage_of_customers": "28.7%",
+      "characteristics": {
+        "style_priority": "career_advancement",
+        "shopping_behavior": "research_intensive",
+        "decision_factors": ["quality", "versatility", "brand"],
+        "average_income": "$50,000-85,000"
+      },
+      "top_combinations": [
+        {
+          "rank": 1,
+          "combination": "charcoal_suit_business_professional",
+          "usage": "daily_work_wear",
+          "investment_mindset": true
+        },
+        {
+          "rank": 2,
+          "combination": "navy_versatile_collection",
+          "usage": "work_to_weekend",
+          "mixing_matching": "high"
+        },
+        {
+          "rank": 3,
+          "combination": "wedding_guest_appropriate",
+          "usage": "social_events",
+          "seasonal_purchases": true
+        }
+      ],
+      "life_events": {
+        "weddings": {
+          "as_guest": "72%",
+          "as_groom": "23%",
+          "average_spend": 1234
+        },
+        "career": {
+          "job_changes": "frequent",
+          "promotion_purchases": "43%",
+          "industry_influence": "high"
+        }
+      },
+      "shopping_patterns": {
+        "wardrobe_building": true,
+        "average_suits_owned": 3.4,
+        "upgrade_cycle": "18 months",
+        "bundle_preference": "76%"
+      },
+      "preferred_styles": {
+        "fit": "modern_tailored",
+        "colors": ["charcoal", "navy", "grey"],
+        "patterns": ["subtle_stripes", "micro_patterns"],
+        "quality_focus": "increasing"
+      },
+      "purchase_behavior": {
+        "average_order_value": 743,
+        "subscription_interest": "34%",
+        "customization_rate": "28%",
+        "loyalty_program_participation": "56%"
+      }
+    },
+    "35-44": {
+      "segment_name": "Established Professionals",
+      "percentage_of_customers": "31.2%",
+      "characteristics": {
+        "style_priority": "quality_and_fit",
+        "shopping_behavior": "efficient_and_decisive",
+        "decision_factors": ["fit", "fabric", "craftsmanship"],
+        "average_income": "$85,000-150,000"
+      },
+      "top_combinations": [
+        {
+          "rank": 1,
+          "combination": "navy_executive_collection",
+          "usage": "boardroom_to_dinner",
+          "quality_tier": "premium"
+        },
+        {
+          "rank": 2,
+          "combination": "custom_tailored_options",
+          "usage": "perfect_fit_priority",
+          "alteration_rate": "89%"
+        },
+        {
+          "rank": 3,
+          "combination": "seasonal_statement_pieces",
+          "usage": "variety_in_wardrobe",
+          "texture_interest": "high"
+        }
+      ],
+      "wardrobe_profile": {
+        "average_suits_owned": 7.2,
+        "replacement_focus": true,
+        "quality_upgrade": "transitioning",
+        "brand_loyalty": "high"
+      },
+      "family_influence": {
+        "shopping_with_spouse": "43%",
+        "children_events": "school_functions",
+        "family_photos": "coordinating_outfits"
+      },
+      "preferred_styles": {
+        "fit": "classic_with_modern_touch",
+        "colors": ["navy", "charcoal", "seasonal_colors"],
+        "patterns": ["pinstripes", "windowpane", "herringbone"],
+        "fabric_preference": "luxury_wools"
+      },
+      "purchase_behavior": {
+        "average_order_value": 1123,
+        "repeat_purchase_rate": "67%",
+        "referral_rate": "high",
+        "review_participation": "42%"
+      }
+    },
+    "45-54": {
+      "segment_name": "Peak Professionals",
+      "percentage_of_customers": "19.4%",
+      "characteristics": {
+        "style_priority": "timeless_elegance",
+        "shopping_behavior": "relationship_based",
+        "decision_factors": ["service", "consistency", "heritage"],
+        "average_income": "$100,000-200,000+"
+      },
+      "top_combinations": [
+        {
+          "rank": 1,
+          "combination": "classic_business_staples",
+          "usage": "executive_presence",
+          "brand_preference": "established"
+        },
+        {
+          "rank": 2,
+          "combination": "luxury_fabric_suits",
+          "usage": "special_occasions",
+          "price_sensitivity": "low"
+        },
+        {
+          "rank": 3,
+          "combination": "coordinated_collections",
+          "usage": "complete_wardrobe",
+          "shopping_efficiency": "high"
+        }
+      },
+      "shopping_evolution": {
+        "from_trendy_to_classic": "82%",
+        "fabric_quality_priority": "highest",
+        "fit_consistency": "crucial",
+        "personal_stylist_interest": "38%"
+      },
+      "lifestyle_factors": {
+        "travel_frequency": "high",
+        "versatile_pieces": "priority",
+        "care_maintenance": "professional",
+        "storage_investment": true
+      },
+      "preferred_styles": {
+        "fit": "classic_comfortable",
+        "colors": ["navy", "grey", "subtle_patterns"],
+        "conservative_choices": true,
+        "investment_pieces": "common"
+      },
+      "purchase_behavior": {
+        "average_order_value": 1567,
+        "bulk_seasonal_shopping": true,
+        "concierge_service_usage": "28%",
+        "gift_purchases": "frequent"
+      }
+    },
+    "55-64": {
+      "segment_name": "Mature Professionals",
+      "percentage_of_customers": "8.4%",
+      "characteristics": {
+        "style_priority": "comfort_and_tradition",
+        "shopping_behavior": "loyal_and_habitual",
+        "decision_factors": ["fit", "comfort", "durability"],
+        "average_income": "$90,000-180,000"
+      },
+      "top_combinations": [
+        {
+          "rank": 1,
+          "combination": "comfortable_classic_fits",
+          "usage": "reduced_office_time",
+          "alteration_needs": "specific"
+        },
+        {
+          "rank": 2,
+          "combination": "event_appropriate_options",
+          "usage": "weddings_and_gatherings",
+          "formality": "traditional"
+        }
+      ],
+      "changing_needs": {
+        "body_changes": "accommodation_required",
+        "comfort_priority": "highest",
+        "easy_care_fabrics": "preferred",
+        "simplified_shopping": true
+      },
+      "preferred_styles": {
+        "fit": "relaxed_classic",
+        "colors": ["navy", "grey", "brown"],
+        "traditional_preferences": true,
+        "minimal_experimentation": true
+      },
+      "purchase_behavior": {
+        "average_order_value": 1234,
+        "phone_order_preference": "34%",
+        "catalog_usage": "still_relevant",
+        "personal_service": "valued"
+      }
+    },
+    "65+": {
+      "segment_name": "Distinguished Gentlemen",
+      "percentage_of_customers": "4.0%",
+      "characteristics": {
+        "style_priority": "special_occasions",
+        "shopping_behavior": "assistance_preferred",
+        "decision_factors": ["ease", "service", "tradition"],
+        "average_income": "varies_widely"
+      },
+      "occasion_driven": {
+        "family_events": "primary_driver",
+        "formal_occasions": "maintaining_standards",
+        "replacement_only": "common",
+        "gift_recipients": "often"
+      },
+      "shopping_assistance": {
+        "family_help": "45%",
+        "phone_orders": "preferred",
+        "in_person_preference": "when_possible",
+        "detailed_service": "expected"
+      },
+      "preferred_styles": {
+        "fit": "comfortable_classic",
+        "colors": ["conservative_choices"],
+        "timeless_styles": true,
+        "quality_focus": "durability"
+      }
+    }
+  },
+  "cross_generational_insights": {
+    "style_evolution": {
+      "slim_fit_peak": "25-34",
+      "classic_return": "45+",
+      "comfort_priority": "increases_with_age",
+      "color_adventurousness": "decreases_with_age"
+    },
+    "shopping_channel_preferences": {
+      "mobile_dominance": "under_35",
+      "desktop_preference": "35-54",
+      "phone_assistance": "55+",
+      "in_store_desire": "45+"
+    },
+    "brand_loyalty_progression": {
+      "experimentation_phase": "18-34",
+      "loyalty_building": "35-44",
+      "established_loyalty": "45+"
+    },
+    "price_sensitivity_curve": {
+      "highest": "18-24",
+      "decreasing": "25-44",
+      "value_focused": "45-64",
+      "quality_over_price": "55+"
+    }
+  },
+  "generational_marketing": {
+    "gen_z": {
+      "key_messages": ["express_yourself", "affordable_style"],
+      "channels": ["TikTok", "Instagram"],
+      "influencer_strategy": "micro_influencers"
+    },
+    "millennials": {
+      "key_messages": ["versatile_investment", "work_life_balance"],
+      "channels": ["Instagram", "Email"],
+      "content_focus": "how_to_guides"
+    },
+    "gen_x": {
+      "key_messages": ["quality_craftsmanship", "timeless_style"],
+      "channels": ["Email", "Facebook"],
+      "loyalty_programs": "important"
+    },
+    "boomers": {
+      "key_messages": ["tradition_meets_comfort", "excellent_service"],
+      "channels": ["Email", "Phone"],
+      "personal_touch": "crucial"
+    }
+  },
+  "age_specific_features": {
+    "younger_demographics": {
+      "virtual_try_on": "high_usage",
+      "style_quiz": "engagement_driver",
+      "social_sharing": "common",
+      "chat_support": "preferred"
+    },
+    "middle_demographics": {
+      "fit_finder": "most_valued",
+      "quality_details": "important",
+      "reviews": "heavily_consulted",
+      "email_reminders": "effective"
+    },
+    "older_demographics": {
+      "phone_support": "essential",
+      "detailed_sizing": "crucial",
+      "simple_navigation": "required",
+      "print_catalog": "still_used"
+    }
+  },
+  "lifetime_value_analysis": {
+    "by_age_acquired": {
+      "18-24": {
+        "ltv": 2341,
+        "retention_challenge": "high",
+        "growth_potential": "highest"
+      },
+      "25-34": {
+        "ltv": 4567,
+        "retention_rate": "improving",
+        "upsell_potential": "high"
+      },
+      "35-44": {
+        "ltv": 7892,
+        "retention_rate": "strong",
+        "referral_value": "highest"
+      },
+      "45+": {
+        "ltv": 5634,
+        "retention_rate": "excellent",
+        "service_expectations": "highest"
+      }
+    }
+  }
+}

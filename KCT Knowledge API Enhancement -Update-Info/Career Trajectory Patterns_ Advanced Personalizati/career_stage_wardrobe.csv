@@ -1,0 +1,7 @@
+Career_Stage,Average_Wardrobe_Investment,Suit_Quality_Level,Tailoring_Frequency,Brand_Prestige_Focus,Style_Formality_Score,Accessory_Investment
+Entry Level (0-2 years),1500,2,1,30,60,200
+Mid-Level (3-7 years),3000,3,2,45,70,500
+Senior Manager (8-15 years),5000,4,3,60,80,800
+Director (10-20 years),8000,5,4,75,85,1200
+VP/Executive (15+ years),12000,6,5,85,90,2000
+C-Suite (20+ years),20000,7,6,95,95,3500

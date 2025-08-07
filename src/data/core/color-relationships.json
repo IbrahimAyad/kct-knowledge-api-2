@@ -1,0 +1,173 @@
+{
+  "version": "1.0",
+  "last_updated": "2024-01-09",
+  "color_relationships": {
+    "navy": {
+      "perfect_matches": {
+        "shirts": ["white", "light_blue", "pink", "lavender"],
+        "ties": ["burgundy", "silver", "gold", "coral", "forest_green"],
+        "confidence": 98
+      },
+      "good_matches": {
+        "shirts": ["cream", "light_grey"],
+        "ties": ["navy_pattern", "rust", "mustard"],
+        "confidence": 85
+      },
+      "seasonal_boosts": {
+        "spring": ["coral", "lavender"],
+        "summer": ["light_blue", "pink"],
+        "fall": ["burgundy", "mustard"],
+        "winter": ["silver", "forest_green"]
+      }
+    },
+    "charcoal": {
+      "perfect_matches": {
+        "shirts": ["white", "light_blue", "light_grey"],
+        "ties": ["burgundy", "silver", "navy", "purple"],
+        "confidence": 96
+      },
+      "good_matches": {
+        "shirts": ["pink", "lavender"],
+        "ties": ["emerald", "gold"],
+        "confidence": 82
+      }
+    },
+    "light_grey": {
+      "perfect_matches": {
+        "shirts": ["white", "light_blue", "pink", "lavender"],
+        "ties": ["navy", "burgundy", "purple", "silver"],
+        "confidence": 94
+      },
+      "good_matches": {
+        "shirts": ["light_grey", "cream"],
+        "ties": ["coral", "sage_green", "dusty_rose"],
+        "confidence": 88
+      }
+    },
+    "burgundy": {
+      "perfect_matches": {
+        "shirts": ["white", "light_blue", "cream"],
+        "ties": ["navy", "gold", "burgundy_pattern", "grey"],
+        "confidence": 95
+      },
+      "good_matches": {
+        "shirts": ["light_pink", "light_grey"],
+        "ties": ["mustard", "forest_green"],
+        "confidence": 83
+      },
+      "popularity_score": 95,
+      "trending": "stable"
+    },
+    "black": {
+      "perfect_matches": {
+        "shirts": ["white"],
+        "ties": ["black", "silver", "white"],
+        "confidence": 92
+      },
+      "limited_use": "formal_only",
+      "avoid_casual": true
+    },
+    "tan": {
+      "perfect_matches": {
+        "shirts": ["white", "light_blue", "cream"],
+        "ties": ["navy", "burgundy", "brown", "sage_green"],
+        "confidence": 90
+      },
+      "good_matches": {
+        "shirts": ["pink", "lavender"],
+        "ties": ["coral", "rust", "olive"],
+        "confidence": 85
+      }
+    },
+    "light_blue": {
+      "perfect_matches": {
+        "shirts": ["white", "light_pink", "cream"],
+        "ties": ["navy", "coral", "burgundy", "brown"],
+        "confidence": 93
+      },
+      "seasonal_favorite": "spring_summer"
+    },
+    "sage_green": {
+      "perfect_matches": {
+        "shirts": ["white", "cream", "light_blue"],
+        "ties": ["blush_pink", "rust", "navy", "brown"],
+        "confidence": 92
+      },
+      "trending": "up_30_percent",
+      "popularity_peak": "spring_2024"
+    },
+    "hunter_green": {
+      "perfect_matches": {
+        "shirts": ["white", "cream", "light_blue"],
+        "ties": ["burgundy", "gold", "rust", "navy"],
+        "confidence": 89
+      },
+      "good_matches": {
+        "shirts": ["pink", "light_grey"],
+        "ties": ["mustard", "olive"],
+        "confidence": 84
+      }
+    },
+    "powder_blue": {
+      "perfect_matches": {
+        "shirts": ["white", "cream", "light_pink"],
+        "ties": ["navy", "burgundy", "silver", "coral"],
+        "confidence": 91
+      },
+      "special_pairings": {
+        "mint_green": "fresh_modern",
+        "lavender": "soft_elegant"
+      }
+    },
+    "midnight_blue": {
+      "perfect_matches": {
+        "shirts": ["white", "light_blue", "black"],
+        "ties": ["silver", "burgundy", "black", "gold"],
+        "confidence": 94
+      },
+      "formality": "high",
+      "tuxedo_appropriate": true
+    },
+    "white": {
+      "perfect_matches": {
+        "shirts": ["white", "light_blue", "black", "pink"],
+        "ties": ["navy", "black", "burgundy", "any_pastel"],
+        "confidence": 88
+      },
+      "seasonal_restriction": "summer_preferred",
+      "venue_specific": ["beach", "tropical", "outdoor_summer"]
+    }
+  },
+  "universal_rules": {
+    "white_shirt": {
+      "works_with": "any_suit_color",
+      "confidence": 100,
+      "note": "The ultimate safe choice"
+    },
+    "navy_tie": {
+      "works_with": ["grey", "tan", "blue", "charcoal"],
+      "confidence": 95
+    },
+    "burgundy_tie": {
+      "works_with": ["navy", "grey", "charcoal", "green"],
+      "confidence": 97
+    }
+  },
+  "color_families": {
+    "cool_tones": {
+      "colors": ["navy", "light_blue", "grey", "charcoal", "powder_blue"],
+      "complement_with": "warm_accents",
+      "tie_suggestions": ["burgundy", "rust", "coral"]
+    },
+    "warm_tones": {
+      "colors": ["burgundy", "rust", "tan", "brown", "terracotta"],
+      "complement_with": "cool_accents",
+      "tie_suggestions": ["navy", "grey", "sage"]
+    },
+    "earth_tones": {
+      "colors": ["sage_green", "olive", "hunter_green", "tan", "brown"],
+      "complement_with": "natural_colors",
+      "trending": "up_significantly"
+    }
+  }
+}

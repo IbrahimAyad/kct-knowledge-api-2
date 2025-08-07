@@ -1,0 +1,243 @@
+# Creating comprehensive venue microdata analysis
+import json
+import pandas as pd
+
+# Top wedding venues and their lighting conditions
+venue_lighting_data = {
+    "indoor_venues": {
+        "ballrooms": {
+            "lighting_characteristics": [
+                "Chandelier-dominant illumination",
+                "Dimmable overhead systems",
+                "Warm tungsten/LED combinations", 
+                "Controlled artificial environment"
+            ],
+            "outfit_implications": [
+                "Luxurious fabrics showcase well",
+                "Dramatic silhouettes work",
+                "Metallic accents catch light",
+                "Formal wear enhances ambiance"
+            ],
+            "color_considerations": [
+                "Deep jewel tones photograph well",
+                "Metallic details reflect beautifully",
+                "Black/navy provide elegant contrast",
+                "Avoid colors that wash out under tungsten"
+            ]
+        },
+        "churches_cathedrals": {
+            "lighting_characteristics": [
+                "Natural light through stained glass",
+                "Dim ambient interior lighting",
+                "Colored light filtering effects",
+                "Shadow-heavy environments"
+            ],
+            "outfit_implications": [
+                "Light-colored fabrics show best",
+                "Avoid busy patterns in low light",
+                "Simple, classic cuts preferred",
+                "Structured garments maintain shape"
+            ]
+        },
+        "historic_venues": {
+            "lighting_characteristics": [
+                "Period-appropriate fixtures",
+                "Limited electrical infrastructure",
+                "Candlelight-style illumination",
+                "Warm, golden tones"
+            ]
+        }
+    },
+    "outdoor_venues": {
+        "gardens": {
+            "lighting_characteristics": [
+                "Natural daylight primary",
+                "String lights for evening",
+                "Uneven ground lighting",
+                "Weather-dependent conditions"
+            ],
+            "outfit_implications": [
+                "Lighter fabrics for movement",
+                "Shorter hemlines for practicality",
+                "Breathable materials essential",
+                "Flowy designs complement setting"
+            ]
+        },
+        "beaches": {
+            "lighting_characteristics": [
+                "Bright natural sunlight",
+                "Reflective light from water/sand",
+                "Golden hour advantages",
+                "Wind affects lighting setups"
+            ],
+            "outfit_implications": [
+                "UV protection considerations",
+                "Wind-resistant styling",
+                "Sand-friendly footwear",
+                "Light colors reflect heat"
+            ]
+        },
+        "vineyards": {
+            "lighting_characteristics": [
+                "Natural landscape lighting",
+                "Sunset backdrop opportunities",
+                "Rustic string light additions",
+                "Seasonal lighting variations"
+            ]
+        }
+    }
+}
+
+# Elite country club dress codes analysis
+country_club_codes = {
+    "ultra_elite_clubs": {
+        "unwritten_rules": {
+            "men": [
+                "Shirts must always be tucked in",
+                "No denim regardless of quality",
+                "Collared shirts mandatory in all areas",
+                "Hats only outdoors, bill forward",
+                "No athletic wear outside gym",
+                "Sport coats required for dinner"
+            ],
+            "women": [
+                "Hemlines at knee or longer",
+                "No sleeveless without collar",
+                "Covered shoulders in dining",
+                "No athletic wear in social areas",
+                "Modest necklines required",
+                "Tailored appearance expected"
+            ],
+            "universal_principles": [
+                "Quality over trends",
+                "Conservative interpretation of rules",
+                "Err on side of formality",
+                "Neat, pressed appearance",
+                "Respect for tradition"
+            ]
+        },
+        "seasonal_variations": {
+            "winter_requirements": [
+                "Sport coats year-round indoors",
+                "No casual outerwear in dining",
+                "Dress shoes mandatory",
+                "Ties often required for dinner"
+            ],
+            "summer_allowances": [
+                "Bermuda shorts permitted (men)",
+                "Sleeveless with collar (women)",
+                "Lighter fabrics acceptable",
+                "Golf attire on course only"
+            ]
+        }
+    },
+    "prestigious_clubs": {
+        "harvard_club_standards": {
+            "business_casual": "No jeans, collared shirts for men",
+            "smart_casual": "Jeans in good repair permitted",
+            "prohibited_items": [
+                "Gym clothes", "T-shirts", "Sweats", 
+                "Torn clothing", "Leggings", "Shorts", 
+                "Beach attire", "Hats (except religious/medical)"
+            ]
+        },
+        "university_club_standards": {
+            "men_requirements": [
+                "Suit jackets or sport coats",
+                "Collared dress shirts",
+                "Dress slacks",
+                "Ties for Main Dining Room dinner"
+            ],
+            "women_requirements": [
+                "Tailored clothing - suits, dresses, skirts",
+                "Tailored slacks with jacket or elegant sweater",
+                "Beaded or tailored tops acceptable"
+            ]
+        }
+    },
+    "country_clubs_general": {
+        "golf_requirements": {
+            "men": [
+                "Collared shirts mandatory",
+                "Golf slacks or Bermuda shorts",
+                "Golf shoes with soft spikes",
+                "No denim or cargo pants"
+            ],
+            "women": [
+                "Collared or sleeved shirts",
+                "Golf skirts mid-thigh or longer",
+                "Golf shoes required",
+                "No tank tops or athletic shorts"
+            ]
+        },
+        "dining_requirements": {
+            "casual_dining": "Country club casual - collared shirts, dress pants/skirts",
+            "formal_dining": "Business attire, sport coats often required",
+            "special_events": "Event-specific dress codes apply"
+        }
+    }
+}
+
+# Venue-specific outfit impact analysis
+venue_outfit_matrix = {
+    "lighting_impact_on_colors": {
+        "tungsten_lighting": {
+            "enhances": ["Warm colors", "Reds", "Golds", "Oranges"],
+            "dulls": ["Blues", "Purples", "Cool grays"],
+            "neutral": ["Black", "White", "Navy"]
+        },
+        "led_lighting": {
+            "enhances": ["True color representation", "Jewel tones", "Metallics"],
+            "dulls": ["None significantly"],
+            "considerations": ["Color temperature varies by venue"]
+        },
+        "natural_light": {
+            "golden_hour": {
+                "enhances": ["Warm tones", "Champagne", "Blush", "Ivory"],
+                "flatters": ["Most skin tones", "Light fabrics"],
+                "creates": ["Romantic atmosphere", "Soft shadows"]
+            },
+            "bright_daylight": {
+                "enhances": ["Bold colors", "Contrasts", "Patterns"],
+                "challenges": ["Harsh shadows", "Squinting in photos"],
+                "requires": ["UV protection", "Heat considerations"]
+            }
+        }
+    },
+    "fabric_performance_by_venue": {
+        "indoor_controlled": {
+            "ideal_fabrics": ["Silk", "Satin", "Velvet", "Heavy crepes"],
+            "avoid": ["Breathable athletics", "Casual cottons"]
+        },
+        "outdoor_variable": {
+            "ideal_fabrics": ["Chiffon", "Organza", "Lightweight wool", "Cotton blends"],
+            "avoid": ["Heavy velvets", "Delicate silks", "Wrinkle-prone materials"]
+        }
+    }
+}
+
+# Compile comprehensive venue data
+comprehensive_venue_data = {
+    "venue_lighting_analysis": venue_lighting_data,
+    "elite_club_dress_codes": country_club_codes,
+    "venue_outfit_impact": venue_outfit_matrix,
+    "key_insights": {
+        "lighting_outfit_correlation": "Venue lighting directly impacts color choices and fabric selection",
+        "elite_club_hierarchy": "More exclusive clubs have stricter, more traditional dress codes",
+        "seasonal_flexibility": "Summer allows more relaxed interpretations while maintaining core standards",
+        "unwritten_rule_importance": "Unspoken expectations often matter more than written policies"
+    }
+}
+
+# Save comprehensive data
+with open('venue_microdata_analysis.json', 'w') as f:
+    json.dump(comprehensive_venue_data, f, indent=2)
+
+print("Venue Microdata Analysis Completed")
+print("\nKey Findings:")
+print("1. Lighting conditions dramatically affect outfit color and fabric choices")
+print("2. Elite country clubs maintain strict unwritten dress codes beyond posted rules")
+print("3. Indoor venues favor luxurious fabrics, outdoor venues require practical considerations")
+print("4. Tungsten lighting enhances warm colors, dulls cool tones")
+print("5. Country club dress codes become stricter with exclusivity level")
+print("6. Seasonal variations allow flexibility while maintaining core standards")

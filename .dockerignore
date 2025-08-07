@@ -1,0 +1,146 @@
+# .dockerignore for KCT Knowledge API
+
+# Node.js
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist
+build
+coverage
+
+# Logs
+logs
+*.log
+/var/log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+!README.md
+docs/
+
+# Test files
+test/
+tests/
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+jest.config.js
+.nyc_output
+
+# Docker files (to prevent recursion)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Backup files
+backups/
+*.backup
+*.sql.gz
+
+# Temporary files
+tmp/
+temp/
+.tmp
+
+# Development tools
+scripts/dev-*
+scripts/test-*
+.eslintrc.*
+.prettierrc.*
+.editorconfig
+
+# CI/CD files
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+Jenkinsfile
+
+# Kubernetes
+k8s/
+kubernetes/
+*.yaml
+*.yml
+!docker-compose*.yml
+
+# Terraform
+*.tf
+*.tfstate
+*.tfstate.backup
+
+# Development databases
+*.sqlite
+*.sqlite3
+*.db
+
+# Package locks (to reduce image size, will npm ci in container)
+package-lock.json
+yarn.lock
+
+# Development scripts
+scripts/dev*
+scripts/local*
+
+# Large data files that should be mounted
+data/large/
+data/uploads/
+data/cache/
+
+# Performance test results
+results/
+benchmarks/
+
+# Configuration backups
+config-backup/
+
+# SSL certificates (should be mounted)
+ssl/
+certs/
+*.pem
+*.key
+*.crt
+
+# Monitoring configs (will be mounted)
+grafana/
+prometheus/
+kibana/

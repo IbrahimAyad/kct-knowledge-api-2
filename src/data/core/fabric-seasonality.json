@@ -1,0 +1,206 @@
+{
+  "version": "1.0",
+  "last_updated": "2024-01-09",
+  "fabric_seasons": {
+    "spring": {
+      "ideal_fabrics": [
+        {
+          "fabric": "lightweight_wool",
+          "weight": "240-260g",
+          "popularity": 88,
+          "benefits": ["breathable", "structured", "versatile"],
+          "temperature_range": "55-75°F"
+        },
+        {
+          "fabric": "cotton_blend",
+          "weight": "200-240g",
+          "popularity": 85,
+          "benefits": ["comfortable", "affordable", "easy_care"],
+          "blend_ratio": "60% cotton, 40% polyester optimal"
+        },
+        {
+          "fabric": "wool_linen_blend",
+          "weight": "220-250g",
+          "popularity": 82,
+          "benefits": ["temperature_regulating", "wrinkle_resistant"],
+          "trending": "up"
+        }
+      ],
+      "acceptable_fabrics": ["light_tweed", "tropical_wool", "high_twist_wool"],
+      "avoid": ["heavy_wool", "velvet", "thick_flannel", "pure_linen"],
+      "color_performance": {
+        "best_in_season": ["light_blue", "sage_green", "tan", "light_grey"],
+        "fabric_color_synergy": "lighter_colors_in_lighter_fabrics"
+      }
+    },
+    "summer": {
+      "ideal_fabrics": [
+        {
+          "fabric": "linen",
+          "weight": "150-200g",
+          "popularity": 90.4,
+          "benefits": ["maximum_breathability", "natural_cooling", "texture"],
+          "wrinkle_factor": "high_but_acceptable"
+        },
+        {
+          "fabric": "cotton",
+          "weight": "180-220g",
+          "popularity": 87,
+          "benefits": ["breathable", "comfortable", "versatile"],
+          "best_weave": "poplin_or_seersucker"
+        },
+        {
+          "fabric": "tropical_wool",
+          "weight": "200-230g",
+          "popularity": 85,
+          "benefits": ["professional_look", "breathable", "wrinkle_resistant"],
+          "ideal_for": "business_events"
+        }
+      ],
+      "acceptable_fabrics": ["fresco", "hopsack", "cotton_linen_blend"],
+      "avoid": ["flannel", "tweed", "velvet", "heavy_wool", "cashmere"],
+      "special_considerations": {
+        "humidity_management": "critical",
+        "sun_protection": "lighter_colors_recommended",
+        "venue_ac": "bring_light_layer_for_indoor"
+      }
+    },
+    "fall": {
+      "ideal_fabrics": [
+        {
+          "fabric": "mid_weight_wool",
+          "weight": "280-340g",
+          "popularity": 92,
+          "benefits": ["structure", "warmth", "professional"],
+          "texture_options": ["flannel", "serge", "worsted"]
+        },
+        {
+          "fabric": "tweed",
+          "weight": "340-400g",
+          "popularity": 87,
+          "benefits": ["texture", "durability", "heritage_appeal"],
+          "patterns": ["herringbone", "glen_plaid", "donegal"]
+        },
+        {
+          "fabric": "wool_cashmere_blend",
+          "weight": "300-350g",
+          "popularity": 85,
+          "benefits": ["luxury_feel", "warmth", "drape"],
+          "price_premium": "25-40%"
+        }
+      ],
+      "acceptable_fabrics": ["corduroy", "moleskin", "brushed_cotton"],
+      "avoid": ["linen", "seersucker", "lightweight_cotton"],
+      "texture_importance": "high",
+      "best_colors_for_fabric": {
+        "tweed": ["brown", "green", "burgundy"],
+        "flannel": ["grey", "navy", "burgundy"],
+        "wool": ["any_fall_color"]
+      }
+    },
+    "winter": {
+      "ideal_fabrics": [
+        {
+          "fabric": "heavy_wool",
+          "weight": "350-450g",
+          "popularity": 90,
+          "benefits": ["warmth", "structure", "durability"],
+          "weave_options": ["worsted", "flannel", "melton"]
+        },
+        {
+          "fabric": "velvet",
+          "weight": "300-400g",
+          "popularity": 88,
+          "benefits": ["luxury", "warmth", "visual_richness"],
+          "best_for": ["evening_events", "formal_occasions"],
+          "care_level": "high"
+        },
+        {
+          "fabric": "cashmere",
+          "weight": "320-380g",
+          "popularity": 86,
+          "benefits": ["ultimate_luxury", "warmth_without_bulk", "soft_hand"],
+          "price_premium": "50-100%"
+        }
+      ],
+      "acceptable_fabrics": ["thick_corduroy", "wool_silk_blend", "camelhair"],
+      "avoid": ["linen", "cotton", "lightweight_anything"],
+      "layering_compatible": true,
+      "texture_mixing": {
+        "recommended": ["different_wool_textures", "velvet_with_silk", "tweed_with_smooth"]
+      }
+    }
+  },
+  "fabric_care_by_season": {
+    "spring": {
+      "storage": "breathable_garment_bags",
+      "cleaning": "light_steam_between_wears",
+      "rotation": "moderate"
+    },
+    "summer": {
+      "storage": "maximum_airflow",
+      "cleaning": "frequent_due_to_perspiration",
+      "rotation": "high",
+      "special_note": "linen_wrinkles_are_acceptable"
+    },
+    "fall": {
+      "storage": "cedar_blocks_recommended",
+      "cleaning": "brush_after_each_wear",
+      "rotation": "moderate"
+    },
+    "winter": {
+      "storage": "climate_controlled",
+      "cleaning": "professional_for_velvet_cashmere",
+      "rotation": "low",
+      "protection": "moth_prevention_critical"
+    }
+  },
+  "trans_seasonal_fabrics": {
+    "year_round_options": [
+      {
+        "fabric": "super_120s_wool",
+        "weight": "260-300g",
+        "versatility": 95,
+        "seasons": ["spring", "fall", "mild_winter"],
+        "investment_value": "high"
+      },
+      {
+        "fabric": "wool_polyester_blend",
+        "weight": "250-280g",
+        "versatility": 88,
+        "seasons": ["all_with_layering"],
+        "budget_friendly": true
+      }
+    ]
+  },
+  "emerging_fabrics": {
+    "sustainable_options": [
+      {
+        "fabric": "recycled_wool",
+        "adoption_rate": "increasing_15%_yearly",
+        "performance": "comparable_to_virgin_wool",
+        "price_point": "10-20%_premium"
+      },
+      {
+        "fabric": "hemp_blend",
+        "best_season": "summer",
+        "benefits": ["sustainable", "breathable", "durable"],
+        "market_readiness": "2025-2026"
+      },
+      {
+        "fabric": "bamboo_blend",
+        "properties": ["moisture_wicking", "antibacterial", "soft"],
+        "ideal_for": "summer_suits"
+      }
+    ]
+  },
+  "ai_fabric_recommendations": {
+    "rules": [
+      "always_consider_venue_climate_control",
+      "factor_in_activity_level",
+      "prioritize_comfort_over_tradition_for_outdoor",
+      "suggest_fabric_weight_based_on_temperature"
+    ],
+    "response_template": "For a {season} {event_type}, I recommend {fabric} because {benefits}. This fabric scores {popularity}% satisfaction in {season} conditions."
+  }
+}

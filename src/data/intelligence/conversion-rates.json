@@ -1,0 +1,349 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2024-01-09",
+    "description": "Conversion rate data for suit, shirt, and tie combinations",
+    "tracking_period": "2023-2024",
+    "total_sessions_analyzed": 847293,
+    "currency": "USD"
+  },
+  "top_converting_combinations": {
+    "all_time_best": [
+      {
+        "rank": 1,
+        "combination": "navy_suit_white_shirt_burgundy_tie",
+        "conversion_rate": "24.3%",
+        "average_order_value": 847,
+        "sessions": 45678,
+        "purchases": 11100,
+        "return_rate": "3.2%",
+        "lifetime_value": 1243,
+        "bundle_configuration": {
+          "base_items": ["navy_suit", "white_shirt", "burgundy_tie"],
+          "upsell_success": "pocket_square_73%",
+          "common_additions": ["brown_shoes", "leather_belt", "cufflinks"]
+        }
+      },
+      {
+        "rank": 2,
+        "combination": "charcoal_suit_light_blue_shirt_silver_tie",
+        "conversion_rate": "22.1%",
+        "average_order_value": 798,
+        "sessions": 38492,
+        "purchases": 8507,
+        "return_rate": "4.1%",
+        "lifetime_value": 1156
+      },
+      {
+        "rank": 3,
+        "combination": "sage_suit_white_shirt_sage_tie",
+        "conversion_rate": "21.8%",
+        "average_order_value": 925,
+        "sessions": 29384,
+        "purchases": 6406,
+        "return_rate": "2.8%",
+        "lifetime_value": 1089,
+        "trend": "rapidly_increasing"
+      },
+      {
+        "rank": 4,
+        "combination": "burgundy_suit_white_shirt_black_tie",
+        "conversion_rate": "19.7%",
+        "average_order_value": 978,
+        "sessions": 24739,
+        "purchases": 4873,
+        "return_rate": "3.9%",
+        "lifetime_value": 1345
+      },
+      {
+        "rank": 5,
+        "combination": "black_suit_white_shirt_black_tie",
+        "conversion_rate": "18.9%",
+        "average_order_value": 756,
+        "sessions": 52841,
+        "purchases": 9987,
+        "return_rate": "5.2%",
+        "lifetime_value": 892
+      }
+    ]
+  },
+  "conversion_by_category": {
+    "price_tiers": {
+      "budget": {
+        "range": "299-499",
+        "conversion_rate": "14.2%",
+        "top_combination": "black_suit_white_shirt_basic_tie",
+        "customer_segment": "first_time_buyers"
+      },
+      "mid_range": {
+        "range": "500-799",
+        "conversion_rate": "22.8%",
+        "top_combination": "navy_suit_variations",
+        "customer_segment": "wedding_guests"
+      },
+      "premium": {
+        "range": "800-1299",
+        "conversion_rate": "19.4%",
+        "top_combination": "custom_fit_collections",
+        "customer_segment": "grooms"
+      },
+      "luxury": {
+        "range": "1300+",
+        "conversion_rate": "31.2%",
+        "top_combination": "velvet_and_designer_pieces",
+        "customer_segment": "repeat_customers"
+      }
+    },
+    "occasion_based": {
+      "wedding_groom": {
+        "conversion_rate": "28.7%",
+        "average_order_value": 1234,
+        "popular_combinations": [
+          "navy_burgundy_classic",
+          "sage_garden_wedding",
+          "burgundy_velvet_winter"
+        ],
+        "bundle_attach_rate": "89%"
+      },
+      "wedding_guest": {
+        "conversion_rate": "16.3%",
+        "average_order_value": 567,
+        "popular_combinations": [
+          "charcoal_versatile",
+          "navy_safe_choice",
+          "grey_modern"
+        ],
+        "bundle_attach_rate": "45%"
+      },
+      "business_professional": {
+        "conversion_rate": "19.8%",
+        "average_order_value": 892,
+        "popular_combinations": [
+          "navy_power_suit",
+          "charcoal_executive",
+          "grey_contemporary"
+        ],
+        "multiple_purchase_rate": "67%"
+      },
+      "special_event": {
+        "conversion_rate": "15.4%",
+        "average_order_value": 723,
+        "popular_combinations": [
+          "black_formal",
+          "burgundy_statement",
+          "emerald_bold"
+        ]
+      }
+    }
+  },
+  "conversion_factors": {
+    "positive_drivers": {
+      "free_shipping": {
+        "impact": "+3.2%",
+        "threshold": "orders_over_500"
+      },
+      "virtual_try_on": {
+        "impact": "+7.8%",
+        "usage_rate": "34%"
+      },
+      "style_quiz_completion": {
+        "impact": "+12.4%",
+        "completion_rate": "67%"
+      },
+      "bundle_discount": {
+        "impact": "+8.9%",
+        "sweet_spot": "15%_off"
+      },
+      "size_guarantee": {
+        "impact": "+5.6%",
+        "claims_rate": "2.3%"
+      },
+      "wedding_countdown_timer": {
+        "impact": "+9.2%",
+        "effectiveness_window": "60_days_out"
+      }
+    },
+    "negative_factors": {
+      "out_of_stock_size": {
+        "impact": "-18.3%",
+        "recovery_rate": "23%_with_notification"
+      },
+      "shipping_cost_surprise": {
+        "impact": "-12.7%",
+        "mitigation": "show_early"
+      },
+      "no_payment_options": {
+        "impact": "-8.4%",
+        "solution": "add_buy_now_pay_later"
+      },
+      "poor_product_images": {
+        "impact": "-15.2%",
+        "improvement": "360_view"
+      }
+    }
+  },
+  "device_performance": {
+    "desktop": {
+      "conversion_rate": "24.6%",
+      "average_order_value": 934,
+      "session_duration": "12:34",
+      "pages_per_session": 8.2
+    },
+    "mobile": {
+      "conversion_rate": "14.2%",
+      "average_order_value": 687,
+      "session_duration": "6:45",
+      "pages_per_session": 4.3,
+      "improvement_opportunities": [
+        "simplified_checkout",
+        "better_image_zoom",
+        "one_tap_buy"
+      ]
+    },
+    "tablet": {
+      "conversion_rate": "19.8%",
+      "average_order_value": 823,
+      "session_duration": "9:12",
+      "pages_per_session": 6.7
+    }
+  },
+  "time_based_patterns": {
+    "day_of_week": {
+      "sunday": {
+        "conversion_rate": "26.3%",
+        "peak_hours": ["7pm-10pm"],
+        "best_combinations": "wedding_focused"
+      },
+      "monday": {
+        "conversion_rate": "18.2%",
+        "peak_hours": ["12pm-1pm", "8pm-9pm"],
+        "best_combinations": "business_suits"
+      },
+      "thursday": {
+        "conversion_rate": "22.7%",
+        "peak_hours": ["6pm-9pm"],
+        "best_combinations": "weekend_event_prep"
+      },
+      "saturday": {
+        "conversion_rate": "24.9%",
+        "peak_hours": ["10am-2pm"],
+        "best_combinations": "all_categories"
+      }
+    },
+    "seasonal_trends": {
+      "spring": {
+        "peak_months": ["March", "April", "May"],
+        "conversion_rate": "23.4%",
+        "trending_combinations": ["sage_suits", "light_colors"],
+        "wedding_season_impact": "+34%"
+      },
+      "summer": {
+        "peak_months": ["June", "July", "August"],
+        "conversion_rate": "19.8%",
+        "trending_combinations": ["tan_linen", "light_fabrics"],
+        "outdoor_wedding_boost": "+28%"
+      },
+      "fall": {
+        "peak_months": ["September", "October", "November"],
+        "conversion_rate": "25.7%",
+        "trending_combinations": ["burgundy", "earth_tones"],
+        "highest_aov_season": true
+      },
+      "winter": {
+        "peak_months": ["December", "January", "February"],
+        "conversion_rate": "21.2%",
+        "trending_combinations": ["velvet", "rich_colors"],
+        "holiday_party_boost": "+41%"
+      }
+    }
+  },
+  "customer_journey_conversions": {
+    "first_touch_to_purchase": {
+      "same_session": "8.3%",
+      "within_24_hours": "14.6%",
+      "within_7_days": "31.2%",
+      "within_30_days": "52.8%",
+      "after_30_days": "12.4%"
+    },
+    "touchpoints_before_conversion": {
+      "1": "8.3%",
+      "2-3": "34.7%",
+      "4-6": "38.2%",
+      "7+": "18.8%"
+    },
+    "conversion_by_source": {
+      "organic_search": {
+        "rate": "22.4%",
+        "top_keywords": ["navy suit combinations", "wedding suit ideas"],
+        "content_driven": true
+      },
+      "paid_search": {
+        "rate": "18.7%",
+        "best_campaigns": ["brand", "wedding_suits"],
+        "roi": "312%"
+      },
+      "social_media": {
+        "rate": "15.3%",
+        "best_platform": "Instagram",
+        "influencer_driven": "42%"
+      },
+      "email": {
+        "rate": "31.2%",
+        "best_segments": ["past_purchasers", "abandoned_cart"],
+        "personalization_impact": "+67%"
+      },
+      "direct": {
+        "rate": "27.8%",
+        "returning_customer_percentage": "73%"
+      }
+    }
+  },
+  "ai_optimization_insights": {
+    "recommendation_impact": {
+      "ai_suggested_combinations": {
+        "conversion_rate": "28.9%",
+        "vs_self_selected": "+42%"
+      },
+      "personalization_score": {
+        "high": "31.2%",
+        "medium": "22.4%",
+        "low": "15.8%"
+      }
+    },
+    "chat_engagement": {
+      "used_chat": {
+        "conversion_rate": "34.6%",
+        "average_order_value": 1023
+      },
+      "no_chat": {
+        "conversion_rate": "17.2%",
+        "average_order_value": 734
+      },
+      "chat_topics_that_convert": [
+        "size_help",
+        "color_matching",
+        "occasion_advice",
+        "bundle_building"
+      ]
+    }
+  },
+  "testing_insights": {
+    "recent_ab_tests": {
+      "urgency_messaging": {
+        "variant": "wedding_countdown",
+        "lift": "+12.3%",
+        "significance": "95%"
+      },
+      "bundle_presentation": {
+        "variant": "pre_selected_complete_look",
+        "lift": "+8.7%",
+        "significance": "93%"
+      },
+      "social_proof": {
+        "variant": "recent_purchase_notifications",
+        "lift": "+6.2%",
+        "significance": "91%"
+      }
+    }
+  }
+}

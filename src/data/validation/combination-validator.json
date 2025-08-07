@@ -1,0 +1,414 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2024-01-09",
+    "description": "Validation rules for suit, shirt, and tie combinations",
+    "total_rules": 47,
+    "rule_categories": ["color_harmony", "pattern_mixing", "formality_matching", "texture_compatibility", "seasonal_appropriateness"]
+  },
+  "validation_rules": {
+    "color_harmony": {
+      "rules": [
+        {
+          "rule_id": "CH001",
+          "name": "Avoid same color suit and tie",
+          "severity": "error",
+          "condition": {
+            "type": "not_equals",
+            "fields": ["suit.color", "tie.color"],
+            "exceptions": ["black", "navy_with_different_shade"]
+          },
+          "message": "Suit and tie should not be the exact same color",
+          "recommendation": "Choose a contrasting or complementary tie color"
+        },
+        {
+          "rule_id": "CH002",
+          "name": "Maximum 3 colors in combination",
+          "severity": "warning",
+          "condition": {
+            "type": "max_unique_count",
+            "fields": ["suit.color", "shirt.color", "tie.color"],
+            "max_count": 3
+          },
+          "message": "Too many colors can look busy",
+          "recommendation": "Stick to 2-3 colors for a cohesive look"
+        },
+        {
+          "rule_id": "CH003",
+          "name": "Brown and black incompatibility",
+          "severity": "error",
+          "condition": {
+            "type": "not_combination",
+            "combinations": [
+              ["brown_suit", "black_tie"],
+              ["black_suit", "brown_tie"],
+              ["brown_suit", "black_shirt"]
+            ]
+          },
+          "message": "Brown and black typically don't mix well",
+          "recommendation": "Try navy instead of black, or tan instead of brown"
+        },
+        {
+          "rule_id": "CH004",
+          "name": "Warm and cool color mixing",
+          "severity": "info",
+          "condition": {
+            "type": "color_temperature_check",
+            "warm_colors": ["burgundy", "brown", "tan", "coral", "orange"],
+            "cool_colors": ["blue", "grey", "green", "purple"],
+            "allow_neutral_bridge": true
+          },
+          "message": "Mixing warm and cool colors requires careful balance",
+          "recommendation": "Use a neutral color (white, grey, black) as a bridge"
+        },
+        {
+          "rule_id": "CH005",
+          "name": "Monochromatic elegance",
+          "severity": "success",
+          "condition": {
+            "type": "same_color_family",
+            "fields": ["suit.color", "tie.color"],
+            "different_shades_required": true
+          },
+          "message": "Monochromatic combinations can be very sophisticated",
+          "recommendation": "Ensure different shades or textures for visual interest"
+        }
+      ]
+    },
+    "pattern_mixing": {
+      "rules": [
+        {
+          "rule_id": "PM001",
+          "name": "Maximum 2 patterns",
+          "severity": "warning",
+          "condition": {
+            "type": "max_pattern_count",
+            "fields": ["suit.pattern", "shirt.pattern", "tie.pattern"],
+            "max_patterns": 2,
+            "solid_counts_as": 0
+          },
+          "message": "More than 2 patterns can clash",
+          "recommendation": "If using 2 patterns, make one subtle and one bold"
+        },
+        {
+          "rule_id": "PM002",
+          "name": "Pattern scale variation",
+          "severity": "error",
+          "condition": {
+            "type": "pattern_scale_check",
+            "rules": {
+              "same_scale_patterns": false,
+              "scale_hierarchy": ["large", "medium", "small", "micro"]
+            }
+          },
+          "message": "Patterns should vary in scale",
+          "recommendation": "Pair large patterns with small ones, not similar sizes"
+        },
+        {
+          "rule_id": "PM003",
+          "name": "Stripe direction conflict",
+          "severity": "error",
+          "condition": {
+            "type": "stripe_compatibility",
+            "avoid": [
+              {
+                "suit": "pinstripe",
+                "shirt": "vertical_stripe",
+                "tie": "diagonal_stripe"
+              }
+            ]
+          },
+          "message": "Multiple stripe patterns can create visual confusion",
+          "recommendation": "Limit stripes to one item, or ensure very different scales"
+        },
+        {
+          "rule_id": "PM004",
+          "name": "Busy pattern overload",
+          "severity": "warning",
+          "condition": {
+            "type": "pattern_busy_check",
+            "busy_patterns": ["paisley", "bold_plaid", "large_check", "complex_geometric"],
+            "max_busy_patterns": 1
+          },
+          "message": "Multiple busy patterns compete for attention",
+          "recommendation": "Balance one busy pattern with solids"
+        }
+      ]
+    },
+    "formality_matching": {
+      "rules": [
+        {
+          "rule_id": "FM001",
+          "name": "Formality level consistency",
+          "severity": "error",
+          "condition": {
+            "type": "formality_range_check",
+            "formality_scores": {
+              "tuxedo": 10,
+              "black_suit": 9,
+              "navy_suit": 8,
+              "charcoal_suit": 8,
+              "grey_suit": 7,
+              "tan_suit": 5,
+              "linen_suit": 4,
+              "black_tie": 9,
+              "silk_tie": 8,
+              "knit_tie": 5,
+              "no_tie": 3
+            },
+            "max_range": 3
+          },
+          "message": "Items have mismatched formality levels",
+          "recommendation": "Choose items within similar formality range"
+        },
+        {
+          "rule_id": "FM002",
+          "name": "Occasion appropriateness",
+          "severity": "warning",
+          "condition": {
+            "type": "occasion_check",
+            "occasion_rules": {
+              "black_tie": {
+                "required": ["tuxedo_or_black_suit", "white_shirt", "black_bow_tie"],
+                "forbidden": ["brown", "casual_fabrics"]
+              },
+              "business": {
+                "required": ["professional_colors"],
+                "forbidden": ["loud_patterns", "casual_textures"]
+              },
+              "casual": {
+                "allowed": ["no_tie", "knit_tie", "casual_fabrics"],
+                "forbidden": ["tuxedo", "formal_accessories"]
+              }
+            }
+          },
+          "message": "Combination may not suit the occasion",
+          "recommendation": "Adjust formality to match the event"
+        },
+        {
+          "rule_id": "FM003",
+          "name": "Seasonal formality",
+          "severity": "info",
+          "condition": {
+            "type": "seasonal_formality",
+            "rules": {
+              "summer": {
+                "reduce_formality": true,
+                "allow": ["lighter_colors", "casual_fabrics", "no_tie"]
+              },
+              "winter": {
+                "increase_formality": true,
+                "prefer": ["darker_colors", "heavier_fabrics", "layering"]
+              }
+            }
+          },
+          "message": "Consider seasonal adjustments to formality",
+          "recommendation": "Lighter and more casual in summer, richer in winter"
+        }
+      ]
+    },
+    "texture_compatibility": {
+      "rules": [
+        {
+          "rule_id": "TC001",
+          "name": "Texture balance",
+          "severity": "warning",
+          "condition": {
+            "type": "texture_variety_check",
+            "min_textures": 1,
+            "max_same_texture": 2,
+            "texture_categories": ["smooth", "textured", "shiny", "matte"]
+          },
+          "message": "Consider adding textural variety",
+          "recommendation": "Mix smooth and textured items for visual interest"
+        },
+        {
+          "rule_id": "TC002",
+          "name": "Shiny fabric limit",
+          "severity": "error",
+          "condition": {
+            "type": "shine_check",
+            "shiny_fabrics": ["satin", "silk_with_sheen", "metallic"],
+            "max_shiny_items": 1
+          },
+          "message": "Too many shiny fabrics can look gaudy",
+          "recommendation": "Limit shiny fabrics to one item, typically the tie"
+        },
+        {
+          "rule_id": "TC003",
+          "name": "Casual-formal texture clash",
+          "severity": "error",
+          "condition": {
+            "type": "texture_formality_check",
+            "incompatible": [
+              {
+                "formal": ["velvet", "silk", "fine_wool"],
+                "casual": ["denim", "linen", "cotton_knit"]
+              }
+            ]
+          },
+          "message": "Mixing very formal and casual textures creates discord",
+          "recommendation": "Keep textures within similar formality range"
+        },
+        {
+          "rule_id": "TC004",
+          "name": "Seasonal texture appropriateness",
+          "severity": "warning",
+          "condition": {
+            "type": "seasonal_texture_check",
+            "summer_avoid": ["velvet", "heavy_wool", "flannel"],
+            "winter_avoid": ["linen", "seersucker", "lightweight_cotton"]
+          },
+          "message": "Texture may not be seasonally appropriate",
+          "recommendation": "Choose fabrics suitable for the season"
+        }
+      ]
+    },
+    "special_cases": {
+      "rules": [
+        {
+          "rule_id": "SC001",
+          "name": "Wedding guest etiquette",
+          "severity": "error",
+          "condition": {
+            "type": "wedding_guest_check",
+            "avoid": [
+              "all_white_combination",
+              "all_black_combination",
+              "overly_flashy"
+            ]
+          },
+          "message": "This combination may not be appropriate for a wedding guest",
+          "recommendation": "Avoid all white (bride) or all black (funeral)"
+        },
+        {
+          "rule_id": "SC002",
+          "name": "Cultural sensitivity",
+          "severity": "info",
+          "condition": {
+            "type": "cultural_check",
+            "considerations": {
+              "red_tie": "Lucky in Chinese culture",
+              "white": "Mourning color in some Asian cultures",
+              "green": "Sacred in Islamic culture"
+            }
+          },
+          "message": "Consider cultural context for international events",
+          "recommendation": "Research cultural color meanings for global events"
+        },
+        {
+          "rule_id": "SC003",
+          "name": "Photography optimization",
+          "severity": "success",
+          "condition": {
+            "type": "photography_check",
+            "high_performance": [
+              "navy_white_burgundy",
+              "charcoal_blue_silver",
+              "grey_white_navy"
+            ]
+          },
+          "message": "This combination photographs exceptionally well",
+          "recommendation": "Great choice for events with photography"
+        },
+        {
+          "rule_id": "SC004",
+          "name": "Trend validation",
+          "severity": "info",
+          "condition": {
+            "type": "trend_check",
+            "trending_combinations": [
+              "sage_suit_combinations",
+              "monochromatic_grey",
+              "burgundy_accents"
+            ],
+            "outdated_combinations": [
+              "black_shirt_white_tie",
+              "excessive_matching"
+            ]
+          },
+          "message": "Trend status of this combination",
+          "recommendation": "Consider current style trends"
+        }
+      ]
+    }
+  },
+  "validation_process": {
+    "steps": [
+      {
+        "order": 1,
+        "category": "color_harmony",
+        "stop_on_error": true
+      },
+      {
+        "order": 2,
+        "category": "pattern_mixing",
+        "stop_on_error": false
+      },
+      {
+        "order": 3,
+        "category": "formality_matching",
+        "stop_on_error": false
+      },
+      {
+        "order": 4,
+        "category": "texture_compatibility",
+        "stop_on_error": false
+      },
+      {
+        "order": 5,
+        "category": "special_cases",
+        "stop_on_error": false
+      }
+    ],
+    "scoring": {
+      "base_score": 100,
+      "deductions": {
+        "error": -25,
+        "warning": -10,
+        "info": 0
+      },
+      "bonuses": {
+        "success": 5,
+        "trending": 10,
+        "photogenic": 5
+      },
+      "thresholds": {
+        "excellent": 90,
+        "good": 75,
+        "acceptable": 60,
+        "poor": 40
+      }
+    }
+  },
+  "override_conditions": {
+    "customer_preference": {
+      "description": "Customer explicitly requests combination",
+      "override_level": "warning",
+      "requires_acknowledgment": true
+    },
+    "stylist_approval": {
+      "description": "Professional stylist approves combination",
+      "override_level": "error",
+      "requires_note": true
+    },
+    "special_event": {
+      "description": "Unique event with special requirements",
+      "override_level": "info",
+      "examples": ["theme_party", "costume_event", "cultural_ceremony"]
+    }
+  },
+  "ai_learning_feedback": {
+    "track_overrides": true,
+    "track_customer_satisfaction": true,
+    "update_rules_threshold": {
+      "override_frequency": 0.15,
+      "satisfaction_threshold": 0.85
+    },
+    "learning_categories": [
+      "emerging_trends",
+      "regional_preferences",
+      "generational_differences"
+    ]
+  }
+}

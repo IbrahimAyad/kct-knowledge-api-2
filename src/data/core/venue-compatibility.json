@@ -1,0 +1,306 @@
+{
+  "version": "1.0",
+  "last_updated": "2024-01-09",
+  "venue_types": {
+    "beach": {
+      "characteristics": {
+        "environment": "outdoor",
+        "formality_range": "casual_to_semi_formal",
+        "typical_weather": "hot_sunny_windy",
+        "photography": "bright_natural_light"
+      },
+      "ideal_suits": [
+        {
+          "color": "linen_beige",
+          "confidence": 98,
+          "reason": "breathable_and_photographs_well_in_sand"
+        },
+        {
+          "color": "light_blue",
+          "confidence": 95,
+          "reason": "complements_ocean_sky"
+        },
+        {
+          "color": "tan",
+          "confidence": 94,
+          "reason": "natural_harmony_with_beach_tones"
+        },
+        {
+          "color": "cream",
+          "confidence": 90,
+          "reason": "light_and_elegant"
+        }
+      ],
+      "acceptable_suits": ["light_grey", "soft_white", "sage_green"],
+      "avoid": ["black", "dark_colors", "heavy_fabrics", "velvet"],
+      "fabric_requirements": {
+        "must_have": ["lightweight", "breathable", "wrinkle_accepting"],
+        "ideal": ["linen", "cotton", "lightweight_wool"],
+        "avoid": ["velvet", "heavy_wool", "synthetic_non_breathable"]
+      },
+      "styling_notes": {
+        "shoes": "consider_barefoot_or_leather_sandals",
+        "tie": "optional_or_loose_knot",
+        "overall": "relaxed_elegance"
+      }
+    },
+    "church": {
+      "characteristics": {
+        "environment": "indoor",
+        "formality_range": "formal_to_very_formal",
+        "typical_lighting": "dim_stained_glass",
+        "atmosphere": "reverent_traditional"
+      },
+      "ideal_suits": [
+        {
+          "color": "navy",
+          "confidence": 98,
+          "reason": "respectful_and_photogenic_in_low_light"
+        },
+        {
+          "color": "charcoal",
+          "confidence": 96,
+          "reason": "formal_without_being_somber"
+        },
+        {
+          "color": "midnight_blue",
+          "confidence": 94,
+          "reason": "elegant_in_candlelight"
+        }
+      ],
+      "acceptable_suits": ["black", "dark_grey", "deep_burgundy"],
+      "avoid": ["bright_colors", "casual_fabrics", "bold_patterns"],
+      "dress_code": {
+        "minimum_formality": 8,
+        "tie_required": "always",
+        "conservative_colors": true,
+        "covered_shoulders": "may_be_required"
+      }
+    },
+    "garden": {
+      "characteristics": {
+        "environment": "outdoor",
+        "formality_range": "semi_formal_to_formal",
+        "typical_weather": "variable",
+        "photography": "natural_backdrop"
+      },
+      "ideal_suits": [
+        {
+          "color": "sage_green",
+          "confidence": 96,
+          "reason": "harmonizes_with_natural_setting"
+        },
+        {
+          "color": "light_grey",
+          "confidence": 93,
+          "reason": "neutral_complement_to_flowers"
+        },
+        {
+          "color": "tan",
+          "confidence": 91,
+          "reason": "earthy_and_appropriate"
+        },
+        {
+          "color": "powder_blue",
+          "confidence": 90,
+          "reason": "fresh_spring_summer_appeal"
+        }
+      ],
+      "seasonal_considerations": {
+        "spring": ["pastels_encouraged", "lighter_fabrics"],
+        "summer": ["breathable_mandatory", "sun_protection"],
+        "fall": ["layers_recommended", "richer_colors_work"]
+      },
+      "fabric_flexibility": "high",
+      "photo_tips": "colors_pop_against_greenery"
+    },
+    "ballroom": {
+      "characteristics": {
+        "environment": "indoor",
+        "formality_range": "formal_to_black_tie",
+        "typical_lighting": "chandeliers_mixed",
+        "atmosphere": "elegant_sophisticated"
+      },
+      "ideal_suits": [
+        {
+          "color": "black",
+          "confidence": 95,
+          "reason": "classic_formal_choice"
+        },
+        {
+          "color": "midnight_blue",
+          "confidence": 97,
+          "reason": "photographs_better_than_black"
+        },
+        {
+          "color": "charcoal",
+          "confidence": 93,
+          "reason": "sophisticated_alternative"
+        },
+        {
+          "color": "burgundy",
+          "confidence": 88,
+          "reason": "bold_yet_appropriate"
+        }
+      ],
+      "fabric_requirements": {
+        "ideal": ["fine_wool", "velvet", "silk_blend"],
+        "texture_importance": "high",
+        "sheen_acceptable": true
+      },
+      "minimum_standards": {
+        "formality": 9,
+        "fabric_quality": "high",
+        "fit": "impeccable",
+        "accessories": "complete"
+      }
+    },
+    "vineyard": {
+      "characteristics": {
+        "environment": "outdoor",
+        "formality_range": "casual_to_formal",
+        "typical_season": "fall_popular",
+        "photography": "golden_natural_light"
+      },
+      "ideal_suits": [
+        {
+          "color": "burgundy",
+          "confidence": 98,
+          "reason": "thematic_wine_connection"
+        },
+        {
+          "color": "olive_green",
+          "confidence": 94,
+          "reason": "complements_vine_colors"
+        },
+        {
+          "color": "brown",
+          "confidence": 92,
+          "reason": "rustic_appropriate"
+        }
+      ],
+      "texture_friendly": true,
+      "patterns_welcome": ["subtle_plaids", "herringbone", "textured_weaves"]
+    },
+    "barn": {
+      "characteristics": {
+        "environment": "indoor_outdoor_hybrid",
+        "formality_range": "rustic_casual_to_semi_formal",
+        "typical_features": "wooden_beams_string_lights",
+        "atmosphere": "warm_intimate"
+      },
+      "ideal_suits": [
+        {
+          "color": "tan",
+          "confidence": 95,
+          "reason": "rustic_harmony"
+        },
+        {
+          "color": "navy",
+          "confidence": 93,
+          "reason": "versatile_for_any_formality"
+        },
+        {
+          "color": "hunter_green",
+          "confidence": 90,
+          "reason": "nature_inspired"
+        }
+      ],
+      "styling_flexibility": "high",
+      "texture_options": ["tweed", "corduroy", "textured_wool"],
+      "accessories": "suspenders_encouraged"
+    },
+    "rooftop": {
+      "characteristics": {
+        "environment": "outdoor_urban",
+        "formality_range": "cocktail_to_formal",
+        "typical_time": "sunset_evening",
+        "considerations": "wind_temperature_changes"
+      },
+      "ideal_suits": [
+        {
+          "color": "charcoal",
+          "confidence": 96,
+          "reason": "urban_sophisticated"
+        },
+        {
+          "color": "navy",
+          "confidence": 94,
+          "reason": "classic_city_appropriate"
+        },
+        {
+          "color": "black",
+          "confidence": 90,
+          "reason": "evening_elegance"
+        }
+      ],
+      "practical_notes": {
+        "fabric_weight": "medium_to_heavy",
+        "layering": "recommended",
+        "tie_clip": "essential_for_wind"
+      }
+    },
+    "country_club": {
+      "characteristics": {
+        "environment": "indoor_outdoor_options",
+        "formality_range": "semi_formal_to_formal",
+        "atmosphere": "traditional_refined",
+        "dress_code": "often_specific"
+      },
+      "ideal_suits": [
+        {
+          "color": "navy",
+          "confidence": 97,
+          "reason": "timeless_appropriate"
+        },
+        {
+          "color": "light_grey",
+          "confidence": 93,
+          "reason": "daytime_elegance"
+        },
+        {
+          "color": "tan",
+          "confidence": 88,
+          "reason": "preppy_appropriate"
+        }
+      ],
+      "traditional_requirements": true,
+      "pattern_acceptability": "conservative_only"
+    }
+  },
+  "venue_formality_index": {
+    "most_formal": ["church", "ballroom", "cathedral", "historic_mansion"],
+    "formal": ["country_club", "hotel", "rooftop_evening"],
+    "semi_formal": ["vineyard", "garden", "restaurant"],
+    "casual_allowed": ["beach", "barn", "backyard", "park"]
+  },
+  "weather_contingencies": {
+    "outdoor_venues": {
+      "rain_plan": {
+        "fabric_choices": ["avoid_linen", "water_resistant_treatments"],
+        "color_impact": "darker_colors_hide_water_spots"
+      },
+      "heat_plan": {
+        "fabric_mandatory": ["breathable", "moisture_wicking"],
+        "color_choice": "lighter_reflects_heat"
+      },
+      "wind_plan": {
+        "accessories": ["tie_clip", "pocket_square_pin"],
+        "avoid": ["lightweight_fabrics_that_billow"]
+      }
+    }
+  },
+  "ai_venue_matching": {
+    "decision_tree": {
+      "outdoor": {
+        "formal": ["navy", "charcoal"],
+        "casual": ["tan", "light_blue", "sage"]
+      },
+      "indoor": {
+        "formal": ["black", "midnight_blue", "charcoal"],
+        "casual": ["grey", "burgundy", "green"]
+      }
+    },
+    "response_template": "For a {venue_type} wedding, I recommend {suit_color} because {reason}. This scores {confidence}% for venue appropriateness."
+  }
+}

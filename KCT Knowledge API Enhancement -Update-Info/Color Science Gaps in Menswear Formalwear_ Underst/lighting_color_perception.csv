@@ -1,0 +1,13 @@
+Lighting_Type,Color_Temperature_K,Red_Accuracy_Score,Blue_Accuracy_Score,Green_Accuracy_Score,Skin_Tone_Flattering,Fabric_Color_Shift
+Natural Daylight (5500K),5500,9.5,9.8,9.7,9.8,0.1
+Natural Sunset (3000K),3000,7.2,8.3,6.8,8.9,1.2
+LED Cool (6000K),6000,6.8,9.2,8.9,6.4,1.8
+LED Warm (3000K),3000,8.1,7.4,7.6,8.7,0.9
+LED Neutral (4000K),4000,7.9,8.6,8.3,7.8,1.1
+Incandescent (2700K),2700,8.5,6.9,7.2,8.2,1.4
+Fluorescent (4000K),4000,6.2,8.1,7.9,5.9,2.1
+Office LED (5000K),5000,7.8,8.8,8.5,7.2,1.3
+Retail LED (4500K),4500,8.2,8.4,8.1,8.0,1.0
+Webcam LED (5500K),5500,7.6,8.7,8.2,7.5,1.2
+Ring Light (5600K),5600,8.3,8.9,8.6,8.4,0.8
+Studio LED (3200K),3200,8.0,7.8,7.9,8.6,1.1

@@ -1,0 +1,271 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2024-01-09",
+    "description": "Most liked and engaged suit combinations on Instagram",
+    "tracking_period": "2023-2024",
+    "total_posts_analyzed": 15420,
+    "hashtags_tracked": ["#menssuits", "#weddingsuit", "#groomstyle", "#suitandtie", "#dapper"]
+  },
+  "top_performers": {
+    "all_time_champions": [
+      {
+        "rank": 1,
+        "combination": "navy_suit_white_shirt_burgundy_tie",
+        "average_likes": 2847,
+        "engagement_rate": "4.2%",
+        "top_post": {
+          "likes": 8934,
+          "account": "@dappergrooms",
+          "caption_keywords": ["classic", "timeless", "wedding"],
+          "photo_type": "golden_hour_outdoor"
+        },
+        "seasonal_performance": {
+          "spring": 2650,
+          "summer": 2340,
+          "fall": 3890,
+          "winter": 3100
+        }
+      },
+      {
+        "rank": 2,
+        "combination": "charcoal_suit_light_blue_shirt_silver_tie",
+        "average_likes": 2654,
+        "engagement_rate": "3.9%",
+        "top_post": {
+          "likes": 7832,
+          "account": "@moderngroomstyle",
+          "caption_keywords": ["modern", "sleek", "city"],
+          "photo_type": "urban_rooftop"
+        }
+      },
+      {
+        "rank": 3,
+        "combination": "burgundy_suit_white_shirt_black_tie",
+        "average_likes": 2489,
+        "engagement_rate": "4.5%",
+        "top_post": {
+          "likes": 9123,
+          "account": "@boldgrooms",
+          "caption_keywords": ["bold", "statement", "unique"],
+          "photo_type": "moody_indoor"
+        }
+      },
+      {
+        "rank": 4,
+        "combination": "sage_suit_white_shirt_sage_tie",
+        "average_likes": 2234,
+        "engagement_rate": "5.1%",
+        "top_post": {
+          "likes": 11234,
+          "account": "@gardenweddings",
+          "caption_keywords": ["garden", "natural", "trending"],
+          "photo_type": "outdoor_garden"
+        },
+        "trend_status": "rapidly_growing"
+      },
+      {
+        "rank": 5,
+        "combination": "black_suit_black_shirt_gold_tie",
+        "average_likes": 2156,
+        "engagement_rate": "3.7%",
+        "top_post": {
+          "likes": 6789,
+          "account": "@luxurygrooms",
+          "caption_keywords": ["luxury", "vegas", "nighttime"],
+          "photo_type": "neon_lights"
+        }
+      }
+    ],
+    "by_category": {
+      "classic_formal": {
+        "winner": "black_suit_white_shirt_black_tie",
+        "average_likes": 1987,
+        "best_photography_style": "traditional_portrait",
+        "peak_posting_time": "Sunday 7pm"
+      },
+      "modern_minimalist": {
+        "winner": "grey_suit_white_shirt_no_tie",
+        "average_likes": 2103,
+        "best_photography_style": "minimalist_backdrop",
+        "peak_posting_time": "Wednesday 6pm"
+      },
+      "colorful_statement": {
+        "winner": "burgundy_suit_pink_shirt_burgundy_tie",
+        "average_likes": 2456,
+        "best_photography_style": "vibrant_location",
+        "peak_posting_time": "Saturday 2pm"
+      },
+      "summer_wedding": {
+        "winner": "tan_suit_white_shirt_navy_tie",
+        "average_likes": 2234,
+        "best_photography_style": "beach_or_outdoor",
+        "peak_posting_time": "Friday 5pm"
+      },
+      "winter_formal": {
+        "winner": "navy_velvet_suit_white_shirt_silver_tie",
+        "average_likes": 2678,
+        "best_photography_style": "luxe_indoor",
+        "peak_posting_time": "Thursday 8pm"
+      }
+    }
+  },
+  "trending_combinations": {
+    "current_month": [
+      {
+        "combination": "sage_suit_variations",
+        "growth_rate": "+127%",
+        "hashtags": ["#sagegreen", "#2024groom", "#gardenwedding"],
+        "influencer_adoption": "high"
+      },
+      {
+        "combination": "monochromatic_grey",
+        "growth_rate": "+89%",
+        "hashtags": ["#modernminimalist", "#greysuit", "#sleek"],
+        "influencer_adoption": "medium"
+      },
+      {
+        "combination": "burgundy_velvet",
+        "growth_rate": "+76%",
+        "hashtags": ["#luxewedding", "#fallgroom", "#velvet"],
+        "influencer_adoption": "high"
+      }
+    ],
+    "emerging_trends": {
+      "texture_mixing": {
+        "description": "Combining different textures in same color family",
+        "example": "Velvet jacket with wool pants",
+        "growth": "+45%"
+      },
+      "earth_tones": {
+        "description": "Sage, tan, dusty rose combinations",
+        "example": "Sage suit with dusty rose tie",
+        "growth": "+93%"
+      },
+      "metallic_accents": {
+        "description": "Gold and silver tie additions",
+        "example": "Any suit with metallic tie",
+        "growth": "+67%"
+      }
+    }
+  },
+  "content_insights": {
+    "photo_styles": {
+      "highest_engagement": [
+        {
+          "style": "golden_hour_outdoor",
+          "average_engagement": "5.2%",
+          "best_combinations": ["navy", "burgundy", "sage"]
+        },
+        {
+          "style": "urban_architecture",
+          "average_engagement": "4.8%",
+          "best_combinations": ["charcoal", "black", "grey"]
+        },
+        {
+          "style": "candid_movement",
+          "average_engagement": "4.6%",
+          "best_combinations": ["any_with_texture"]
+        }
+      ]
+    },
+    "caption_strategies": {
+      "high_performing_keywords": [
+        "dapper",
+        "suited",
+        "groom style",
+        "wedding ready",
+        "feeling fresh"
+      ],
+      "emoji_usage": {
+        "top_performers": ["🤵", "💍", "👔", "✨", "🔥"],
+        "average_boost": "+12% engagement"
+      },
+      "hashtag_count": {
+        "optimal": 11,
+        "mix": "5 broad + 3 niche + 3 branded"
+      }
+    },
+    "posting_patterns": {
+      "best_days": ["Thursday", "Sunday", "Tuesday"],
+      "best_times": ["7pm-9pm EST", "12pm-1pm EST"],
+      "worst_times": ["3am-6am", "Monday mornings"]
+    }
+  },
+  "influencer_partnerships": {
+    "top_performers": [
+      {
+        "account": "@thestylishgroom",
+        "followers": 234000,
+        "average_likes_our_products": 4532,
+        "best_combination_posted": "navy_burgundy_classic",
+        "roi": "387%"
+      },
+      {
+        "account": "@groomgoals",
+        "followers": 189000,
+        "average_likes_our_products": 3876,
+        "best_combination_posted": "sage_earth_tones",
+        "roi": "294%"
+      }
+    ],
+    "micro_influencers": {
+      "sweet_spot_followers": "10k-50k",
+      "average_engagement": "6.8%",
+      "cost_effectiveness": "highest_roi"
+    }
+  },
+  "user_generated_content": {
+    "best_performing_ugc": [
+      {
+        "combination": "navy_white_burgundy",
+        "average_shares": 234,
+        "common_scenarios": ["wedding_day", "first_look", "groomsmen"]
+      },
+      {
+        "combination": "charcoal_blue_silver",
+        "average_shares": 198,
+        "common_scenarios": ["proposal", "engagement", "date_night"]
+      }
+    ],
+    "ugc_campaigns": {
+      "most_successful": "#MyPerfectSuit",
+      "submissions": 3421,
+      "quality_posts": 892,
+      "conversions_from_ugc": "12.3%"
+    }
+  },
+  "competitive_analysis": {
+    "vs_competitors": {
+      "our_top_combination": {
+        "performance": 2847,
+        "competitor_average": 1923,
+        "advantage": "+48%"
+      },
+      "unique_combinations": {
+        "sage_suits": "We dominate with 73% share",
+        "burgundy_suits": "We lead with 61% share",
+        "metallic_ties": "Growing opportunity, 43% share"
+      }
+    }
+  },
+  "actionable_insights": {
+    "immediate_actions": [
+      "Feature sage combinations prominently",
+      "Create more golden hour content",
+      "Partner with garden wedding accounts"
+    ],
+    "content_calendar": {
+      "monday": "Motivation Monday - Classic Navy",
+      "wednesday": "Wedding Wednesday - Real Grooms",
+      "friday": "Fresh Fit Friday - Trending Combos",
+      "sunday": "Sunday Style - Luxury Looks"
+    },
+    "seasonal_planning": {
+      "spring": "Push sage and pastel combinations",
+      "summer": "Lightweight fabrics and tan suits",
+      "fall": "Burgundy and earth tones",
+      "winter": "Velvet textures and rich colors"
+    }
+  }
+}

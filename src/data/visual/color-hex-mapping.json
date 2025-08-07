@@ -1,0 +1,302 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2024-01-09",
+    "description": "Exact color codes for all suit, shirt, and tie colors in inventory",
+    "color_spaces": ["hex", "rgb", "pantone", "cmyk"]
+  },
+  "suits": {
+    "navy": {
+      "standard": {
+        "hex": "#1F2937",
+        "rgb": [31, 41, 55],
+        "pantone": "533 C",
+        "marketing_name": "Midnight Navy",
+        "variations": {
+          "light": "#2D3E50",
+          "dark": "#0F172A"
+        }
+      },
+      "royal_navy": {
+        "hex": "#003F7F",
+        "rgb": [0, 63, 127],
+        "pantone": "287 C",
+        "marketing_name": "Royal Navy"
+      }
+    },
+    "charcoal": {
+      "standard": {
+        "hex": "#36454F",
+        "rgb": [54, 69, 79],
+        "pantone": "432 C",
+        "marketing_name": "Executive Charcoal"
+      },
+      "light_charcoal": {
+        "hex": "#4B5563",
+        "rgb": [75, 85, 99],
+        "pantone": "Cool Gray 10 C",
+        "marketing_name": "Smoke Charcoal"
+      }
+    },
+    "grey": {
+      "light_grey": {
+        "hex": "#9CA3AF",
+        "rgb": [156, 163, 175],
+        "pantone": "Cool Gray 6 C",
+        "marketing_name": "Pearl Grey"
+      },
+      "medium_grey": {
+        "hex": "#6B7280",
+        "rgb": [107, 114, 128],
+        "pantone": "Cool Gray 9 C",
+        "marketing_name": "Stone Grey"
+      }
+    },
+    "black": {
+      "standard": {
+        "hex": "#000000",
+        "rgb": [0, 0, 0],
+        "pantone": "Black C",
+        "marketing_name": "Tuxedo Black"
+      },
+      "soft_black": {
+        "hex": "#0A0A0A",
+        "rgb": [10, 10, 10],
+        "pantone": "Black 6 C",
+        "marketing_name": "Midnight Black"
+      }
+    },
+    "burgundy": {
+      "standard": {
+        "hex": "#800020",
+        "rgb": [128, 0, 32],
+        "pantone": "209 C",
+        "marketing_name": "Wine Burgundy"
+      },
+      "deep_burgundy": {
+        "hex": "#6B0F1A",
+        "rgb": [107, 15, 26],
+        "pantone": "7421 C",
+        "marketing_name": "Bordeaux"
+      }
+    },
+    "sage": {
+      "standard": {
+        "hex": "#87A96B",
+        "rgb": [135, 169, 107],
+        "pantone": "5773 C",
+        "marketing_name": "Sage Garden"
+      },
+      "dusty_sage": {
+        "hex": "#9CAF88",
+        "rgb": [156, 175, 136],
+        "pantone": "5783 C",
+        "marketing_name": "Dusty Sage"
+      }
+    },
+    "tan": {
+      "standard": {
+        "hex": "#D2B48C",
+        "rgb": [210, 180, 140],
+        "pantone": "4665 C",
+        "marketing_name": "Desert Tan"
+      },
+      "light_tan": {
+        "hex": "#F5DEB3",
+        "rgb": [245, 222, 179],
+        "pantone": "7506 C",
+        "marketing_name": "Wheat"
+      }
+    }
+  },
+  "shirts": {
+    "white": {
+      "crisp_white": {
+        "hex": "#FFFFFF",
+        "rgb": [255, 255, 255],
+        "pantone": "White",
+        "marketing_name": "Crisp White"
+      },
+      "off_white": {
+        "hex": "#FAF9F6",
+        "rgb": [250, 249, 246],
+        "pantone": "11-0602 TCX",
+        "marketing_name": "Ivory White"
+      }
+    },
+    "light_blue": {
+      "standard": {
+        "hex": "#ADD8E6",
+        "rgb": [173, 216, 230],
+        "pantone": "656 C",
+        "marketing_name": "Sky Blue"
+      },
+      "powder_blue": {
+        "hex": "#B0E0E6",
+        "rgb": [176, 224, 230],
+        "pantone": "635 C",
+        "marketing_name": "Powder Blue"
+      }
+    },
+    "pink": {
+      "soft_pink": {
+        "hex": "#FFC0CB",
+        "rgb": [255, 192, 203],
+        "pantone": "706 C",
+        "marketing_name": "Blush Pink"
+      },
+      "dusty_rose": {
+        "hex": "#DCAE96",
+        "rgb": [220, 174, 150],
+        "pantone": "7514 C",
+        "marketing_name": "Dusty Rose"
+      }
+    },
+    "lavender": {
+      "standard": {
+        "hex": "#E6E6FA",
+        "rgb": [230, 230, 250],
+        "pantone": "7443 C",
+        "marketing_name": "French Lavender"
+      }
+    },
+    "mint": {
+      "standard": {
+        "hex": "#98FF98",
+        "rgb": [152, 255, 152],
+        "pantone": "7478 C",
+        "marketing_name": "Fresh Mint"
+      }
+    },
+    "grey": {
+      "light_grey": {
+        "hex": "#D3D3D3",
+        "rgb": [211, 211, 211],
+        "pantone": "Cool Gray 3 C",
+        "marketing_name": "Dove Grey"
+      }
+    },
+    "black": {
+      "standard": {
+        "hex": "#000000",
+        "rgb": [0, 0, 0],
+        "pantone": "Black C",
+        "marketing_name": "Onyx Black"
+      }
+    }
+  },
+  "ties": {
+    "burgundy": {
+      "standard": {
+        "hex": "#800020",
+        "rgb": [128, 0, 32],
+        "pantone": "209 C",
+        "marketing_name": "Bordeaux Wine"
+      },
+      "matte": {
+        "hex": "#722F37",
+        "rgb": [114, 47, 55],
+        "pantone": "7428 C",
+        "marketing_name": "Matte Burgundy"
+      }
+    },
+    "navy": {
+      "standard": {
+        "hex": "#000080",
+        "rgb": [0, 0, 128],
+        "pantone": "282 C",
+        "marketing_name": "Navy Blue"
+      },
+      "pattern_base": {
+        "hex": "#1F3A5F",
+        "rgb": [31, 58, 95],
+        "pantone": "534 C",
+        "marketing_name": "Pattern Navy"
+      }
+    },
+    "gold": {
+      "metallic": {
+        "hex": "#FFD700",
+        "rgb": [255, 215, 0],
+        "pantone": "116 C",
+        "marketing_name": "Champagne Gold"
+      },
+      "matte_gold": {
+        "hex": "#D4AF37",
+        "rgb": [212, 175, 55],
+        "pantone": "7406 C",
+        "marketing_name": "Antique Gold"
+      }
+    },
+    "silver": {
+      "metallic": {
+        "hex": "#C0C0C0",
+        "rgb": [192, 192, 192],
+        "pantone": "877 C",
+        "marketing_name": "Sterling Silver"
+      },
+      "platinum": {
+        "hex": "#E5E4E2",
+        "rgb": [229, 228, 226],
+        "pantone": "Cool Gray 1 C",
+        "marketing_name": "Platinum"
+      }
+    },
+    "emerald": {
+      "standard": {
+        "hex": "#50C878",
+        "rgb": [80, 200, 120],
+        "pantone": "3395 C",
+        "marketing_name": "Emerald Green"
+      }
+    },
+    "pink": {
+      "blush": {
+        "hex": "#FFB6C1",
+        "rgb": [255, 182, 193],
+        "pantone": "1895 C",
+        "marketing_name": "Blush"
+      },
+      "coral": {
+        "hex": "#FF6B6B",
+        "rgb": [255, 107, 107],
+        "pantone": "178 C",
+        "marketing_name": "Coral Pink"
+      }
+    },
+    "purple": {
+      "royal": {
+        "hex": "#7851A9",
+        "rgb": [120, 81, 169],
+        "pantone": "2685 C",
+        "marketing_name": "Royal Purple"
+      },
+      "lavender": {
+        "hex": "#B57EDC",
+        "rgb": [181, 126, 220],
+        "pantone": "528 C",
+        "marketing_name": "Lavender Purple"
+      }
+    },
+    "sage": {
+      "standard": {
+        "hex": "#87A96B",
+        "rgb": [135, 169, 107],
+        "pantone": "5773 C",
+        "marketing_name": "Sage"
+      }
+    }
+  },
+  "color_matching_rules": {
+    "complementary_colors": {
+      "navy": ["gold", "burgundy", "pink"],
+      "charcoal": ["silver", "purple", "emerald"],
+      "burgundy": ["navy", "grey", "gold"]
+    },
+    "photography_notes": {
+      "high_contrast": ["black-white", "navy-white", "burgundy-white"],
+      "subtle_elegance": ["grey-silver", "tan-gold", "sage-mint"],
+      "bold_statement": ["burgundy-gold", "emerald-black", "purple-silver"]
+    }
+  }
+}

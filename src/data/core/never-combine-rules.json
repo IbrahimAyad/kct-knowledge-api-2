@@ -1,0 +1,207 @@
+{
+  "version": "1.0",
+  "last_updated": "2024-01-09",
+  "absolute_never_combine": [
+    {
+      "rule_id": "NC001",
+      "combination": {
+        "suit": "light_colors",
+        "shirt": "black"
+      },
+      "reason": "Creates harsh, unbalanced contrast",
+      "severity": "critical",
+      "examples": ["light_blue_suit_black_shirt", "tan_suit_black_shirt", "light_grey_suit_black_shirt"]
+    },
+    {
+      "rule_id": "NC002",
+      "combination": {
+        "suit": "tan",
+        "tie": "black"
+      },
+      "reason": "Too harsh for tan's warmth",
+      "severity": "critical",
+      "exception": "none"
+    },
+    {
+      "rule_id": "NC003",
+      "combination": {
+        "suit": "white",
+        "shirt": "white",
+        "tie": "white"
+      },
+      "reason": "Lacks visual interest and dimension",
+      "severity": "high",
+      "exception": "unless_textured_fabrics"
+    },
+    {
+      "rule_id": "NC004",
+      "combination": {
+        "suit": "any",
+        "shirt": "same_exact_color"
+      },
+      "reason": "Creates unflattering monochrome blob",
+      "severity": "critical",
+      "exception": "different_shades_acceptable"
+    },
+    {
+      "rule_id": "NC005",
+      "combination": {
+        "patterns": "more_than_two"
+      },
+      "reason": "Visual chaos, overwhelming",
+      "severity": "high",
+      "example": "striped_suit_checked_shirt_patterned_tie"
+    },
+    {
+      "rule_id": "NC006",
+      "combination": {
+        "suit": "burgundy",
+        "tie": "bright_red"
+      },
+      "reason": "Colors clash, too similar but not matching",
+      "severity": "high"
+    },
+    {
+      "rule_id": "NC007",
+      "combination": {
+        "suit": "brown",
+        "shirt": "black"
+      },
+      "reason": "Creates muddy, unflattering appearance",
+      "severity": "critical"
+    },
+    {
+      "rule_id": "NC008",
+      "combination": {
+        "neon_colors": "any_formal_setting"
+      },
+      "reason": "Too casual/loud for formal wear",
+      "severity": "critical",
+      "items": ["neon_ties", "bright_orange_shirts", "electric_blue_accessories"]
+    }
+  ],
+  "conditional_avoid": [
+    {
+      "rule_id": "CA001",
+      "combination": {
+        "suit": "black",
+        "event": "daytime_wedding"
+      },
+      "reason": "Too somber for celebratory daytime events",
+      "severity": "medium",
+      "exception": "black_tie_specified"
+    },
+    {
+      "rule_id": "CA002",
+      "combination": {
+        "suit": "velvet",
+        "season": "summer"
+      },
+      "reason": "Too heavy for warm weather",
+      "severity": "high"
+    },
+    {
+      "rule_id": "CA003",
+      "combination": {
+        "suit": "linen",
+        "season": "winter"
+      },
+      "reason": "Too lightweight for cold weather",
+      "severity": "high",
+      "exception": "indoor_tropical_destination"
+    },
+    {
+      "rule_id": "CA004",
+      "combination": {
+        "white_or_ivory": "any",
+        "event": "wedding_guest"
+      },
+      "reason": "Reserved for bride",
+      "severity": "critical"
+    },
+    {
+      "rule_id": "CA005",
+      "combination": {
+        "exact_wedding_colors": true,
+        "role": "guest"
+      },
+      "reason": "Risk being mistaken for wedding party",
+      "severity": "medium"
+    }
+  ],
+  "pattern_rules": {
+    "never_mix": [
+      {
+        "pattern1": "stripes",
+        "pattern2": "stripes",
+        "reason": "Creates dizzying effect",
+        "exception": "different_scales_only"
+      },
+      {
+        "pattern1": "plaid",
+        "pattern2": "paisley",
+        "reason": "Too busy, competing patterns"
+      },
+      {
+        "pattern1": "large_check",
+        "pattern2": "small_dots",
+        "reason": "Scale conflict"
+      }
+    ],
+    "safe_pattern_rules": [
+      "solid_suit_allows_one_pattern",
+      "patterned_suit_requires_solid_shirt_and_tie",
+      "subtle_patterns_can_mix_if_different_scales"
+    ]
+  },
+  "formality_mismatches": [
+    {
+      "formal_item": "tuxedo",
+      "casual_item": "knit_tie",
+      "severity": "high"
+    },
+    {
+      "formal_event": "black_tie",
+      "casual_color": "tan_suit",
+      "severity": "critical"
+    },
+    {
+      "formal_item": "white_tie",
+      "wrong_items": ["colored_bow_tie", "patterned_vest", "colored_shirt"],
+      "severity": "critical"
+    }
+  ],
+  "texture_conflicts": [
+    {
+      "texture1": "shiny_satin",
+      "texture2": "rough_tweed",
+      "reason": "Incompatible formality levels"
+    },
+    {
+      "texture1": "velvet",
+      "texture2": "linen",
+      "reason": "Seasonal conflict"
+    }
+  ],
+  "quick_reference": {
+    "always_avoid": [
+      "black_shirt_with_light_suits",
+      "matching_exact_suit_and_shirt_color",
+      "more_than_two_patterns",
+      "black_tie_with_tan_suit",
+      "white_outfit_at_weddings",
+      "neon_anything_formal"
+    ],
+    "common_mistakes": [
+      "brown_shoes_with_black_suit",
+      "short_tie_with_vest",
+      "casual_shoes_with_formal_suit",
+      "wrong_bow_tie_with_tuxedo"
+    ]
+  },
+  "ai_response_templates": {
+    "critical_violation": "I cannot recommend {combination} as it violates fundamental style rules. Instead, try {alternative}.",
+    "high_violation": "That combination typically doesn't work well because {reason}. A better option would be {alternative}.",
+    "medium_violation": "While some might wear {combination}, it's generally not recommended for {event}. Consider {alternative} instead."
+  }
+}

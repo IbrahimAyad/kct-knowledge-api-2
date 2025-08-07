@@ -1,0 +1,929 @@
+openapi: 3.0.3
+info:
+  title: KCT Knowledge API
+  description: |
+    Comprehensive menswear styling API providing intelligent outfit validation, color recommendations, 
+    and fashion intelligence powered by extensive knowledge bank data.
+    
+    ## Features
+    - **Advanced Validation Engine**: Multi-category rule validation with confidence scoring
+    - **Color Harmony Analysis**: Sophisticated color relationship analysis
+    - **Formality Matching**: Occasion and dress code compliance validation  
+    - **Seasonal Appropriateness**: Fabric and color seasonality validation
+    - **Style Profile Matching**: Personalized recommendations based on customer profiles
+    - **Venue Requirements**: Location-specific styling requirements
+    - **Pattern Mixing Rules**: Advanced pattern compatibility analysis
+    - **Trending Intelligence**: Real-time fashion trend analysis
+    
+    ## Authentication
+    All endpoints require API key authentication via the `X-API-Key` header.
+    
+    ## Rate Limits
+    - Standard plan: 1000 requests/hour
+    - Premium plan: 10000 requests/hour
+    - Enterprise plan: Unlimited
+    
+    ## Response Format
+    All responses follow a consistent format with success/error status, data payload, and metadata.
+    
+  version: 2.0.0
+  contact:
+    name: KCT API Support
+    email: api-support@kctmenswear.com
+    url: https://api.kctmenswear.com/support
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://api.kctmenswear.com/terms
+
+servers:
+  - url: https://api.kctmenswear.com/v2
+    description: Production server
+  - url: https://staging-api.kctmenswear.com/v2
+    description: Staging server
+  - url: http://localhost:3000/api
+    description: Development server
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /colors:
+    get:
+      summary: List all colors with metadata and relationships
+      description: |
+        Retrieves comprehensive color data including color families, universal rules, 
+        and trending color information from the knowledge bank.
+      tags:
+        - Colors
+      responses:
+        '200':
+          description: Successful response with color data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  color_families:
+                    neutrals:
+                      colors: ["white", "black", "grey", "charcoal"]
+                      complement_with: "any color family"
+                      tie_suggestions: ["burgundy", "navy", "silver"]
+                      trending: "stable"
+                  universal_rules:
+                    white_shirt_universal:
+                      works_with: "all suit colors"
+                      confidence: 0.95
+                      note: "Always appropriate and versatile"
+                  trending:
+                    rising: ["sage_green", "burgundy", "midnight_blue"]
+                    stable: ["navy", "charcoal", "white"]
+                    declining: ["tan", "light_blue"]
+                  total_colors: 47
+                  metadata:
+                    version: "2.0.0"
+                    last_updated: "2024-01-15T10:30:00Z"
+                    description: "Comprehensive color relationship data for menswear styling"
+                error: null
+                timestamp: "2024-01-15T10:30:00Z"
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /colors/{color}/relationships:
+    get:
+      summary: Get matching colors for suits/shirts/ties
+      description: |
+        Retrieves complementary color relationships for a specific color,
+        including confidence scores and seasonal recommendations.
+      tags:
+        - Colors
+      parameters:
+        - name: color
+          in: path
+          required: true
+          description: Color name (e.g., 'navy', 'charcoal', 'burgundy')
+          schema:
+            type: string
+            example: navy
+      responses:
+        '200':
+          description: Color relationships found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  color: "navy"
+                  normalized_color: "navy"
+                  relationships:
+                    perfect_matches:
+                      shirts: ["white", "light_blue"]
+                      ties: ["burgundy", "silver", "gold"]
+                      confidence: 0.95
+                    good_matches:
+                      shirts: ["pink", "lavender"]
+                      ties: ["navy", "forest_green"]
+                      confidence: 0.85
+                  confidence_scores:
+                    shirt_matches: 0.95
+                    tie_matches: 0.90
+                    overall_confidence: 0.92
+                  seasonal_recommendations:
+                    spring: ["light_blue_shirt", "coral_tie"]
+                    summer: ["white_shirt", "sage_green_tie"]
+                  formality_notes: "versatile for business to formal occasions"
+                  metadata:
+                    source: "KCT Knowledge Bank"
+                    last_updated: "2024-01-15T10:30:00Z"
+                error: null
+                timestamp: "2024-01-15T10:30:00Z"
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /combinations/validate:
+    post:
+      summary: Validate outfit combinations with comprehensive analysis
+      description: |
+        Performs comprehensive validation of outfit combinations using advanced
+        fashion rules engine with confidence scoring and detailed feedback.
+      tags:
+        - Validation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CombinationValidationRequest'
+            example:
+              suit_color: "navy"
+              suit_fabric: "wool"
+              shirt_color: "white"
+              shirt_pattern: "solid"
+              tie_color: "burgundy"
+              tie_pattern: "solid"
+              occasion: "business_formal"
+              season: "fall"
+              venue_type: "office"
+              customer_profile: "classic_conservative"
+              formality_required: 7
+      responses:
+        '200':
+          description: Validation completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  overall_score: 92
+                  confidence: 0.95
+                  validation_passed: true
+                  category_scores:
+                    color_harmony: 0.95
+                    formality_matching: 0.90
+                    seasonal_appropriateness: 0.88
+                    style_consistency: 0.92
+                  rule_results:
+                    - rule_id: "CH001"
+                      rule_name: "Color Harmony"
+                      category: "color_harmony"
+                      passed: true
+                      confidence: 0.95
+                      severity: "success"
+                      message: "Excellent color harmony"
+                      reasoning: "Navy, white, and burgundy create classic sophisticated combination"
+                      recommendation: "Perfect color choice"
+                      score_impact: 5
+                  violations: []
+                  warnings: []
+                  suggestions: []
+                  alternatives: []
+                  improvement_suggestions: []
+                  metadata:
+                    rules_processed: 15
+                    processing_time_ms: 245
+                    knowledge_bank_version: "2.0.0"
+                    validated_at: "2024-01-15T10:30:00Z"
+                error: null
+                timestamp: "2024-01-15T10:30:00Z"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /recommendations:
+    post:
+      summary: AI-powered outfit recommendations
+      description: |
+        Generates personalized outfit recommendations based on customer profile,
+        occasion, and preferences using advanced AI algorithms.
+      tags:
+        - Recommendations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationRequest'
+            example:
+              suit_color: "navy"
+              customer_profile: "modern_adventurous"
+              occasion: "cocktail"
+              season: "spring"
+              formality_level: 6
+              age: 32
+              occupation: "marketing_executive"
+      responses:
+        '200':
+          description: Recommendations generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  primary_recommendations:
+                    - suit_color: "navy"
+                      shirt_color: "light_blue"
+                      tie_color: "coral"
+                      rank: 1
+                      ai_confidence: 0.95
+                      personalization_score: 0.92
+                      trending_factor: 0.88
+                      reasoning: "Perfect balance of classic and contemporary for modern adventurous profile"
+                  alternative_options:
+                    - suit_color: "navy"
+                      shirt_color: "white"
+                      tie_color: "forest_green"
+                      confidence: 0.87
+                      reasoning: "Alternative with nature-inspired accent color"
+                  style_insights:
+                    detected_profile: "modern_adventurous"
+                    confidence: 0.90
+                    key_characteristics:
+                      color_preferences: ["contemporary_colors", "accent_experimentation"]
+                      pattern_tolerance: "moderate"
+                      adventure_level: "medium"
+                    personalization_factors:
+                      - "Color preferences"
+                      - "Occasion requirements"
+                      - "Age-appropriate styling"
+                  upsell_opportunities:
+                    - "Premium silk tie upgrade"
+                    - "Seasonal pocket square addition"
+                  seasonal_highlights:
+                    season: "spring"
+                    trending_colors: ["sage_green", "coral", "powder_blue"]
+                    seasonal_tips:
+                      - "Perfect for spring events"
+                      - "Seasonal color palette optimized"
+                  metadata:
+                    generated_at: "2024-01-15T10:30:00Z"
+                    algorithm_version: "2.0.0"
+                    knowledge_bank_version: "2.0.0"
+                    total_combinations_analyzed: 1247
+                error: null
+                timestamp: "2024-01-15T10:30:00Z"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /trending:
+    get:
+      summary: Real-time trending combinations and analytics
+      description: |
+        Retrieves current trending combinations, color trends, and fashion analytics
+        with momentum indicators and social proof data.
+      tags:
+        - Trends
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of trending items to return
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 10
+        - name: timeframe
+          in: query
+          description: Timeframe for trend analysis
+          schema:
+            type: string
+            enum: [7d, 30d, 90d, 1y]
+            default: 30d
+      responses:
+        '200':
+          description: Trending data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  trending_combinations:
+                    - rank: 1
+                      combination: "navy suit, white shirt, burgundy tie"
+                      conversion_rate: "12.5%"
+                      trend_score: 0.95
+                      momentum: "rising"
+                      social_mentions: 342
+                      celebrity_endorsements: ["red_carpet", "fashion_week"]
+                  color_trends:
+                    rising: ["sage_green", "burgundy", "midnight_blue"]
+                    stable: ["navy", "charcoal", "light_grey"]
+                    declining: ["tan", "light_blue"]
+                  seasonal_trends:
+                    spring_champions:
+                      - "sage_green suit combinations"
+                      - "coral accent pieces"
+                  occasion_popularity:
+                    wedding_groom: 0.85
+                    business_professional: 0.75
+                    cocktail: 0.70
+                  demographic_insights:
+                    age_25_35: "prefer contemporary colors"
+                    age_35_45: "stick to classics with modern touches"
+                  analytics:
+                    timeframe: "30d"
+                    data_points_analyzed: 15847
+                    confidence_level: 0.92
+                    last_updated: "2024-01-15T10:30:00Z"
+                  metadata:
+                    source: "KCT Fashion Intelligence Platform"
+                    algorithm: "Trend Analysis Engine v2.0"
+                    update_frequency: "Real-time"
+                error: null
+                timestamp: "2024-01-15T10:30:00Z"
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /venues/{type}/recommendations:
+    get:
+      summary: Venue-specific style recommendations
+      description: |
+        Provides styling recommendations tailored to specific venue types
+        with formality guidelines and complete outfit suggestions.
+      tags:
+        - Venues
+      parameters:
+        - name: type
+          in: path
+          required: true
+          description: Venue type
+          schema:
+            type: string
+            enum: [beach, garden, church, ballroom, country_club, rooftop, yacht, gallery]
+            example: ballroom
+        - name: season
+          in: query
+          description: Season for seasonal adjustments
+          schema:
+            $ref: '#/components/schemas/Season'
+        - name: formality
+          in: query
+          description: Required formality level
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10
+      responses:
+        '200':
+          description: Venue recommendations retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  venue_type: "ballroom"
+                  recommendations:
+                    recommended_colors: ["black", "midnight_blue", "charcoal"]
+                    fabric_suggestions: ["silk", "fine_wool", "tuxedo_cloth"]
+                    formality_range: [8, 10]
+                    seasonal_notes: "Formal evening wear required"
+                    avoid: ["casual_colors", "daytime_styling"]
+                  seasonal_adjustments:
+                    season: "winter"
+                    specific_tips: "Optimized for winter ballroom events"
+                  formality_guidance:
+                    recommended_range: [8, 10]
+                    current_formality: "not_specified"
+                  complete_outfits:
+                    - suit_color: "black"
+                      shirt_color: "white"
+                      tie_color: "black_bow_tie"
+                      formality_score: 10
+                      confidence: 0.98
+                      reasoning: "Perfect black tie ensemble for formal ballroom"
+                  metadata:
+                    venue_database_version: "2.0.0"
+                    last_updated: "2024-01-15T10:30:00Z"
+                error: null
+                timestamp: "2024-01-15T10:30:00Z"
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /styles/{profile}:
+    get:
+      summary: Get style profile recommendations
+      description: |
+        Retrieves detailed information about a specific style profile including
+        characteristics, preferences, and personalized recommendations.
+      tags:
+        - Style Profiles
+      parameters:
+        - name: profile
+          in: path
+          required: true
+          description: Style profile identifier
+          schema:
+            $ref: '#/components/schemas/CustomerProfile'
+      responses:
+        '200':
+          description: Style profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  percentage_of_customers: "28%"
+                  demographics:
+                    age_range: "25-40"
+                    occupations: ["business_professional", "consultant", "lawyer"]
+                    shopping_behavior: "thoughtful_research_driven"
+                    decision_time: "moderate"
+                  characteristics:
+                    color_preferences: ["navy", "charcoal", "white", "light_blue"]
+                    pattern_tolerance: "low"
+                    adventure_level: "conservative"
+                    brand_loyalty: "high"
+                    price_sensitivity: "low"
+                  recommended_combinations:
+                    - combo: "navy suit, white shirt, burgundy tie"
+                      confidence: 0.95
+                  styling_tips:
+                    - "Stick to timeless color combinations"
+                    - "Invest in quality basics first"
+                    - "Navy and charcoal are your foundation colors"
+                  color_palette:
+                    suits: ["navy", "charcoal", "light_grey"]
+                    shirts: ["white", "light_blue"]
+                    ties: ["burgundy", "navy", "silver"]
+                  shopping_guide:
+                    essential: "navy_suit_white_shirt_silk_tie"
+                    premium: "charcoal_suit_luxury_accessories"
+                    luxury: "bespoke_tailoring_premium_fabrics"
+                  personalization_score: 0.92
+                  metadata:
+                    profile_type: "classic_conservative"
+                    confidence: 0.88
+                    last_updated: "2024-01-15T10:30:00Z"
+                error: null
+                timestamp: "2024-01-15T10:30:00Z"
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /rules/check:
+    post:
+      summary: Validate against specific fashion rules
+      description: |
+        Validates outfit combinations against specific fashion rules with
+        detailed violation analysis and improvement suggestions.
+      tags:
+        - Validation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RulesCheckRequest'
+            example:
+              combination:
+                suit_color: "brown"
+                shirt_color: "black"
+                tie_color: "brown"
+              context:
+                occasion: "business_formal"
+                season: "winter"
+                formality_required: 7
+      responses:
+        '200':
+          description: Rules validation completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  validation_passed: false
+                  overall_score: 45
+                  rule_checks:
+                    color_clashing:
+                      valid: false
+                      issue: "Brown and black create muddy appearance"
+                      severity: "high"
+                    formality_mismatch:
+                      valid: true
+                      issue: null
+                      severity: null
+                  violations:
+                    - rule: "color_clashing"
+                      issue: "Brown and black create muddy appearance"
+                      severity: "high"
+                  recommendations:
+                    - "Choose white or light blue shirt instead of black"
+                    - "Consider navy tie as alternative to brown"
+                  metadata:
+                    rules_engine_version: "2.0.0"
+                    total_rules_checked: 8
+                    validated_at: "2024-01-15T10:30:00Z"
+                error: null
+                timestamp: "2024-01-15T10:30:00Z"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Returns the health status of the API and its dependencies
+      tags:
+        - System
+      security: []
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+                  version:
+                    type: string
+                    example: "2.0.0"
+                  dependencies:
+                    type: object
+                    properties:
+                      redis:
+                        type: string
+                        example: "connected"
+                      knowledge_bank:
+                        type: string
+                        example: "loaded"
+        '503':
+          description: Service is unhealthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "unhealthy"
+                  error:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication
+
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates if the request was successful
+        data:
+          type: object
+          description: Response data payload
+          nullable: true
+        error:
+          type: string
+          description: Error message if request failed
+          nullable: true
+        timestamp:
+          type: string
+          format: date-time
+          description: Response timestamp
+      required:
+        - success
+        - timestamp
+
+    CombinationValidationRequest:
+      type: object
+      required:
+        - suit_color
+        - shirt_color
+        - tie_color
+      properties:
+        suit_color:
+          $ref: '#/components/schemas/SuitColor'
+        suit_fabric:
+          type: string
+          enum: [wool, cotton, linen, silk, velvet, tweed, cashmere]
+          example: wool
+        suit_pattern:
+          type: string
+          enum: [solid, pinstripe, chalk_stripe, check, plaid]
+          example: solid
+        shirt_color:
+          $ref: '#/components/schemas/ShirtColor'
+        shirt_fabric:
+          type: string
+          enum: [cotton, silk, linen, poplin, oxford, chambray]
+          example: cotton
+        shirt_pattern:
+          type: string
+          enum: [solid, stripe, check, dot, pattern]
+          example: solid
+        tie_color:
+          $ref: '#/components/schemas/TieColor'
+        tie_fabric:
+          type: string
+          enum: [silk, wool, knit, linen, cotton]
+          example: silk
+        tie_pattern:
+          type: string
+          enum: [solid, stripe, dot, paisley, geometric, floral]
+          example: solid
+        occasion:
+          $ref: '#/components/schemas/Occasion'
+        season:
+          $ref: '#/components/schemas/Season'
+        venue_type:
+          type: string
+          enum: [office, church, beach, garden, ballroom, rooftop, yacht, gallery]
+        customer_profile:
+          $ref: '#/components/schemas/CustomerProfile'
+        formality_required:
+          type: integer
+          minimum: 1
+          maximum: 10
+          description: Required formality level (1-10 scale)
+        accessories:
+          type: object
+          properties:
+            pocket_square:
+              type: string
+            watch_type:
+              type: string
+              enum: [dress, sport, smart, none]
+            shoes:
+              type: string
+              enum: [oxford, derby, loafer, monk_strap, boot]
+            belt:
+              type: string
+              enum: [leather, fabric, none]
+
+    RecommendationRequest:
+      type: object
+      required:
+        - suit_color
+      properties:
+        suit_color:
+          $ref: '#/components/schemas/SuitColor'
+        customer_profile:
+          $ref: '#/components/schemas/CustomerProfile'
+        occasion:
+          $ref: '#/components/schemas/Occasion'
+        season:
+          $ref: '#/components/schemas/Season'
+        formality_level:
+          type: integer
+          minimum: 1
+          maximum: 10
+        age:
+          type: integer
+          minimum: 18
+          maximum: 100
+        occupation:
+          type: string
+          example: marketing_executive
+
+    RulesCheckRequest:
+      type: object
+      required:
+        - combination
+      properties:
+        combination:
+          type: object
+          required:
+            - suit_color
+            - shirt_color
+          properties:
+            suit_color:
+              $ref: '#/components/schemas/SuitColor'
+            shirt_color:
+              $ref: '#/components/schemas/ShirtColor'
+            tie_color:
+              $ref: '#/components/schemas/TieColor'
+            suit_pattern:
+              type: string
+            shirt_pattern:
+              type: string
+            tie_pattern:
+              type: string
+        context:
+          type: object
+          properties:
+            occasion:
+              $ref: '#/components/schemas/Occasion'
+            season:
+              $ref: '#/components/schemas/Season'
+            formality_required:
+              type: integer
+              minimum: 1
+              maximum: 10
+            venue_type:
+              type: string
+
+    SuitColor:
+      type: string
+      enum:
+        - navy
+        - charcoal
+        - light_grey
+        - burgundy
+        - black
+        - tan
+        - light_blue
+        - sage_green
+        - hunter_green
+        - powder_blue
+        - midnight_blue
+        - white
+        - brown
+      example: navy
+
+    ShirtColor:
+      type: string
+      enum:
+        - white
+        - light_blue
+        - pink
+        - lavender
+        - cream
+        - light_grey
+        - black
+      example: white
+
+    TieColor:
+      type: string
+      enum:
+        - burgundy
+        - silver
+        - gold
+        - coral
+        - forest_green
+        - navy
+        - purple
+        - black
+        - brown
+        - red
+        - blue
+      example: burgundy
+
+    Season:
+      type: string
+      enum: [spring, summer, fall, winter]
+      example: fall
+
+    Occasion:
+      type: string
+      enum:
+        - wedding_groom
+        - wedding_guest
+        - business_professional
+        - business_casual
+        - special_event
+        - cocktail
+        - black_tie
+        - black_tie_optional
+        - white_tie
+        - casual_friday
+      example: business_professional
+
+    CustomerProfile:
+      type: string
+      enum:
+        - classic_conservative
+        - modern_adventurous
+        - practical_value_seeker
+        - occasion_driven
+        - luxury_connoisseur
+      example: classic_conservative
+
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            success: false
+            data: null
+            error: "suit_color, shirt_color, and tie_color are required"
+            timestamp: "2024-01-15T10:30:00Z"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            success: false
+            data: null
+            error: "Resource not found"
+            timestamp: "2024-01-15T10:30:00Z"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            success: false
+            data: null
+            error: "Internal server error"
+            timestamp: "2024-01-15T10:30:00Z"
+
+    Unauthorized:
+      description: Unauthorized - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            success: false
+            data: null
+            error: "Invalid or missing API key"
+            timestamp: "2024-01-15T10:30:00Z"
+
+    RateLimitExceeded:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            success: false
+            data: null
+            error: "Rate limit exceeded. Please try again later."
+            timestamp: "2024-01-15T10:30:00Z"
+
+tags:
+  - name: Colors
+    description: Color relationship and harmony analysis
+  - name: Validation
+    description: Outfit combination validation and rule checking
+  - name: Recommendations
+    description: AI-powered styling recommendations
+  - name: Trends
+    description: Fashion trends and analytics
+  - name: Venues
+    description: Venue-specific styling requirements
+  - name: Style Profiles
+    description: Customer style profile management
+  - name: System
+    description: System health and monitoring
+
+externalDocs:
+  description: Find more info about KCT API
+  url: https://docs.kctmenswear.com/api

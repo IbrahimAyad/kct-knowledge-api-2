@@ -1,0 +1,9 @@
+Colorblind_Type,Population_Percentage,Red_Green_Confusion,Blue_Yellow_Confusion,Navy_Black_Confusion,Brown_Green_Confusion,Safe_Color_Combinations,Formal_Wear_Challenge_Score
+Normal Vision,92.0,0,0,0,0,All combinations,0.0
+Protanopia (Red-blind),1.0,9,2,8,9,"Blue-Yellow, Blue-White",8.2
+Deuteranopia (Green-blind),1.1,9,2,7,9,"Blue-Yellow, Blue-White",8.5
+Tritanopia (Blue-blind),0.01,1,9,3,2,"Red-Green, Red-White",4.1
+Protanomaly (Red-weak),1.0,6,1,5,7,Blue-Yellow pairs,6.3
+Deuteranomaly (Green-weak),4.9,7,2,6,8,Blue-Yellow pairs,6.8
+Tritanomaly (Blue-weak),0.01,1,7,2,1,Red-Green pairs,3.2
+Complete Achromatopsia,0.003,10,10,10,10,High contrast only,9.8

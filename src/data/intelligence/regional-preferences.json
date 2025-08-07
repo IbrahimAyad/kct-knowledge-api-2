@@ -1,0 +1,321 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2024-01-09",
+    "description": "Regional and geographic preferences for suit combinations",
+    "coverage": "United States, Canada, UK, Australia",
+    "data_points": 523000,
+    "analysis_period": "2023-2024"
+  },
+  "united_states": {
+    "northeast": {
+      "states": ["NY", "MA", "CT", "NJ", "PA", "ME", "VT", "NH", "RI"],
+      "style_profile": {
+        "formality_index": 8.5,
+        "trend_adoption": "early",
+        "price_sensitivity": "low"
+      },
+      "top_combinations": [
+        {
+          "rank": 1,
+          "combination": "navy_suit_white_shirt_burgundy_tie",
+          "market_share": "18.3%",
+          "seasonal_variance": "low"
+        },
+        {
+          "rank": 2,
+          "combination": "charcoal_suit_light_blue_shirt_silver_tie",
+          "market_share": "15.7%",
+          "notes": "Wall Street influence"
+        },
+        {
+          "rank": 3,
+          "combination": "black_suit_black_shirt_silver_tie",
+          "market_share": "12.4%",
+          "notes": "NYC nightlife influence"
+        }
+      ],
+      "color_preferences": {
+        "suits": {
+          "navy": "34%",
+          "charcoal": "28%",
+          "black": "19%",
+          "grey": "12%",
+          "other": "7%"
+        },
+        "trending": ["burgundy_suits", "velvet_textures"]
+      },
+      "shopping_behavior": {
+        "average_order_value": 987,
+        "bundles_preferred": true,
+        "customization_rate": "34%",
+        "peak_season": "fall"
+      }
+    },
+    "south": {
+      "states": ["TX", "FL", "GA", "NC", "SC", "VA", "TN", "AL", "MS", "LA", "AR", "KY", "WV"],
+      "style_profile": {
+        "formality_index": 7.2,
+        "trend_adoption": "moderate",
+        "price_sensitivity": "medium"
+      },
+      "top_combinations": [
+        {
+          "rank": 1,
+          "combination": "navy_suit_white_shirt_navy_tie",
+          "market_share": "22.1%",
+          "notes": "Traditional preference"
+        },
+        {
+          "rank": 2,
+          "combination": "tan_suit_white_shirt_brown_tie",
+          "market_share": "16.8%",
+          "notes": "Climate appropriate"
+        },
+        {
+          "rank": 3,
+          "combination": "grey_suit_pink_shirt_navy_tie",
+          "market_share": "14.2%",
+          "notes": "Southern prep influence"
+        }
+      ],
+      "regional_variations": {
+        "texas": {
+          "unique_preferences": ["western_influenced_accessories", "bolder_colors"],
+          "average_order_value": 1123
+        },
+        "florida": {
+          "unique_preferences": ["lighter_fabrics", "tropical_colors"],
+          "seasonal_patterns": "year_round_lighter"
+        },
+        "atlanta_metro": {
+          "unique_preferences": ["fashion_forward", "hip_hop_influence"],
+          "trend_adoption": "early"
+        }
+      },
+      "climate_considerations": {
+        "fabric_preferences": ["lightweight_wool", "cotton_blends", "linen"],
+        "color_preferences": ["lighter_shades", "breathable_options"],
+        "seasonal_adjustment": "minimal"
+      }
+    },
+    "midwest": {
+      "states": ["IL", "OH", "MI", "IN", "WI", "MN", "IA", "MO", "KS", "NE", "SD", "ND"],
+      "style_profile": {
+        "formality_index": 7.0,
+        "trend_adoption": "late",
+        "price_sensitivity": "high"
+      },
+      "top_combinations": [
+        {
+          "rank": 1,
+          "combination": "navy_suit_white_shirt_red_tie",
+          "market_share": "24.3%",
+          "notes": "Classic American"
+        },
+        {
+          "rank": 2,
+          "combination": "charcoal_suit_white_shirt_blue_tie",
+          "market_share": "19.8%",
+          "notes": "Business standard"
+        },
+        {
+          "rank": 3,
+          "combination": "grey_suit_light_blue_shirt_burgundy_tie",
+          "market_share": "15.6%"
+        }
+      ],
+      "value_focus": {
+        "bundle_preference": "87%",
+        "average_items_per_order": 4.2,
+        "promotion_response": "high",
+        "loyalty_program_participation": "68%"
+      },
+      "metropolitan_differences": {
+        "chicago": {
+          "style_index": "more_formal",
+          "color_preference": "darker_tones",
+          "average_order_value": 892
+        },
+        "detroit": {
+          "style_index": "casual_friday_focus",
+          "emerging_trend": "athletic_fit_suits"
+        }
+      }
+    },
+    "west": {
+      "states": ["CA", "WA", "OR", "NV", "AZ", "CO", "UT", "ID", "MT", "WY", "NM"],
+      "style_profile": {
+        "formality_index": 6.5,
+        "trend_adoption": "innovative",
+        "price_sensitivity": "varies_widely"
+      },
+      "top_combinations": [
+        {
+          "rank": 1,
+          "combination": "sage_suit_white_shirt_no_tie",
+          "market_share": "19.7%",
+          "notes": "Tech casual influence"
+        },
+        {
+          "rank": 2,
+          "combination": "navy_suit_casual_shirt_no_tie",
+          "market_share": "17.3%",
+          "notes": "Silicon Valley style"
+        },
+        {
+          "rank": 3,
+          "combination": "charcoal_suit_black_tee",
+          "market_share": "14.8%",
+          "notes": "LA entertainment influence"
+        }
+      ],
+      "sub_regional_trends": {
+        "silicon_valley": {
+          "formality": "very_low",
+          "innovation": "high",
+          "sustainable_preference": "82%"
+        },
+        "los_angeles": {
+          "style_focus": "entertainment_industry",
+          "color_preference": "bold_statements",
+          "customization_rate": "56%"
+        },
+        "pacific_northwest": {
+          "style_focus": "outdoor_influenced",
+          "color_preference": "earth_tones",
+          "texture_preference": "natural_fibers"
+        },
+        "denver_boulder": {
+          "style_mix": "outdoor_meets_business",
+          "growing_trend": "versatile_pieces"
+        }
+      }
+    }
+  },
+  "canada": {
+    "style_profile": {
+      "similarity_to_us": "78%",
+      "unique_aspects": ["more_conservative", "weather_appropriate"],
+      "french_influence": "quebec_region"
+    },
+    "top_preferences": {
+      "toronto": {
+        "similar_to": "NYC",
+        "top_combination": "charcoal_professional",
+        "average_order_value": 823
+      },
+      "vancouver": {
+        "similar_to": "Seattle",
+        "top_combination": "navy_casual_tech",
+        "sustainability_focus": "high"
+      },
+      "montreal": {
+        "european_influence": "strong",
+        "top_combination": "black_minimalist",
+        "fashion_forward": true
+      }
+    }
+  },
+  "united_kingdom": {
+    "style_profile": {
+      "formality_index": 8.8,
+      "tradition_importance": "high",
+      "savile_row_influence": "significant"
+    },
+    "regional_differences": {
+      "london": {
+        "city_style": "very_formal",
+        "color_conservatism": "high",
+        "pattern_acceptance": "traditional"
+      },
+      "manchester": {
+        "style_evolution": "modernizing",
+        "football_influence": "significant",
+        "younger_demographic": true
+      },
+      "scotland": {
+        "unique_elements": ["tartan_accessories", "highland_formal"],
+        "color_preferences": "rich_deep_tones"
+      }
+    }
+  },
+  "australia": {
+    "style_profile": {
+      "formality_index": 6.8,
+      "climate_driven": true,
+      "casual_influence": "strong"
+    },
+    "city_preferences": {
+      "sydney": {
+        "beach_influence": "high",
+        "top_combination": "light_grey_no_tie",
+        "seasonal_inverse": true
+      },
+      "melbourne": {
+        "style_conscious": "very_high",
+        "european_influence": "moderate",
+        "color_experimentation": "high"
+      }
+    }
+  },
+  "cultural_events_impact": {
+    "regional_weddings": {
+      "southern_traditional": {
+        "colors": ["navy", "grey", "seersucker"],
+        "season_peak": "spring",
+        "outdoor_percentage": "73%"
+      },
+      "northeast_formal": {
+        "colors": ["black", "midnight_navy"],
+        "season_peak": "fall",
+        "venue_type": "ballroom"
+      },
+      "west_coast_casual": {
+        "colors": ["tan", "sage", "light_grey"],
+        "season_peak": "summer",
+        "beach_vineyard": "58%"
+      },
+      "midwest_barn": {
+        "colors": ["burgundy", "navy", "earth_tones"],
+        "season_peak": "fall",
+        "rustic_theme": "64%"
+      }
+    }
+  },
+  "shipping_preferences": {
+    "by_region": {
+      "urban_centers": {
+        "express_shipping": "42%",
+        "standard_acceptable": "58%",
+        "pickup_points": "growing"
+      },
+      "suburban": {
+        "standard_preferred": "71%",
+        "free_threshold_sensitive": true
+      },
+      "rural": {
+        "planning_ahead": "84%",
+        "bulk_orders": "common"
+      }
+    }
+  },
+  "marketing_implications": {
+    "regional_messaging": {
+      "northeast": ["professional_success", "wall_street_ready"],
+      "south": ["tradition_meets_style", "climate_smart"],
+      "midwest": ["value_quality", "american_made"],
+      "west": ["innovative_style", "sustainable_choice"]
+    },
+    "influencer_strategy": {
+      "regional_ambassadors": true,
+      "local_photography": "essential",
+      "cultural_sensitivity": "high_importance"
+    },
+    "inventory_planning": {
+      "regional_allocation": true,
+      "seasonal_adjustment": "by_climate",
+      "trend_testing": "start_west_coast"
+    }
+  }
+}

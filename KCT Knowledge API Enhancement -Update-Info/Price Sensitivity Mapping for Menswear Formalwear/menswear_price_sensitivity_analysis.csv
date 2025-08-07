@@ -1,0 +1,7 @@
+Price_Range,Customer_Behavior,Comparison_Shopping_Intensity,Bundle_Effectiveness,Key_Motivators
+$100-200,"Highly price sensitive, heavy comparison shopping, entry-level buyers",Very High,Low-Moderate,"Price, basic quality, occasion-driven"
+$200-350,"Value shoppers, moderate comparison shopping, quality-conscious",High,High,"Value for money, versatility, brand reputation"
+$350-500,"Quality-focused, selective comparison shopping, brand-aware",Moderate,High,"Quality, fit, professional image"
+$500-1000,"Premium buyers, limited comparison shopping, feature-driven",Low,Moderate,"Craftsmanship, exclusivity, prestige"
+$1000-2000,"Luxury buyers, minimal price comparison, prestige-focused",Very Low,Low,"Luxury materials, bespoke features, status"
+$2000+,"Ultra-luxury, status-driven, brand loyalty dominates",Minimal,Very Low,"Heritage brands, ultimate exclusivity"

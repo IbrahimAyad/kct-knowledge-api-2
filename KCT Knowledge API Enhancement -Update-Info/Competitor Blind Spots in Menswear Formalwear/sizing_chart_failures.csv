@@ -1,0 +1,11 @@
+Size_Chart_Issue,Industry_Standard_Problem,Customer_Frustration_Level,Alteration_Cost_Impact,Return_Rate_Impact
+Shoulder slope variations not accounted for,"Uses average slope, ignores square vs sloped shoulders",9,8,9
+Drop ratio assumptions (chest-to-waist difference),Assumes 6-inch drop for all body types,8,6,7
+Arm length independent of jacket size,"Arm length tied to chest size, not actual arm length",9,7,8
+Neck vs chest size misalignment in shirts,"Shirt sizing based on neck only, ignores chest variations",8,5,7
+Athletic build accommodations,Standard cuts don't accommodate muscular builds,10,9,10
+Height-based jacket length oversimplification,"Height ranges too broad, ignores torso/leg ratios",7,6,6
+Trouser rise and leg shape variations,One rise measurement doesn't fit all body shapes,8,7,8
+International size conversion inaccuracies,Generic conversions ignore brand-specific variations,9,8,8
+Fabric stretch/structure not factored in,Doesn't account for fabric behavior over time,7,5,6
+Seasonal weight impact on fit ignored,Same measurements year-round ignore seasonal changes,6,4,5

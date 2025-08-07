@@ -1,0 +1,21 @@
+Term_Category,Technical_Term,Customer_Usage,AI_Confusion_Level,Training_Gap_Severity
+Fit Descriptors,Drop,Waist suppression,8,7
+Fit Descriptors,Suppression,Fitted through the body,9,8
+Fit Descriptors,Darting,Chest shaping,7,6
+Fit Descriptors,Drape,How it hangs,8,7
+Construction Terms,Canvassed,Structured jacket,9,9
+Construction Terms,Fused,Stiff construction,7,6
+Construction Terms,Floating chest piece,Chest piece construction,10,10
+Construction Terms,Quarter-lined,Lining type,8,7
+Fabric Descriptions,Hand,Fabric feel,7,6
+Fabric Descriptions,Drape,How fabric falls,8,7
+Fabric Descriptions,Weight (in fabric),Fabric thickness,6,5
+Fabric Descriptions,Nap direction,Fabric grain direction,9,8
+Style Classifications,Sack suit,Traditional American suit,8,7
+Style Classifications,Continental fit,European styling,9,8
+Style Classifications,American cut,Classic American fit,7,6
+Style Classifications,British tailoring,English tailoring style,8,7
+Occasion Terms,Black-tie optional,Semi-formal evening,6,5
+Occasion Terms,Cocktail attire,Dressy casual,7,6
+Occasion Terms,Business formal,Formal business,5,4
+Occasion Terms,Smart casual,Polished casual,7,6

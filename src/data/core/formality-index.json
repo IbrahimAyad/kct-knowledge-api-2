@@ -1,0 +1,309 @@
+{
+  "version": "1.0",
+  "last_updated": "2024-01-09",
+  "formality_scale": {
+    "description": "1-10 scale where 10 is most formal (white tie) and 1 is most casual",
+    "reference_points": {
+      "10": "white_tie",
+      "9": "black_tie",
+      "8": "black_tie_optional",
+      "7": "formal_business",
+      "6": "cocktail",
+      "5": "business_casual",
+      "4": "smart_casual",
+      "3": "casual_friday",
+      "2": "weekend_casual",
+      "1": "beach_casual"
+    }
+  },
+  "suit_formality": {
+    "black": {
+      "base_formality": 9,
+      "fabric_modifiers": {
+        "velvet": "+1",
+        "standard_wool": "0",
+        "textured": "-1"
+      },
+      "event_appropriateness": {
+        "evening": "perfect",
+        "daytime": "too_formal",
+        "outdoor": "usually_too_formal"
+      }
+    },
+    "midnight_blue": {
+      "base_formality": 9,
+      "advantages": "photographs_better_than_black",
+      "tuxedo_appropriate": true
+    },
+    "charcoal": {
+      "base_formality": 8,
+      "versatility": "high",
+      "appropriate_range": "business_to_black_tie_optional"
+    },
+    "navy": {
+      "base_formality": 7,
+      "versatility": "highest",
+      "appropriate_range": "business_casual_to_formal",
+      "modifier_range": "-2_to_+2_based_on_styling"
+    },
+    "dark_grey": {
+      "base_formality": 7,
+      "similar_to": "navy",
+      "slightly_more": "conservative"
+    },
+    "burgundy": {
+      "base_formality": 6,
+      "statement_level": "high",
+      "best_for": "cocktail_to_formal",
+      "seasonal_boost": "fall_winter"
+    },
+    "light_grey": {
+      "base_formality": 6,
+      "daytime_appropriate": true,
+      "season_dependent": "spring_summer_best"
+    },
+    "hunter_green": {
+      "base_formality": 6,
+      "uniqueness": "high",
+      "trending": "up"
+    },
+    "brown": {
+      "base_formality": 5,
+      "context_dependent": true,
+      "never": "black_tie_events"
+    },
+    "tan": {
+      "base_formality": 4,
+      "seasonal": "spring_summer",
+      "max_formality": "cocktail"
+    },
+    "light_blue": {
+      "base_formality": 4,
+      "fresh_factor": "high",
+      "best_for": "daytime_outdoor"
+    },
+    "white": {
+      "base_formality": 3,
+      "very_specific": "beach_tropical_only",
+      "controversial": true
+    }
+  },
+  "shirt_formality": {
+    "white": {
+      "base_formality": 10,
+      "universal": true,
+      "collar_impacts": {
+        "spread": "+0",
+        "point": "+0",
+        "button_down": "-2",
+        "wing": "+1_for_tuxedo"
+      }
+    },
+    "light_blue": {
+      "base_formality": 7,
+      "versatility": "high",
+      "never_with": "tuxedo"
+    },
+    "cream_ivory": {
+      "base_formality": 6,
+      "warmth": "adds_softness",
+      "seasonal": "fall_winter_preferred"
+    },
+    "pink": {
+      "base_formality": 5,
+      "shade_dependent": "lighter_more_formal"
+    },
+    "lavender": {
+      "base_formality": 5,
+      "modern": true,
+      "age_appropriate": "younger_demographics"
+    },
+    "patterned": {
+      "base_formality": 4,
+      "pattern_impacts": {
+        "micro_pattern": "-1",
+        "stripes": "-2",
+        "bold_pattern": "-3"
+      }
+    },
+    "black": {
+      "base_formality": 6,
+      "context_specific": "evening_only",
+      "modern_formal": true
+    }
+  },
+  "tie_formality": {
+    "bow_tie": {
+      "black": {
+        "formality": 10,
+        "required_for": "black_tie_white_tie"
+      },
+      "colored": {
+        "formality": 6,
+        "playful": true
+      }
+    },
+    "solid_silk": {
+      "black": {
+        "formality": 9
+      },
+      "silver": {
+        "formality": 8
+      },
+      "navy": {
+        "formality": 7
+      },
+      "burgundy": {
+        "formality": 7
+      },
+      "other_colors": {
+        "formality": 6
+      }
+    },
+    "patterned": {
+      "subtle_pattern": {
+        "formality": 6,
+        "examples": ["pin_dot", "micro_paisley"]
+      },
+      "regimental_stripe": {
+        "formality": 5,
+        "traditional": true
+      },
+      "bold_pattern": {
+        "formality": 4,
+        "examples": ["large_paisley", "novelty"]
+      }
+    },
+    "textured": {
+      "grenadine": {
+        "formality": 7,
+        "sophisticated": true
+      },
+      "knit": {
+        "formality": 4,
+        "casual_leaning": true
+      }
+    },
+    "no_tie": {
+      "formality": 3,
+      "only_acceptable": "casual_events_or_specific_dress_codes"
+    }
+  },
+  "fabric_formality_modifiers": {
+    "increases_formality": {
+      "velvet": "+2",
+      "silk": "+1",
+      "fine_wool": "+1",
+      "satin_lapels": "+2"
+    },
+    "decreases_formality": {
+      "linen": "-2",
+      "cotton": "-2",
+      "corduroy": "-3",
+      "tweed": "-1",
+      "textured_weaves": "-1"
+    },
+    "neutral": {
+      "standard_wool": "0",
+      "polyester_blend": "0"
+    }
+  },
+  "accessory_formality": {
+    "pocket_square": {
+      "white_linen": {
+        "formality_boost": "+1",
+        "always_appropriate": true
+      },
+      "silk_patterned": {
+        "formality_boost": "+0.5",
+        "adds": "personality"
+      }
+    },
+    "shoes": {
+      "patent_leather": {
+        "formality": 10,
+        "required_for": "black_tie_up"
+      },
+      "black_oxford": {
+        "formality": 8
+      },
+      "brown_leather": {
+        "formality": 5,
+        "never_with": "black_suit"
+      },
+      "loafers": {
+        "formality": 3
+      }
+    },
+    "watches": {
+      "dress_watch": {
+        "formality_impact": "+1"
+      },
+      "no_watch": {
+        "formality_impact": "0"
+      },
+      "smart_watch": {
+        "formality_impact": "-2"
+      }
+    }
+  },
+  "formality_combinations": {
+    "maximum_formal_10": {
+      "suit": "black_tuxedo_or_tailcoat",
+      "shirt": "white_wing_collar",
+      "tie": "white_bow_tie",
+      "accessories": "white_vest_white_gloves"
+    },
+    "black_tie_9": {
+      "suit": "black_or_midnight_blue_tuxedo",
+      "shirt": "white_pleated",
+      "tie": "black_bow_tie",
+      "accessories": "cummerbund_or_vest"
+    },
+    "business_formal_7": {
+      "suit": "navy_or_charcoal",
+      "shirt": "white_or_light_blue",
+      "tie": "conservative_silk",
+      "accessories": "minimal"
+    },
+    "cocktail_6": {
+      "suit": "any_except_black",
+      "shirt": "some_color_acceptable",
+      "tie": "personality_allowed",
+      "accessories": "pocket_square_encouraged"
+    },
+    "smart_casual_4": {
+      "suit": "lighter_colors_ok",
+      "shirt": "patterns_acceptable",
+      "tie": "optional",
+      "accessories": "more_casual"
+    }
+  },
+  "ai_formality_calculator": {
+    "formula": "base_suit_formality + shirt_modifier + tie_modifier + fabric_modifier + accessory_modifiers",
+    "rules": [
+      "never_exceed_event_formality",
+      "when_in_doubt_go_slightly_more_formal",
+      "consider_time_of_day",
+      "factor_in_venue"
+    ],
+    "response_template": "This combination scores {total}/10 on formality, making it perfect for {event_types}."
+  },
+  "common_formality_mistakes": {
+    "overdressed": [
+      "tuxedo_at_cocktail_party",
+      "black_suit_daytime_wedding",
+      "white_tie_when_black_tie"
+    ],
+    "underdressed": [
+      "no_tie_at_formal_wedding",
+      "brown_suit_at_black_tie_optional",
+      "casual_shoes_with_formal_suit"
+    ],
+    "mismatched_formality": [
+      "casual_tie_with_formal_suit",
+      "tennis_shoes_with_suit",
+      "backpack_with_tuxedo"
+    ]
+  }
+}

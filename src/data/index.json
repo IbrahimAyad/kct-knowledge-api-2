@@ -1,0 +1,37 @@
+{
+  "version": "1.0.0",
+  "created": "2025-07-08T18:19:36.656Z",
+  "description": "KCT Menswear Knowledge Bank Data",
+  "files": {
+    "core": [
+      "color-relationships.json",
+      "fabric-seasonality.json",
+      "formality-index.json",
+      "never-combine-rules.json",
+      "venue-compatibility.json"
+    ],
+    "training": [
+      "customer-conversations.json",
+      "style-profiles.json",
+      "successful-upsells.json"
+    ],
+    "intelligence": [
+      "age-demographics.json",
+      "cart-abandonment.json",
+      "conversion-rates.json",
+      "regional-preferences.json",
+      "seasonal-champions.json",
+      "top-10-all-time.json",
+      "trending-now.json"
+    ],
+    "visual": [
+      "color-hex-mapping.json",
+      "instagram-winners.json",
+      "texture-compatibility.json"
+    ],
+    "validation": [
+      "combination-validator.json",
+      "edge-cases.json"
+    ]
+  }
+}

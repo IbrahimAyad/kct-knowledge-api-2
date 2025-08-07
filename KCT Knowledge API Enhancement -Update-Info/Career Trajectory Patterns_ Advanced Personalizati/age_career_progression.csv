@@ -1,0 +1,9 @@
+Age_Range,Typical_Role_Level,Wardrobe_Budget_Percentage,Style_Confidence_Score,Brand_Loyalty,Custom_Tailoring_Usage
+22-27,Analyst/Associate,5,60,40,10
+28-32,Senior Analyst,6,70,50,25
+33-37,Manager,7,75,60,40
+38-42,Senior Manager,8,80,70,60
+43-47,Director,9,85,80,75
+48-52,VP,10,90,85,85
+53-57,SVP,11,92,90,90
+58+,C-Suite,12,95,95,95
