@@ -215,9 +215,10 @@ const initializeServices = async () => {
     logger.info('🔄 Initializing Chat services (Phase 1)...');
     await chatController.initialize();
     
-    logger.info('🔄 Initializing Voice services...');
-    const { voiceService } = await import("./services/voice-service");
-    await voiceService.initialize();
+    // Voice services temporarily disabled for production deployment
+    // logger.info('🔄 Initializing Voice services...');
+    // const { voiceService } = await import("./services/voice-service");
+    // await voiceService.initialize();
     
     servicesInitialized = true;
     logger.info('✅ All services initialized successfully');
@@ -995,12 +996,12 @@ app.get("/api/v3/chat/health", async (req, res) => {
 });
 
 // ===== VOICE API ENDPOINTS =====
-
-// Import voice routes
-import voiceRoutes from "./routes/voice-routes";
-
-// Mount voice routes
-app.use("/api/v3/voice", voiceRoutes);
+// Voice routes temporarily disabled for production deployment
+// // Import voice routes
+// import voiceRoutes from "./routes/voice-routes";
+// 
+// // Mount voice routes
+// app.use("/api/v3/voice", voiceRoutes);
 
 // ===== PHASE 3 ADVANCED PERSONALIZATION API ENDPOINTS =====
 

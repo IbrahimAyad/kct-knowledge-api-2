@@ -50,7 +50,9 @@
     "dist",
     "**/*.test.ts",
     "**/*.spec.ts",
-    "src/tests/**/*"
+    "src/tests/**/*",
+    "src/services/voice-service.ts",
+    "src/routes/voice-routes.ts"
   ],
   "ts-node": {
     "require": ["tsconfig-paths/register"]
