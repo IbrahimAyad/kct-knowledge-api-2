@@ -17,22 +17,31 @@ class DatabaseService {
     const databaseType = process.env.DATABASE_TYPE as 'postgresql' | 'sqlite' || 
       (databaseUrl.startsWith('postgres') ? 'postgresql' : 'sqlite');
     const databaseEnabled = process.env.DATABASE_ENABLED !== 'false';
+    
+    // Debug logging
+    logger.info(`🔍 Database config: type=${databaseType}, url=${databaseUrl ? 'present' : 'missing'}, enabled=${databaseEnabled}`);
 
     if (!databaseEnabled) {
       logger.info('📊 Database is disabled (DATABASE_ENABLED=false)');
       return;
     }
 
-    if (databaseType === 'postgresql' && databaseUrl) {
-      await this.initializePostgreSQL(databaseUrl);
-    } else if (databaseType === 'sqlite') {
-      try {
+    try {
+      if (databaseType === 'postgresql' && databaseUrl) {
+        logger.info('🐘 Attempting PostgreSQL connection...');
+        await this.initializePostgreSQL(databaseUrl);
+      } else if (databaseType === 'sqlite') {
+        logger.info('💿 Attempting SQLite connection...');
         await this.initializeSQLite();
-      } catch (error) {
-        logger.warn('⚠️ SQLite initialization failed, continuing without database:', error);
-        // Don't throw - allow app to run without database
+      }
+    } catch (error) {
+      logger.error('❌ Database initialization failed:', error);
+      // For production, continue without database rather than crash
+      if (process.env.NODE_ENV === 'production') {
+        logger.warn('⚠️ Continuing without database in production mode');
         return;
       }
+      throw error;
     }
 
     if (this.config) {
