@@ -3,7 +3,7 @@
  * Sets up API routes for testing purposes
  */
 
-import { Express, Router } from 'express';
+import { Express, Router, Request, Response, NextFunction } from 'express';
 import { customerPsychologyService } from '../../services/customer-psychology-service';
 import { careerIntelligenceService } from '../../services/career-intelligence-service';
 import { venueIntelligenceService } from '../../services/venue-intelligence-service';
@@ -17,7 +17,7 @@ export async function setupIntelligenceRoutes(app: Express): Promise<void> {
   const router = Router();
 
   // Validation middleware
-  const handleValidationErrors = (req: any, res: any, next: any) => {
+  const handleValidationErrors = (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -38,7 +38,7 @@ export async function setupIntelligenceRoutes(app: Express): Promise<void> {
       body('page_views').isNumeric().withMessage('Page views must be a number'),
       handleValidationErrors
     ],
-    async (req, res, next) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const result = await customerPsychologyService.analyzeDecisionFatigue(req.body);
         res.json({
@@ -56,7 +56,7 @@ export async function setupIntelligenceRoutes(app: Express): Promise<void> {
       param('customerId').notEmpty().withMessage('Customer ID is required'),
       handleValidationErrors
     ],
-    async (req, res, next) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const result = await customerPsychologyService.getCustomerProfile(req.params.customerId);
         res.json({
@@ -75,7 +75,7 @@ export async function setupIntelligenceRoutes(app: Express): Promise<void> {
       body('context').isObject().withMessage('Context must be an object'),
       handleValidationErrors
     ],
-    async (req, res, next) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const result = await customerPsychologyService.getPersonalizationRecommendations(
           req.body.customer_id,
@@ -102,7 +102,7 @@ export async function setupIntelligenceRoutes(app: Express): Promise<void> {
       body('recent_behaviors').isArray().withMessage('Recent behaviors must be an array'),
       handleValidationErrors
     ],
-    async (req, res, next) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const result = await careerIntelligenceService.analyzeCareerTrajectory(req.body);
         res.json({
@@ -121,7 +121,7 @@ export async function setupIntelligenceRoutes(app: Express): Promise<void> {
       param('industry').notEmpty().withMessage('Industry is required'),
       handleValidationErrors
     ],
-    async (req, res, next) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const result = await careerIntelligenceService.getCareerStagePreferences(
           req.params.stage as any,
@@ -143,7 +143,7 @@ export async function setupIntelligenceRoutes(app: Express): Promise<void> {
       param('roleLevel').notEmpty().withMessage('Role level is required'),
       handleValidationErrors
     ],
-    async (req, res, next) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const result = await careerIntelligenceService.getIndustryRecommendations(
           req.params.industry,
@@ -165,7 +165,7 @@ export async function setupIntelligenceRoutes(app: Express): Promise<void> {
       body('current_trajectory').isObject().withMessage('Current trajectory must be an object'),
       handleValidationErrors
     ],
-    async (req, res, next) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const result = await careerIntelligenceService.optimizeWardrobeTiming(
           req.body.customer_id,
@@ -189,7 +189,7 @@ export async function setupIntelligenceRoutes(app: Express): Promise<void> {
       body('season').notEmpty().withMessage('Season is required'),
       handleValidationErrors
     ],
-    async (req, res, next) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const result = await venueIntelligenceService.optimizeForVenue(req.body);
         res.json({
@@ -207,7 +207,7 @@ export async function setupIntelligenceRoutes(app: Express): Promise<void> {
       param('venueType').notEmpty().withMessage('Venue type is required'),
       handleValidationErrors
     ],
-    async (req, res, next) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const result = await venueIntelligenceService.getVenueIntelligence(req.params.venueType);
         res.json({
@@ -226,7 +226,7 @@ export async function setupIntelligenceRoutes(app: Express): Promise<void> {
       body('artificial_light').notEmpty().withMessage('Artificial light information is required'),
       handleValidationErrors
     ],
-    async (req, res, next) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const result = await venueIntelligenceService.analyzeLightingConditions(req.body);
         res.json({
@@ -251,7 +251,7 @@ export async function setupIntelligenceRoutes(app: Express): Promise<void> {
       body('sensitivity_level').notEmpty().withMessage('Sensitivity level is required'),
       handleValidationErrors
     ],
-    async (req, res, next) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const result = await culturalAdaptationService.adaptRecommendations(req.body);
         res.json({
@@ -269,7 +269,7 @@ export async function setupIntelligenceRoutes(app: Express): Promise<void> {
       param('region').notEmpty().withMessage('Region is required'),
       handleValidationErrors
     ],
-    async (req, res, next) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const result = await culturalAdaptationService.getCulturalNuances(req.params.region);
         res.json({
@@ -288,7 +288,7 @@ export async function setupIntelligenceRoutes(app: Express): Promise<void> {
       body('cultural_context').isObject().withMessage('Cultural context must be an object'),
       handleValidationErrors
     ],
-    async (req, res, next) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
         const result = await culturalAdaptationService.analyzeColorCulturalSignificance(
           req.body.color,

@@ -13,9 +13,9 @@ class DatabaseService {
   private config: DatabaseConfig | null = null;
 
   async initialize(): Promise<void> {
-    const databaseUrl = process.env.DATABASE_URL;
-    const databaseType = process.env.DATABASE_TYPE as 'postgresql' | 'sqlite' || 'sqlite';
-    const databaseEnabled = process.env.DATABASE_ENABLED !== 'false';
+    const databaseUrl = process.env.DATABASE_URL || 'sqlite::memory:';
+const databaseType = process.env.DATABASE_TYPE as 'postgresql' | 'sqlite' || 'sqlite';
+const databaseEnabled = process.env.DATABASE_ENABLED !== 'false';
 
     if (!databaseEnabled) {
       logger.info('📊 Database is disabled (DATABASE_ENABLED=false)');
