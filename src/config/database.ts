@@ -103,9 +103,17 @@ class DatabaseService {
     }
 
     if (this.config.type === 'postgresql' && this.pool) {
+      // Convert SQLite-style ? parameters to PostgreSQL-style $1, $2, etc.
+      let pgSql = sql;
+      let paramIndex = 1;
+      while (pgSql.includes('?')) {
+        pgSql = pgSql.replace('?', `$${paramIndex}`);
+        paramIndex++;
+      }
+      
       const client = await this.pool.connect();
       try {
-        const result = await client.query(sql, params);
+        const result = await client.query(pgSql, params);
         return result.rows;
       } finally {
         client.release();
@@ -132,9 +140,17 @@ class DatabaseService {
     }
 
     if (this.config.type === 'postgresql' && this.pool) {
+      // Convert SQLite-style ? parameters to PostgreSQL-style $1, $2, etc.
+      let pgSql = sql;
+      let paramIndex = 1;
+      while (pgSql.includes('?')) {
+        pgSql = pgSql.replace('?', `$${paramIndex}`);
+        paramIndex++;
+      }
+      
       const client = await this.pool.connect();
       try {
-        const result = await client.query(sql, params);
+        const result = await client.query(pgSql, params);
         return { insertId: result.rows[0]?.id, changes: result.rowCount };
       } finally {
         client.release();
