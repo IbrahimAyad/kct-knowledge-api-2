@@ -98,7 +98,8 @@ class DatabaseService {
 
   async query(sql: string, params: any[] = []): Promise<any[]> {
     if (!this.config) {
-      throw new Error('Database not initialized');
+      logger.warn('⚠️ Database query attempted but database not initialized - returning empty result');
+      return [];
     }
 
     if (this.config.type === 'postgresql' && this.pool) {
@@ -126,7 +127,8 @@ class DatabaseService {
 
   async execute(sql: string, params: any[] = []): Promise<{ insertId?: number; changes?: number }> {
     if (!this.config) {
-      throw new Error('Database not initialized');
+      logger.warn('⚠️ Database execute attempted but database not initialized - operation skipped');
+      return { insertId: undefined, changes: 0 };
     }
 
     if (this.config.type === 'postgresql' && this.pool) {
