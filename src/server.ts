@@ -215,6 +215,10 @@ const initializeServices = async () => {
     logger.info('🔄 Initializing Chat services (Phase 1)...');
     await chatController.initialize();
     
+    logger.info('🔄 Initializing Voice services...');
+    const { voiceService } = await import("./services/voice-service");
+    await voiceService.initialize();
+    
     servicesInitialized = true;
     logger.info('✅ All services initialized successfully');
   } catch (error) {
@@ -285,6 +289,14 @@ app.get("/", (_req, res) => {
           end_conversation: "POST /api/v3/chat/conversation/end",
           analytics: "GET /api/v3/chat/analytics/patterns",
           health: "GET /api/v3/chat/health"
+        },
+        voice: {
+          transcribe: "POST /api/v3/voice/transcribe",
+          synthesize: "POST /api/v3/voice/synthesize",
+          chat: "POST /api/v3/voice/chat",
+          stream: "GET /api/v3/voice/stream/:sessionId",
+          languages: "GET /api/v3/voice/languages",
+          feedback: "POST /api/v3/voice/feedback"
         }
       },
       // V4 Phase 3 Advanced Features
@@ -981,6 +993,14 @@ app.get("/api/v3/chat/analytics/patterns", async (req, res) => {
 app.get("/api/v3/chat/health", async (req, res) => {
   await chatController.getHealthCheck(req, res);
 });
+
+// ===== VOICE API ENDPOINTS =====
+
+// Import voice routes
+import voiceRoutes from "./routes/voice-routes";
+
+// Mount voice routes
+app.use("/api/v3/voice", voiceRoutes);
 
 // ===== PHASE 3 ADVANCED PERSONALIZATION API ENDPOINTS =====
 
