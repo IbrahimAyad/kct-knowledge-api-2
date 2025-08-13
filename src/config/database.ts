@@ -211,7 +211,7 @@ const databaseEnabled = process.env.DATABASE_ENABLED !== 'false';
       // Messages table
       `CREATE TABLE IF NOT EXISTS conversation_messages (
         id ${isPostgreSQL ? 'UUID PRIMARY KEY DEFAULT gen_random_uuid()' : 'TEXT PRIMARY KEY'},
-        conversation_id TEXT ${isPostgreSQL ? '' : ''},
+        conversation_id TEXT,
         role TEXT CHECK (role IN ('user', 'assistant')) NOT NULL,
         content TEXT NOT NULL,
         intent TEXT,
@@ -224,7 +224,7 @@ const databaseEnabled = process.env.DATABASE_ENABLED !== 'false';
       // Conversation state table
       `CREATE TABLE IF NOT EXISTS conversation_state (
         id ${isPostgreSQL ? 'UUID PRIMARY KEY DEFAULT gen_random_uuid()' : 'TEXT PRIMARY KEY'},
-        conversation_id TEXT ${isPostgreSQL ? '' : ''},
+        conversation_id TEXT,
         state_key TEXT NOT NULL,
         state_value ${isPostgreSQL ? 'JSONB' : 'TEXT'},
         updated_at TIMESTAMP DEFAULT ${isPostgreSQL ? 'NOW()' : 'CURRENT_TIMESTAMP'},
@@ -247,7 +247,7 @@ const databaseEnabled = process.env.DATABASE_ENABLED !== 'false';
       // Outcomes table for metrics tracking
       `CREATE TABLE IF NOT EXISTS conversation_outcomes (
         id ${isPostgreSQL ? 'UUID PRIMARY KEY DEFAULT gen_random_uuid()' : 'TEXT PRIMARY KEY'},
-        conversation_id TEXT ${isPostgreSQL ? '' : ''},
+        conversation_id TEXT,
         outcome_type TEXT CHECK (outcome_type IN ('conversion', 'satisfaction', 'resolution', 'escalation')),
         outcome_value DECIMAL(10,2),
         metadata ${isPostgreSQL ? 'JSONB' : 'TEXT'},
