@@ -15,7 +15,7 @@ export const authenticateApiKey = (req: Request, res: Response, next: NextFuncti
     '/',
     '/api/v1/health',
     '/api/recommendations',
-    '/api/v2/recommendations', 
+    '/api/v2', // All v2 endpoints are public for frontend
     '/api/combinations/validate',
     '/api/colors',
     '/api/trending',

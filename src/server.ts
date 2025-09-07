@@ -79,6 +79,8 @@ import * as phase3Controllers from "./controllers/phase3-integration-controller"
 // Import Chat services (Phase 1)
 import { chatController } from "./controllers/chat-controller";
 import { databaseService } from "./config/database";
+// Import V2 Compatibility Router
+import v2CompatibilityRouter from "./routes/v2-compatibility";
 
 const app = express();
 const PORT = process.env['PORT'] || 3000;
@@ -180,7 +182,7 @@ app.use((req, res, next) => {
     '/health', 
     '/',
     '/api/recommendations',
-    '/api/v2/recommendations',
+    '/api/v2', // All v2 endpoints are public
     '/api/combinations/validate',
     '/api/colors',
     '/api/trending',
@@ -792,6 +794,10 @@ app.get("/api/v1/info", async (_req, res) => {
   }
 });
 
+// ===== V2 COMPATIBILITY LAYER FOR FRONTEND =====
+// Mount the V2 compatibility router to handle all frontend-expected endpoints
+app.use('/api/v2', v2CompatibilityRouter);
+
 // ===== NEW PRIORITY API ENDPOINTS =====
 
 // Core Colors API
@@ -813,12 +819,6 @@ app.post("/api/combinations/validate", async (req, res) => {
 
 // AI Recommendations API
 app.post("/api/recommendations", async (req, res) => {
-  await initializeServices();
-  await apiControllers.getRecommendations(req, res);
-});
-
-// V2 Recommendations endpoint (alias for compatibility)
-app.post("/api/v2/recommendations", async (req, res) => {
   await initializeServices();
   await apiControllers.getRecommendations(req, res);
 });
