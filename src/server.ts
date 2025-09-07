@@ -173,9 +173,26 @@ setupSwagger(app);
 // Add documentation links to responses
 app.use(addDocumentationLinks);
 
-// Authentication middleware for protected routes (skip docs endpoints)
+// Authentication middleware for protected routes (skip public endpoints)
 app.use((req, res, next) => {
-  if (req.path.startsWith('/docs') || req.path === '/health') {
+  const publicPaths = [
+    '/docs',
+    '/health', 
+    '/',
+    '/api/recommendations',
+    '/api/v2/recommendations',
+    '/api/combinations/validate',
+    '/api/colors',
+    '/api/trending',
+    '/api/venues',
+    '/api/styles'
+  ];
+  
+  const isPublicPath = publicPaths.some(path => 
+    req.path.startsWith(path) || req.path === path
+  );
+  
+  if (isPublicPath) {
     return next();
   }
   return authenticateApiKey(req, res, next);

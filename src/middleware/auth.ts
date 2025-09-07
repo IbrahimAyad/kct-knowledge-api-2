@@ -9,8 +9,25 @@ const EXPECTED_API_KEY = 'kct-menswear-api-2024-secret';
  * Secures all API endpoints except health checks
  */
 export const authenticateApiKey = (req: Request, res: Response, next: NextFunction) => {
-  // Skip authentication for health check endpoints
-  if (req.path === '/health' || req.path === '/' || req.path.startsWith('/api/v1/health')) {
+  // Skip authentication for public endpoints
+  const publicEndpoints = [
+    '/health',
+    '/',
+    '/api/v1/health',
+    '/api/recommendations',
+    '/api/v2/recommendations', 
+    '/api/combinations/validate',
+    '/api/colors',
+    '/api/trending',
+    '/api/venues',
+    '/api/styles'
+  ];
+  
+  const isPublicEndpoint = publicEndpoints.some(endpoint => 
+    req.path === endpoint || req.path.startsWith(endpoint + '/')
+  );
+  
+  if (isPublicEndpoint) {
     return next();
   }
 
