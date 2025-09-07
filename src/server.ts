@@ -817,6 +817,12 @@ app.post("/api/recommendations", async (req, res) => {
   await apiControllers.getRecommendations(req, res);
 });
 
+// V2 Recommendations endpoint (alias for compatibility)
+app.post("/api/v2/recommendations", async (req, res) => {
+  await initializeServices();
+  await apiControllers.getRecommendations(req, res);
+});
+
 // Trending Analysis API
 app.get("/api/trending", async (req, res) => {
   await initializeServices();
