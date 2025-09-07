@@ -128,14 +128,39 @@ app.use(gracefulDegradation);
 // Cache invalidation middleware for data modification endpoints
 app.use(cacheInvalidation(['*color*', '*trending*', '*style*', '*venue*']));
 
-// CORS Configuration
-app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
+// CORS Configuration with support for environment variables
+const getAllowedOrigins = () => {
+  if (process.env.CORS_ALLOWED_ORIGINS) {
+    return process.env.CORS_ALLOWED_ORIGINS.split(',').map(origin => origin.trim());
+  }
+  return process.env.NODE_ENV === 'production' 
     ? ['https://kctmenswear.com', 'https://www.kctmenswear.com', 'https://kct-menswear-v2.vercel.app']
-    : true,
+    : ['http://localhost:3000', 'http://localhost:3001'];
+};
+
+app.use(cors({
+  origin: function (origin, callback) {
+    const allowedOrigins = getAllowedOrigins();
+    
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Check if the origin is allowed (including wildcard support)
+    const isAllowed = allowedOrigins.some(allowed => {
+      if (allowed === origin) return true;
+      if (allowed.includes('*')) {
+        const regex = new RegExp('^' + allowed.replace(/\*/g, '.*') + '$');
+        return regex.test(origin);
+      }
+      return false;
+    });
+    
+    callback(isAllowed ? null : new Error('Not allowed by CORS'), isAllowed);
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key', 'x-api-key'],
+  optionsSuccessStatus: 200
 }));
 
 // Body parsing middleware
