@@ -169,7 +169,7 @@ class NLPIntelligenceService {
       };
 
       // Cache the result for 5 minutes
-      await cacheService.set(cacheKey, response, 300);
+      await cacheService.set(cacheKey, response, { ttl: 300 });
 
       logger.debug(`✅ NLP analysis completed: ${intent.category} (${intent.confidence})`);
       return response;

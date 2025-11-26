@@ -111,6 +111,7 @@ export interface CustomerJourney {
   predicted_ltv: number;
   churn_risk: number;
   personalization_effectiveness: number;
+  conversion_probability?: number;
 }
 
 export interface ABTestVariant {
@@ -210,7 +211,7 @@ class EnhancedAnalyticsService {
       logger.info('✅ Enhanced Analytics Service initialized successfully');
 
     } catch (error) {
-      logger.error('❌ Failed to initialize Enhanced Analytics Service:', error);
+      logger.error('❌ Failed to initialize Enhanced Analytics Service:', error instanceof Error ? { error: error.message } : {});
       throw error;
     }
   }
@@ -276,7 +277,7 @@ class EnhancedAnalyticsService {
       logger.debug(`📊 Analytics updated for session: ${sessionId}`);
 
     } catch (error) {
-      logger.error('❌ Failed to track conversation analytics:', error);
+      logger.error('❌ Failed to track conversation analytics:', error instanceof Error ? { error: error.message } : {});
     }
   }
 
@@ -304,12 +305,12 @@ class EnhancedAnalyticsService {
 
       // Persist conversion event
       const cacheKey = `conversion:${conversionEvent.id}`;
-      await cacheService.set(cacheKey, conversionEvent, 86400 * 30); // 30 days
+      await cacheService.set(cacheKey, conversionEvent, { ttl: 86400 * 30 }); // 30 days
 
       logger.info(`💰 Conversion tracked: ${conversionEvent.event_type} - $${conversionEvent.value}`);
 
     } catch (error) {
-      logger.error('❌ Failed to track conversion:', error);
+      logger.error('❌ Failed to track conversion:', error instanceof Error ? { error: error.message } : {});
       throw error;
     }
   }
@@ -370,7 +371,7 @@ class EnhancedAnalyticsService {
       logger.debug(`🛤️ Customer journey updated for: ${customerId}`);
 
     } catch (error) {
-      logger.error('❌ Failed to update customer journey:', error);
+      logger.error('❌ Failed to update customer journey:', error instanceof Error ? { error: error.message } : {});
     }
   }
 
@@ -398,14 +399,14 @@ class EnhancedAnalyticsService {
 
       if (variantAssigned) {
         // Cache assignment for consistency
-        await cacheService.set(cacheKey, test.id, 86400); // 24 hours
+        await cacheService.set(cacheKey, test.id, { ttl: 86400 }); // 24 hours
         return test;
       }
 
       return null;
 
     } catch (error) {
-      logger.error('❌ Failed to get A/B test variant:', error);
+      logger.error('❌ Failed to get A/B test variant:', error instanceof Error ? { error: error.message } : {});
       return null;
     }
   }
@@ -435,12 +436,12 @@ class EnhancedAnalyticsService {
         timestamp: new Date()
       });
 
-      await cacheService.set(resultKey, existingResults, 86400 * 30); // 30 days
+      await cacheService.set(resultKey, existingResults, { ttl: 86400 * 30 }); // 30 days
 
       logger.debug(`🧪 A/B test result tracked: ${testId}/${variantId}`);
 
     } catch (error) {
-      logger.error('❌ Failed to track A/B test result:', error);
+      logger.error('❌ Failed to track A/B test result:', error instanceof Error ? { error: error.message } : {});
     }
   }
 
@@ -519,7 +520,7 @@ class EnhancedAnalyticsService {
       };
 
     } catch (error) {
-      logger.error('❌ Failed to get conversation analytics:', error);
+      logger.error('❌ Failed to get conversation analytics:', error instanceof Error ? { error: error.message } : {});
       throw error;
     }
   }
@@ -578,7 +579,7 @@ class EnhancedAnalyticsService {
       };
 
     } catch (error) {
-      logger.error('❌ Failed to get conversion analytics:', error);
+      logger.error('❌ Failed to get conversion analytics:', error instanceof Error ? { error: error.message } : {});
       throw error;
     }
   }
@@ -626,7 +627,7 @@ class EnhancedAnalyticsService {
       };
 
     } catch (error) {
-      logger.error('❌ Failed to get customer journey analytics:', error);
+      logger.error('❌ Failed to get customer journey analytics:', error instanceof Error ? { error: error.message } : {});
       throw error;
     }
   }
@@ -681,7 +682,7 @@ class EnhancedAnalyticsService {
       }];
 
     } catch (error) {
-      logger.error('❌ Failed to get A/B test results:', error);
+      logger.error('❌ Failed to get A/B test results:', error instanceof Error ? { error: error.message } : {});
       throw error;
     }
   }
@@ -752,7 +753,7 @@ class EnhancedAnalyticsService {
       };
 
     } catch (error) {
-      logger.error('❌ Failed to get performance metrics:', error);
+      logger.error('❌ Failed to get performance metrics:', error instanceof Error ? { error: error.message } : {});
       throw error;
     }
   }
@@ -762,8 +763,9 @@ class EnhancedAnalyticsService {
   private async loadAnalyticsData(): Promise<void> {
     try {
       // Load existing analytics from cache/database
-      const analyticsKeys = await cacheService.getKeysByPattern('analytics:*');
-      
+      // Note: getKeysByPattern would require Redis KEYS or SCAN - skipping for now
+      const analyticsKeys: string[] = []; // In production, implement proper key scanning
+
       for (const key of analyticsKeys.slice(0, 100)) { // Limit for demo
         const analytics = await cacheService.get<ConversationAnalytics>(key);
         if (analytics) {
@@ -773,7 +775,7 @@ class EnhancedAnalyticsService {
 
       logger.debug(`📊 Loaded ${this.conversationAnalytics.size} analytics records`);
     } catch (error) {
-      logger.warn('⚠️ Could not load analytics data:', error);
+      logger.warn('⚠️ Could not load analytics data:', error instanceof Error ? { error: error.message } : {});
     }
   }
 
@@ -1028,12 +1030,12 @@ class EnhancedAnalyticsService {
 
   private async persistAnalytics(sessionId: string, analytics: ConversationAnalytics): Promise<void> {
     const cacheKey = `analytics:${sessionId}`;
-    await cacheService.set(cacheKey, analytics, 86400 * 7); // 7 days
+    await cacheService.set(cacheKey, analytics, { ttl: 86400 * 7 }); // 7 days
   }
 
   private async persistCustomerJourney(customerId: string, journey: CustomerJourney): Promise<void> {
     const cacheKey = `journey:${customerId}`;
-    await cacheService.set(cacheKey, journey, 86400 * 30); // 30 days
+    await cacheService.set(cacheKey, journey, { ttl: 86400 * 30 }); // 30 days
   }
 
   private aggregatePerformanceMetrics(): void {

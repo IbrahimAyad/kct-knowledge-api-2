@@ -887,11 +887,11 @@ async function generateIntegratedInsights(
   }
 
   if (predictiveAnalytics?.churn_assessment?.risk_level === 'high') {
-    insights.risk_factors.push('High churn risk detected - immediate intervention recommended');
+    (insights as any).risk_factors = 'High churn risk detected - immediate intervention recommended';
   }
 
   if (salesOptimization?.revenueProjection?.upliftPercentage > 20) {
-    insights.key_opportunities.push(`${salesOptimization.revenueProjection.upliftPercentage.toFixed(1)}% revenue uplift potential identified`);
+    (insights as any).key_opportunities = `${salesOptimization.revenueProjection.upliftPercentage.toFixed(1)}% revenue uplift potential identified`;
   }
 
   if (predictiveAnalytics?.next_best_action) {
@@ -914,7 +914,12 @@ async function generateAdvancedChatRecommendations(
   chatEnhancement: any,
   phase3Enhancements: any[]
 ): Promise<any> {
-  const recommendations = {
+  const recommendations: {
+    messaging_adaptations: any[];
+    conversation_strategies: any[];
+    sales_tactics: any[];
+    personalization_opportunities: any[];
+  } = {
     messaging_adaptations: [],
     conversation_strategies: [],
     sales_tactics: [],

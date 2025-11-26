@@ -135,9 +135,20 @@ const getAllowedOrigins = () => {
   if (process.env.CORS_ALLOWED_ORIGINS) {
     return process.env.CORS_ALLOWED_ORIGINS.split(',').map(origin => origin.trim());
   }
-  return process.env.NODE_ENV === 'production' 
-    ? ['https://kctmenswear.com', 'https://www.kctmenswear.com', 'https://kct-menswear-v2.vercel.app']
-    : ['http://localhost:3000', 'http://localhost:3001'];
+  return process.env.NODE_ENV === 'production'
+    ? [
+        'https://kctmenswear.com',
+        'https://www.kctmenswear.com',
+        'https://kct-menswear-v2.vercel.app',
+        'https://*.lovable.app', // Lovable preview domains
+        'https://preview--kct-viral-looks-shop.lovable.app' // Specific Lovable preview
+      ]
+    : [
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'https://*.lovable.app', // Lovable preview domains (for testing)
+        'https://preview--kct-viral-looks-shop.lovable.app'
+      ];
 };
 
 app.use(cors({
@@ -823,8 +834,20 @@ app.post("/api/recommendations", async (req, res) => {
   await apiControllers.getRecommendations(req, res);
 });
 
+// Lovable compatibility alias for recommendations
+app.post("/api/recommendations/generate", async (req, res) => {
+  await initializeServices();
+  await apiControllers.getRecommendations(req, res);
+});
+
 // Trending Analysis API
 app.get("/api/trending", async (req, res) => {
+  await initializeServices();
+  await apiControllers.getTrending(req, res);
+});
+
+// Lovable compatibility alias for trends
+app.get("/api/trends/current", async (req, res) => {
   await initializeServices();
   await apiControllers.getTrending(req, res);
 });

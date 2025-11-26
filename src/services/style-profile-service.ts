@@ -466,7 +466,7 @@ export class StyleProfileService {
         wardrobe_priorities: stagePreferences.wardrobe_focus,
         color_recommendations: mergedColorRecommendations,
         style_adjustments: [
-          ...baseProfile.characteristics.style_notes,
+          ...(baseProfile.characteristics as any).style_notes || [],
           `Career stage: ${careerStage} - ${stagePreferences.stage_info.style_evolution}`
         ],
         investment_focus: stagePreferences.investment_priorities,
@@ -478,7 +478,7 @@ export class StyleProfileService {
       return {
         wardrobe_priorities: ['Professional foundation pieces'],
         color_recommendations: baseProfile.characteristics.color_preferences,
-        style_adjustments: baseProfile.characteristics.style_notes,
+        style_adjustments: (baseProfile.characteristics as any).style_notes || [],
         investment_focus: ['Quality basics', 'Proper fit'],
         budget_guidance: this.getBundlePreference(baseProfile.bundle_preferences)
       };

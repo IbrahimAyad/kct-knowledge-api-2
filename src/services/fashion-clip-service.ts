@@ -234,7 +234,7 @@ class FashionClipService {
       };
 
       // Cache the result for 1 hour
-      await cacheService.set(cacheKey, result, 3600);
+      await cacheService.set(cacheKey, result, { ttl: 3600 });
 
       logger.info(`Fashion-CLIP analysis completed in ${result.processing_time_ms}ms`);
       return result;
@@ -299,7 +299,7 @@ class FashionClipService {
       });
 
       // Cache the result for 30 minutes
-      await cacheService.set(cacheKey, response, 1800);
+      await cacheService.set(cacheKey, response, { ttl: 1800 });
 
       logger.info(`Generated ${response.generated_outfits.length} outfit options`);
       return response;
@@ -432,7 +432,6 @@ class FashionClipService {
         'Authorization': `Bearer ${this.apiKey}`,
         'User-Agent': 'KCT-Knowledge-API/2.0.0'
       },
-      timeout: this.timeout,
       ...options
     };
 
@@ -466,7 +465,7 @@ class FashionClipService {
 
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
-        logger.warn(`Fashion-CLIP API request failed (attempt ${attempt}/${this.retryAttempts}):`, lastError.message);
+        logger.warn(`Fashion-CLIP API request failed (attempt ${attempt}/${this.retryAttempts}):`, { error: lastError.message });
 
         if (attempt < this.retryAttempts) {
           const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000); // Exponential backoff, max 5s

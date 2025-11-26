@@ -396,7 +396,7 @@ class AdvancedPersonalizationService {
       logger.info('✅ Advanced Personalization Service initialized successfully');
 
     } catch (error) {
-      logger.error('❌ Failed to initialize Advanced Personalization Service:', error);
+      logger.error('❌ Failed to initialize Advanced Personalization Service:', error instanceof Error ? { error: error.message } : {});
       throw error;
     }
   }
@@ -467,7 +467,7 @@ class AdvancedPersonalizationService {
       return profile;
 
     } catch (error) {
-      logger.error(`❌ Failed to update customer profile ${customerId}:`, error);
+      logger.error(`❌ Failed to update customer profile ${customerId}:`, error instanceof Error ? { error: error.message } : {});
       throw error;
     }
   }
@@ -542,7 +542,7 @@ class AdvancedPersonalizationService {
       return response;
 
     } catch (error) {
-      logger.error(`❌ Failed to get personalized recommendations for ${request.customerId}:`, error);
+      logger.error(`❌ Failed to get personalized recommendations for ${request.customerId}:`, error instanceof Error ? { error: error.message } : {});
       throw error;
     }
   }
@@ -582,7 +582,7 @@ class AdvancedPersonalizationService {
       logger.info(`✅ Learned from style preferences for customer: ${update.customerId}`);
 
     } catch (error) {
-      logger.error(`❌ Failed to learn from style preferences:`, error);
+      logger.error(`❌ Failed to learn from style preferences:`, error instanceof Error ? { error: error.message } : {});
       throw error;
     }
   }
@@ -641,7 +641,7 @@ class AdvancedPersonalizationService {
       // For now, we'll initialize with empty profiles
       logger.info('Loading existing customer profiles...');
     } catch (error) {
-      logger.warn('Failed to load existing profiles, starting fresh:', error);
+      logger.warn('Failed to load existing profiles, starting fresh:', error as any);
     }
   }
 
@@ -669,7 +669,7 @@ class AdvancedPersonalizationService {
 
       logger.info('✅ Learning models initialized');
     } catch (error) {
-      logger.warn('Failed to initialize learning models:', error);
+      logger.warn('Failed to initialize learning models:', error instanceof Error ? { error: error.message } : {});
     }
   }
 
@@ -1116,7 +1116,7 @@ class AdvancedPersonalizationService {
 
       return psychologyResponse.fatigue_score;
     } catch (error) {
-      logger.warn('Failed to analyze decision fatigue:', error);
+      logger.warn('Failed to analyze decision fatigue:', error instanceof Error ? { error: error.message } : {});
       return 30; // Default moderate fatigue
     }
   }
@@ -1519,7 +1519,7 @@ class AdvancedPersonalizationService {
       status,
       profiles_loaded: profilesLoaded,
       learning_models: learningModels,
-      cache_status: `${cacheStats?.keys_count || 0} keys cached`,
+      cache_status: `${(cacheStats as any)?.keys_count || 0} keys cached`,
       last_update: new Date().toISOString()
     };
   }

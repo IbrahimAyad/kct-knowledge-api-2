@@ -151,7 +151,10 @@ class DatabaseService {
       const client = await this.pool.connect();
       try {
         const result = await client.query(pgSql, params);
-        return { insertId: result.rows[0]?.id, changes: result.rowCount };
+        return {
+          insertId: result.rows[0]?.id,
+          changes: result.rowCount ?? 0
+        };
       } finally {
         client.release();
       }

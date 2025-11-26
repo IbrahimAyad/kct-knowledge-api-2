@@ -268,7 +268,7 @@ class PredictiveAnalyticsService {
       logger.info('✅ Predictive Analytics Service initialized successfully');
 
     } catch (error) {
-      logger.error('❌ Failed to initialize Predictive Analytics Service:', error);
+      logger.error('❌ Failed to initialize Predictive Analytics Service:', error instanceof Error ? { error: error.message } : {});
       throw error;
     }
   }
@@ -348,7 +348,7 @@ class PredictiveAnalyticsService {
       return response;
 
     } catch (error) {
-      logger.error(`❌ Failed to generate predictive analytics:`, error);
+      logger.error(`❌ Failed to generate predictive analytics:`, error instanceof Error ? { error: error.message } : {});
       throw error;
     }
   }
@@ -499,7 +499,7 @@ class PredictiveAnalyticsService {
       };
       logger.info('✅ Historical data loaded');
     } catch (error) {
-      logger.warn('Failed to load historical data:', error);
+      logger.warn('Failed to load historical data:', error instanceof Error ? { error: error.message } : {});
       this.historicalData = { customers: [], purchases: [], interactions: [], churn_events: [], seasonal_patterns: [] };
     }
   }
@@ -552,7 +552,7 @@ class PredictiveAnalyticsService {
 
       logger.info('✅ Prediction models initialized');
     } catch (error) {
-      logger.warn('Failed to initialize prediction models:', error);
+      logger.warn('Failed to initialize prediction models:', error instanceof Error ? { error: error.message } : {});
     }
   }
 

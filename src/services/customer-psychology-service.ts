@@ -507,7 +507,7 @@ export class CustomerPsychologyService {
     return {
       status: dataLoaded ? 'healthy' : 'degraded',
       data_loaded: dataLoaded,
-      cache_status: `${cacheStats?.keys_count || 0} keys cached`,
+      cache_status: `${(cacheStats as any)?.keys_count || 0} keys cached`,
       last_update: new Date().toISOString()
     };
   }

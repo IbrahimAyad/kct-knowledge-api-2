@@ -32,7 +32,7 @@ export interface ColorExtractionRequest {
 }
 
 export interface ColorExtractionResult {
-  success: bool;
+  success: boolean;
   extracted_colors: Array<{
     color: string;
     hex: string;
@@ -322,7 +322,7 @@ class ColorExtractionService {
 
       // Cache the result
       const cacheTime = request.extraction_options.color_accuracy === 'fast' ? 7200 : 3600; // 2 hours for fast, 1 hour for precise
-      await cacheService.set(cacheKey, result, cacheTime);
+      await cacheService.set(cacheKey, result, { ttl: cacheTime });
 
       logger.info(`Color extraction completed in ${result.processing_metadata.extraction_time_ms}ms`);
       return result;
@@ -384,7 +384,7 @@ class ColorExtractionService {
       if (baseColors && baseColors.length > 0) {
         for (const color of baseColors) {
           const complements = await colorService.findComplementaryColors(color);
-          complementaryColors.push(...complements.slice(0, 2));
+          complementaryColors.push(...complements.perfect_matches.slice(0, 2));
         }
       }
 
@@ -409,7 +409,7 @@ class ColorExtractionService {
     rawColors: any[],
     request: ColorExtractionRequest
   ): Promise<ColorExtractionResult['extracted_colors']> {
-    const processedColors = [];
+    const processedColors: ColorExtractionResult['extracted_colors'] = [];
 
     for (const color of rawColors) {
       const rgb = this.hexToRgb(color.hex);
@@ -424,8 +424,8 @@ class ColorExtractionService {
         confidence: Math.random() * 0.3 + 0.7, // Would be calculated based on extraction quality
         color_family: color.color_family || this.determineColorFamily(color.hex),
         color_temperature: this.determineColorTemperature(hsl.h),
-        brightness_level: this.determineBrightnessLevel(hsl.l),
-        saturation_level: this.determineSaturationLevel(hsl.s),
+        brightness_level: this.determineBrightnessLevel(hsl.l) as any,
+        saturation_level: this.determineSaturationLevel(hsl.s) as any,
         accessibility: {
           wcag_aa_compliant: this.checkWCAGCompliance(color.hex),
           contrast_ratio: this.calculateContrastRatio(color.hex, '#FFFFFF'),
@@ -786,7 +786,7 @@ class ColorExtractionService {
   }
   private getCulturalAssociations(colors: any[], culture?: string): any[] { return []; }
   private getColorTrendScore(hex: string): number { return 0.7; }
-  private determineTrendingStatus(score: number): string { return score > 0.7 ? 'peak' : 'classic'; }
+  private determineTrendingStatus(score: number): 'peak' | 'emerging' | 'classic' | 'declining' { return score > 0.7 ? 'peak' : 'classic'; }
   private async generateIdealCombinations(colors: any[], context?: any): Promise<any[]> { return []; }
   private identifyAvoidCombinations(colors: any[]): any[] { return []; }
   private calculateVersatilityMatrix(colors: any[]): any { 

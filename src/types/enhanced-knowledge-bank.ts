@@ -395,6 +395,11 @@ export interface CareerTrajectoryResponse {
   wardrobe_recommendations: WardrobeRecommendation[];
   investment_strategy: InvestmentStrategy;
   promotion_signals: PromotionSignal[];
+  current_trajectory?: {
+    stage: string;
+    focus_areas: string[];
+    timeline: Timeline;
+  };
 }
 
 export interface WardrobeRecommendation {

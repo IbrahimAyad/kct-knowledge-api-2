@@ -176,7 +176,7 @@ export class PrecisionFrameworkService {
       logger.info(`✅ Generated PRECISION™ response for stage ${currentStage}`, {
         sessionId: context.sessionId,
         stage: currentStage,
-        conversionTarget: this.framework[currentStage]?.conversionTarget,
+        conversionTarget: (this.framework as any)[currentStage]?.conversionTarget,
         psychologicalTriggers: this.identifyPsychologicalTriggers(intent, context)
       });
 
@@ -201,7 +201,7 @@ export class PrecisionFrameworkService {
     context: ConversationContext,
     stage: string
   ): ChatResponse {
-    const stageConfig = this.framework[stage] as PRECISIONStage;
+    const stageConfig = (this.framework as any)[stage] as PRECISIONStage;
     const psychTriggers = this.identifyPsychologicalTriggers(intent, context);
     
     let message = '';
@@ -246,8 +246,8 @@ export class PrecisionFrameworkService {
 
     // Apply psychological trigger multipliers
     if (psychTriggers.length > 0) {
-      const multiplier = psychTriggers.reduce((acc, trigger) => 
-        acc * this.PSYCHOLOGICAL_TRIGGERS[trigger]?.response_multiplier || 1, 1
+      const multiplier = psychTriggers.reduce((acc, trigger) =>
+        acc * (this.PSYCHOLOGICAL_TRIGGERS as any)[trigger]?.response_multiplier || 1, 1
       );
       confidence = Math.min(confidence * multiplier, 1.0);
     }
@@ -485,7 +485,7 @@ export class PrecisionFrameworkService {
       interview: "• Conservative navy suit for authority\n• Classic white or light blue dress shirt\n• Understated silk tie in complementary color\n• Polished leather shoes and belt"
     };
 
-    return recommendations[occasion] || "• Versatile pieces that work across multiple occasions\n• Quality basics that form a strong foundation\n• Statement pieces that reflect your personality\n• Accessories that elevate the overall look";
+    return (recommendations as any)[occasion] || "• Versatile pieces that work across multiple occasions\n• Quality basics that form a strong foundation\n• Statement pieces that reflect your personality\n• Accessories that elevate the overall look";
   }
 
   private buildValueProtectionMessage(context: ConversationContext): string {

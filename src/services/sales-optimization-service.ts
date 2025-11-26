@@ -226,7 +226,7 @@ class SalesOptimizationService {
       logger.info('✅ Sales Optimization Service initialized successfully');
 
     } catch (error) {
-      logger.error('❌ Failed to initialize Sales Optimization Service:', error);
+      logger.error('❌ Failed to initialize Sales Optimization Service:', error instanceof Error ? { error: error.message } : {});
       throw error;
     }
   }
@@ -293,7 +293,7 @@ class SalesOptimizationService {
       return response;
 
     } catch (error) {
-      logger.error(`❌ Failed to generate optimization recommendations:`, error);
+      logger.error(`❌ Failed to generate optimization recommendations:`, error instanceof Error ? { error: error.message } : {});
       throw error;
     }
   }
@@ -480,7 +480,7 @@ class SalesOptimizationService {
       };
       logger.info('✅ Market data loaded');
     } catch (error) {
-      logger.warn('Failed to load market data:', error);
+      logger.warn('Failed to load market data:', error instanceof Error ? { error: error.message } : {});
       this.marketData = {};
     }
   }
@@ -508,7 +508,7 @@ class SalesOptimizationService {
 
       logger.info('✅ Pricing models initialized');
     } catch (error) {
-      logger.warn('Failed to initialize pricing models:', error);
+      logger.warn('Failed to initialize pricing models:', error instanceof Error ? { error: error.message } : {});
     }
   }
 
@@ -572,7 +572,7 @@ class SalesOptimizationService {
   private async calculatePsychologyFactor(
     profile: ComprehensiveCustomerProfile,
     request: OptimizationRequest
-  ): PricingFactor {
+  ): Promise<PricingFactor> {
     let impact = 0;
     let reasoning = '';
 
@@ -603,7 +603,7 @@ class SalesOptimizationService {
     };
   }
 
-  private async calculateMarketFactor(productId: string): PricingFactor {
+  private async calculateMarketFactor(productId: string): Promise<PricingFactor> {
     // Use market data to adjust pricing
     const demandMultiplier = this.marketData.demand_multipliers?.['formal_wear'] || 1.0;
     const seasonalFactor = this.getCurrentSeasonalFactor();
@@ -619,7 +619,7 @@ class SalesOptimizationService {
     };
   }
 
-  private async calculateDemandFactor(productId: string, profile: ComprehensiveCustomerProfile): PricingFactor {
+  private async calculateDemandFactor(productId: string, profile: ComprehensiveCustomerProfile): Promise<PricingFactor> {
     // Calculate demand-based pricing factor
     // This would typically use inventory levels, sales velocity, etc.
     

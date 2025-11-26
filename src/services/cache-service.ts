@@ -33,7 +33,7 @@ export interface CacheEntry<T = any> {
 }
 
 export class CacheService {
-  private redis: Redis;
+  private redis: Redis | null;
   private metrics: CacheMetrics = {
     hits: 0,
     misses: 0,
@@ -60,12 +60,23 @@ export class CacheService {
   }
 
   /**
+   * Check if Redis is available
+   */
+  private isRedisAvailable(): boolean {
+    return this.redis !== null;
+  }
+
+  /**
    * Get data from cache
    */
   async get<T = any>(key: string): Promise<T | null> {
     const startTime = Date.now();
-    
+
     try {
+      if (!this.redis) {
+        return null;
+      }
+
       const cached = await this.redis.get(this.normalizeKey(key));
       const responseTime = Date.now() - startTime;
       this.updateMetrics('get', responseTime, cached !== null);
@@ -75,7 +86,7 @@ export class CacheService {
       }
 
       const entry: CacheEntry<T> = JSON.parse(cached);
-      
+
       // Handle compressed data
       if (entry.compressed) {
         entry.data = this.decompress(entry.data as string) as T;
@@ -123,11 +134,15 @@ export class CacheService {
         compressed,
       };
 
+      if (!this.redis) {
+        return false;
+      }
+
       const serialized = JSON.stringify(entry);
-      
+
       // Set with TTL
       await this.redis.setex(normalizedKey, ttl, serialized);
-      
+
       // Store tags for invalidation if provided
       if (options.tags && options.tags.length > 0) {
         await this.storeCacheTags(normalizedKey, options.tags);
@@ -135,7 +150,7 @@ export class CacheService {
 
       const responseTime = Date.now() - startTime;
       this.updateMetrics('set', responseTime, true);
-      
+
       console.log(`💾 Cache SET: ${key} (TTL: ${ttl}s, Size: ${this.formatBytes(serialized.length)}, ${responseTime}ms)`);
       return true;
     } catch (error) {
@@ -151,8 +166,12 @@ export class CacheService {
    */
   async delete(key: string): Promise<boolean> {
     const startTime = Date.now();
-    
+
     try {
+      if (!this.redis) {
+        return false;
+      }
+
       const normalizedKey = this.normalizeKey(key);
       const result = await this.redis.del(normalizedKey);
       
@@ -177,16 +196,20 @@ export class CacheService {
    */
   async invalidateByTags(tags: string[]): Promise<number> {
     let totalDeleted = 0;
-    
+
     try {
+      if (!this.redis) {
+        return 0;
+      }
+
       for (const tag of tags) {
         const tagKey = `cache_tag:${tag}`;
         const keys = await this.redis.smembers(tagKey);
-        
+
         if (keys.length > 0) {
           const deleted = await this.redis.del(...keys);
           totalDeleted += deleted;
-          
+
           // Clean up tag mapping
           await this.redis.del(tagKey);
         }
@@ -205,6 +228,10 @@ export class CacheService {
    */
   async invalidateByPattern(pattern: string): Promise<number> {
     try {
+      if (!this.redis) {
+        return 0;
+      }
+
       const keys = await this.redis.keys(`kct:${pattern}`);
       
       if (keys.length === 0) {
@@ -253,6 +280,13 @@ export class CacheService {
   }
 
   /**
+   * Get cache statistics (alias for getMetrics)
+   */
+  getStats(): CacheMetrics {
+    return this.getMetrics();
+  }
+
+  /**
    * Reset cache metrics
    */
   resetMetrics(): void {
@@ -281,7 +315,7 @@ export class CacheService {
       const connected = await RedisConnection.ping();
       let memoryUsage, keyCount;
       
-      if (connected) {
+      if (connected && this.redis) {
         try {
           // Get basic Redis info instead of memory usage
           keyCount = await this.redis.dbsize();
@@ -336,6 +370,10 @@ export class CacheService {
   }
 
   private async storeCacheTags(key: string, tags: string[]): Promise<void> {
+    if (!this.redis) {
+      return;
+    }
+
     const pipeline = this.redis.pipeline();
     
     for (const tag of tags) {
@@ -349,6 +387,10 @@ export class CacheService {
 
   private async removeCacheTagMappings(key: string): Promise<void> {
     try {
+      if (!this.redis) {
+        return;
+      }
+
       const tagKeys = await this.redis.keys('cache_tag:*');
       if (tagKeys.length > 0) {
         const pipeline = this.redis.pipeline();

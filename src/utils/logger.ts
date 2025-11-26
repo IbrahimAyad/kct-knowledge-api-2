@@ -116,6 +116,7 @@ const winstonLogger = winston.createLogger({
 // Enhanced logging interface
 export interface LogContext {
   userId?: string;
+  customerId?: string;
   sessionId?: string;
   requestId?: string;
   endpoint?: string;
@@ -127,7 +128,15 @@ export interface LogContext {
   errorCode?: string;
   component?: string;
   operation?: string;
+  framework?: string;
+  satisfactionScore?: number;
+  context?: any;
+  stage?: string;
+  conversionOutcome?: boolean;
+  error?: string;
+  base_item?: any;
   metadata?: Record<string, any>;
+  [key: string]: any; // Allow additional properties
 }
 
 class Logger {

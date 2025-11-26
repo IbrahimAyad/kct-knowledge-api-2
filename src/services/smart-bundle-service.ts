@@ -17,7 +17,7 @@ export interface BundleGenerationRequest {
       age_range: string;
       style_preference: string;
       budget_range: { min: number; max: number };
-      body_types?: string[];
+      body_types: string[];
     };
   };
   customization_options?: {
@@ -254,7 +254,7 @@ class SmartBundleService {
           business_context: {
             current_season: request.base_requirements.season,
             inventory_priorities: request.business_constraints?.promotional_priorities || [],
-            promotional_goals: []
+            promotional_goals: [], competitive_landscape: {}
           }
         }
       };
@@ -318,7 +318,7 @@ class SmartBundleService {
       };
 
       // Cache the result for 1 hour
-      await cacheService.set(cacheKey, result, 3600);
+      await cacheService.set(cacheKey, result, { ttl: 3600 });
 
       logger.info(`Bundle generation completed in ${result.generation_metadata.generation_time_ms}ms`);
       return result;
@@ -490,7 +490,8 @@ class SmartBundleService {
             target_demographics: {
               age_range: segment.demographic,
               style_preference: segment.style_preference,
-              budget_range: this.mapBudgetTierToRange(segment.budget_tier)
+              budget_range: this.mapBudgetTierToRange(segment.budget_tier),
+              body_types: []
             }
           }
         })

@@ -280,7 +280,7 @@ class VisualAnalysisEngine {
 
       // Cache the result based on analysis depth
       const cacheTime = request.analysis_depth === 'basic' ? 3600 : 1800; // 1 hour for basic, 30 min for comprehensive
-      await cacheService.set(cacheKey, result, cacheTime);
+      await cacheService.set(cacheKey, result, { ttl: cacheTime });
 
       logger.info(`Visual analysis completed in ${result.processing_metadata.analysis_time_ms}ms`);
       return result;
@@ -385,9 +385,9 @@ class VisualAnalysisEngine {
         },
         target_style: {
           desired_style: targetStyle,
-          transformation_elements: targetStyleProfile?.key_pieces || [],
-          color_adjustments: targetStyleProfile?.color_palette || [],
-          pattern_modifications: targetStyleProfile?.pattern_preferences || []
+          transformation_elements: (targetStyleProfile as any)?.key_pieces || [],
+          color_adjustments: (targetStyleProfile as any)?.color_palette || [],
+          pattern_modifications: (targetStyleProfile as any)?.pattern_preferences || []
         },
         transformation_plan: transformationPlan
       };

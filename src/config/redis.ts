@@ -72,15 +72,19 @@ export class RedisConnection {
   }
 
   private static createConnection(): Redis {
-    const redisOptions = typeof this.config === 'string' 
-      ? this.config // Use Redis URL directly
-      : {
-          ...this.config,
-          enableOfflineQueue: false,
-        };
-    
     console.log('🔌 Attempting to connect to Redis...');
-    const redis = new Redis(redisOptions);
+
+    let redis: Redis;
+    if (typeof this.config === 'string') {
+      // Use Redis URL directly
+      redis = new Redis(this.config);
+    } else {
+      // Use config object
+      redis = new Redis({
+        ...this.config,
+        enableOfflineQueue: false,
+      });
+    }
 
     redis.on('connect', () => {
       console.log('🔌 Redis connected successfully');
@@ -117,6 +121,9 @@ export class RedisConnection {
   static async ping(): Promise<boolean> {
     try {
       const redis = this.getInstance();
+      if (!redis) {
+        return false;
+      }
       const result = await redis.ping();
       return result === 'PONG';
     } catch (error) {
@@ -140,6 +147,10 @@ export class RedisConnection {
   static async flushCache(): Promise<void> {
     try {
       const redis = this.getInstance();
+      if (!redis) {
+        console.log('⚠️ Redis not available, skipping cache flush');
+        return;
+      }
       await redis.flushdb();
       console.log('🗑️ Redis cache flushed successfully');
     } catch (error) {
@@ -155,6 +166,16 @@ export class RedisConnection {
     db: number;
     status?: string;
   } {
+    if (typeof this.config === 'string') {
+      return {
+        isConnected: this.isConnected,
+        host: 'redis-url',
+        port: 0,
+        db: 0,
+        status: this.instance?.status,
+      };
+    }
+
     return {
       isConnected: this.isConnected,
       host: this.config?.host || 'unknown',

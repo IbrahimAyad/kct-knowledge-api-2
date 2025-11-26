@@ -160,7 +160,7 @@ export class RestoreFrameworkService {
         sessionId: context.sessionId,
         stage: currentStage,
         problemCategory: this.identifyProblemCategory(intent),
-        satisfactionTarget: this.framework[currentStage]?.satisfactionTarget
+        satisfactionTarget: (this.framework as any)[currentStage]?.satisfactionTarget
       });
 
       return response;
@@ -184,7 +184,7 @@ export class RestoreFrameworkService {
     context: ConversationContext,
     stage: string
   ): ChatResponse {
-    const stageConfig = this.framework[stage] as RESTOREStage;
+    const stageConfig = (this.framework as any)[stage] as RESTOREStage;
     const problemCategory = this.identifyProblemCategory(intent);
     
     let message = '';
@@ -272,7 +272,7 @@ export class RestoreFrameworkService {
     response += `\n\n${question}`;
     
     // Add immediate action if high severity
-    const categoryInfo = this.PROBLEM_CATEGORIES[problemCategory];
+    const categoryInfo = (this.PROBLEM_CATEGORIES as any)[problemCategory];
     if (categoryInfo?.severity === 'high') {
       response += " I'm already beginning to investigate this on my end while we talk.";
     }
@@ -291,7 +291,7 @@ export class RestoreFrameworkService {
     let response = `${basePattern}\n\n`;
     
     // Add diagnostic specifics based on problem category
-    const categoryInfo = this.PROBLEM_CATEGORIES[problemCategory];
+    const categoryInfo = (this.PROBLEM_CATEGORIES as any)[problemCategory];
     response += this.buildDiagnosticAnalysis(problemCategory, categoryInfo);
     
     response += `\n\n${question}`;
@@ -305,19 +305,19 @@ export class RestoreFrameworkService {
     problemCategory: string
   ): string {
     const basePattern = this.getRandomStagePattern('comprehensive_resolution');
-    const categoryInfo = this.PROBLEM_CATEGORIES[problemCategory];
+    const categoryInfo = (this.PROBLEM_CATEGORIES as any)[problemCategory];
     
     let response = `${basePattern}\n\n`;
     
     // Present specific solutions
     response += "Here are the solutions I'm implementing:\n\n";
     
-    categoryInfo.common_solutions.forEach((solution, index) => {
+    categoryInfo.common_solutions.forEach((solution: any, index: number) => {
       response += `${index + 1}. ${this.formatSolution(solution)}\n`;
     });
-    
+
     response += `\nAdditionally, I'm taking these preventive actions:\n`;
-    categoryInfo.recovery_actions.forEach((action, index) => {
+    categoryInfo.recovery_actions.forEach((action: any, index: number) => {
       response += `• ${this.formatRecoveryAction(action)}\n`;
     });
     
@@ -476,13 +476,13 @@ export class RestoreFrameworkService {
   }
 
   private getRandomStagePattern(stage: string): string {
-    const stageConfig = this.framework[stage] as RESTOREStage;
+    const stageConfig = (this.framework as any)[stage] as RESTOREStage;
     const patterns = stageConfig.patterns;
     return patterns[Math.floor(Math.random() * patterns.length)];
   }
 
   private getRandomStageQuestion(stage: string): string {
-    const stageConfig = this.framework[stage] as RESTOREStage;
+    const stageConfig = (this.framework as any)[stage] as RESTOREStage;
     const questions = stageConfig.questions || [];
     if (questions.length === 0) return '';
     return questions[Math.floor(Math.random() * questions.length)];

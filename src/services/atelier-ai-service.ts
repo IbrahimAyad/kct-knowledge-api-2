@@ -263,24 +263,24 @@ export class AtelierAIService {
   private generateStyleRecommendations(intent: Intent, context: ConversationContext): string {
     // Extract occasion from context or intent
     const occasion = intent.entities?.occasion || context.sessionContext?.occasion || 'business';
-    const occasionData = this.STYLE_KNOWLEDGE.occasions[occasion] || this.STYLE_KNOWLEDGE.occasions.business;
-    
+    const occasionData = (this.STYLE_KNOWLEDGE.occasions as any)[occasion] || this.STYLE_KNOWLEDGE.occasions.business;
+
     let recommendation = `For ${occasion} occasions, I recommend focusing on ${occasionData.style_notes}.\n\n`;
     recommendation += `Key pieces to consider:\n`;
-    
-    occasionData.key_pieces.forEach((piece, index) => {
+
+    occasionData.key_pieces.forEach((piece: any, index: any) => {
       recommendation += `${index + 1}. ${this.capitalizeLetter(piece)}\n`;
     });
-    
+
     recommendation += `\nColor palette: ${occasionData.color_preferences.join(', ')} work exceptionally well for this level of formality.`;
-    
+
     return recommendation;
   }
 
   private buildColorAdvice(intent: Intent, context: ConversationContext): string {
     const colors = Object.keys(this.STYLE_KNOWLEDGE.color_psychology);
-    const colorAdvice = colors.map(color => 
-      `${this.capitalizeLetter(color)}: ${this.STYLE_KNOWLEDGE.color_psychology[color]}`
+    const colorAdvice = colors.map(color =>
+      `${this.capitalizeLetter(color)}: ${(this.STYLE_KNOWLEDGE.color_psychology as any)[color]}`
     ).join('\n\n');
     
     return `Here's my expert guidance on color selection:\n\n${colorAdvice}\n\nWhich of these resonates with the image you want to project?`;

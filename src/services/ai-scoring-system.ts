@@ -393,7 +393,7 @@ class AIScoringSystem {
       };
 
       // Cache the result for 30 minutes
-      await cacheService.set(cacheKey, result, 1800);
+      await cacheService.set(cacheKey, result, { ttl: 1800 });
 
       const processingTime = Date.now() - startTime;
       logger.info(`Bundle scoring completed in ${processingTime}ms. Score: ${overallScore.toFixed(3)}`);
@@ -521,12 +521,18 @@ class AIScoringSystem {
   private async calculateConversionProbability(bundle: OutfitBundle, context?: any): Promise<any> {
     try {
       // Use conversion service to predict conversion rate
+      const suit = bundle.pieces.find(p => p.item_type === 'suit');
+      const shirt = bundle.pieces.find(p => p.item_type === 'shirt');
+      const tie = bundle.pieces.find(p => p.item_type === 'tie');
+
+      const combination = {
+        suit_color: suit?.color || 'navy',
+        shirt_color: shirt?.color || 'white',
+        tie_color: tie?.color || 'navy'
+      };
+
       const conversionPrediction = await conversionService.predictConversionRate(
-        {
-          suit_color: bundle.pieces.find(p => p.item_type === 'suit')?.color || 'navy',
-          shirt_color: bundle.pieces.find(p => p.item_type === 'shirt')?.color || 'white',
-          tie_color: bundle.pieces.find(p => p.item_type === 'tie')?.color || 'navy'
-        },
+        suit?.color || 'navy',
         context?.target_customer,
         bundle.occasion,
         'desktop',
@@ -568,7 +574,7 @@ class AIScoringSystem {
       };
 
     } catch (error) {
-      logger.warn('Conversion probability calculation fallback used:', error);
+      logger.warn('Conversion probability calculation fallback used:', error instanceof Error ? { error: error.message } : {});
       return {
         score: 0.6,
         confidence: 0.5,
@@ -624,7 +630,7 @@ class AIScoringSystem {
       };
 
     } catch (error) {
-      logger.warn('Style coherence calculation fallback used:', error);
+      logger.warn('Style coherence calculation fallback used:', error instanceof Error ? { error: error.message } : {});
       return {
         score: 0.7,
         confidence: 0.5,
@@ -665,7 +671,7 @@ class AIScoringSystem {
       };
 
     } catch (error) {
-      logger.warn('Price optimization calculation fallback used:', error);
+      logger.warn('Price optimization calculation fallback used:', error instanceof Error ? { error: error.message } : {});
       return {
         score: 0.6,
         confidence: 0.5,
@@ -707,7 +713,7 @@ class AIScoringSystem {
       };
 
     } catch (error) {
-      logger.warn('Seasonal relevance calculation fallback used:', error);
+      logger.warn('Seasonal relevance calculation fallback used:', error instanceof Error ? { error: error.message } : {});
       return {
         score: 0.7,
         confidence: 0.5,
@@ -750,7 +756,7 @@ class AIScoringSystem {
       };
 
     } catch (error) {
-      logger.warn('Trend alignment calculation fallback used:', error);
+      logger.warn('Trend alignment calculation fallback used:', error instanceof Error ? { error: error.message } : {});
       return {
         score: 0.6,
         confidence: 0.5,
@@ -796,7 +802,7 @@ class AIScoringSystem {
       };
 
     } catch (error) {
-      logger.warn('Customer match calculation fallback used:', error);
+      logger.warn('Customer match calculation fallback used:', error instanceof Error ? { error: error.message } : {});
       return this.getDefaultCustomerMatch();
     }
   }
@@ -825,7 +831,7 @@ class AIScoringSystem {
       };
 
     } catch (error) {
-      logger.warn('Inventory efficiency calculation fallback used:', error);
+      logger.warn('Inventory efficiency calculation fallback used:', error instanceof Error ? { error: error.message } : {});
       return {
         score: 0.7,
         confidence: 0.5,
@@ -885,7 +891,7 @@ class AIScoringSystem {
       };
 
     } catch (error) {
-      logger.warn('Cross-sell potential calculation fallback used:', error);
+      logger.warn('Cross-sell potential calculation fallback used:', error instanceof Error ? { error: error.message } : {});
       return {
         score: 0.5,
         confidence: 0.5,
@@ -916,7 +922,7 @@ class AIScoringSystem {
   }
 
   private generateOptimizationSuggestions(scores: any[]): any[] {
-    const suggestions = [];
+    const suggestions: any[] = [];
     
     scores.forEach((score, index) => {
       if (score.score < 0.7) {

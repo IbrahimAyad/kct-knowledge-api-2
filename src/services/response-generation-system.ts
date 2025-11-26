@@ -250,7 +250,7 @@ class ResponseGenerationSystem {
       };
 
       // Cache the result for 5 minutes
-      await cacheService.set(cacheKey, generatedResponse, 300);
+      await cacheService.set(cacheKey, generatedResponse, { ttl: 300 });
 
       logger.debug(`✅ Response generated in ${generatedResponse.metadata.generation_time_ms}ms`);
       return generatedResponse;

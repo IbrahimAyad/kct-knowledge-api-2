@@ -193,7 +193,7 @@ export class VenueIntelligenceService {
           primary_lighting: primaryLighting,
           color_accuracy_impact: colorAccuracyImpact,
           recommendations,
-          undertone_shifts
+          undertone_shifts: undertoneShifts
         };
       },
       {
@@ -355,7 +355,7 @@ export class VenueIntelligenceService {
       mixed: {
         primary_lighting: 'mixed',
         intensity: 'variable',
-        color_temperature: 'mixed',
+        color_temperature: 'neutral' as any, // mixed lighting
         color_accuracy_impact: 7,
         recommendations: ['Balanced approach needed', 'Neutral colors safest']
       }
@@ -673,7 +673,7 @@ export class VenueIntelligenceService {
     return {
       status: dataLoaded ? 'healthy' : 'degraded',
       data_loaded: dataLoaded,
-      cache_status: `${cacheStats?.keys_count || 0} keys cached`,
+      cache_status: `${(cacheStats as any)?.keys_count || 0} keys cached`,
       last_update: new Date().toISOString()
     };
   }

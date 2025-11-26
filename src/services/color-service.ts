@@ -682,7 +682,7 @@ export class ColorService {
         ...baseRecommendations,
         shirt_recommendations: enhancedShirtRecommendations,
         psychology_optimization: {
-          emotional_alignment,
+          emotional_alignment: emotionalAlignment,
           confidence_boost_colors: confidenceBoostColors,
           personality_match: personalityMatch
         }

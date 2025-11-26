@@ -575,7 +575,7 @@ class CustomerSegmentationService {
 
       logger.info('✅ Segmentation models initialized');
     } catch (error) {
-      logger.warn('Failed to initialize segmentation models:', error);
+      logger.warn('Failed to initialize segmentation models:', error instanceof Error ? { error: error.message } : {});
     }
   }
 
@@ -785,7 +785,7 @@ class CustomerSegmentationService {
 
       logger.info(`✅ Loaded ${segments.length} customer segments`);
     } catch (error) {
-      logger.warn('Failed to load customer segments:', error);
+      logger.warn('Failed to load customer segments:', error instanceof Error ? { error: error.message } : {});
     }
   }
 
@@ -840,7 +840,7 @@ class CustomerSegmentationService {
       this.adaptationEngine.set('global', globalRules);
       logger.info('✅ Adaptation engine initialized');
     } catch (error) {
-      logger.warn('Failed to initialize adaptation engine:', error);
+      logger.warn('Failed to initialize adaptation engine:', error instanceof Error ? { error: error.message } : {});
     }
   }
 
@@ -889,16 +889,16 @@ class CustomerSegmentationService {
     }
 
     // Sort by score
-    segmentScores.sort((a, b) => b.score.score - a.score.score);
+    segmentScores.sort((a, b) => (b.score as any).score - (a.score as any).score);
 
     // Primary segment is highest scoring
     const primary = segmentScores[0].segment;
-    const primaryScore = segmentScores[0].score.score;
+    const primaryScore = (segmentScores[0].score as any).score;
 
     // Secondary segments are those with scores within 20% of primary
     const secondary = segmentScores
       .slice(1)
-      .filter(s => s.score.score >= primaryScore * 0.8)
+      .filter(s => (s.score as any).score >= primaryScore * 0.8)
       .map(s => s.segment)
       .slice(0, 2); // Max 2 secondary segments
 
@@ -909,7 +909,7 @@ class CustomerSegmentationService {
       primary,
       secondary,
       confidence,
-      reasons: segmentScores[0].score.reasons
+      reasons: (segmentScores[0].score as any).reasons
     };
   }
 
@@ -1059,7 +1059,7 @@ class CustomerSegmentationService {
 
       return false;
     } catch (error) {
-      logger.warn(`Failed to evaluate condition: ${condition}`, error);
+      logger.warn(`Failed to evaluate condition: ${condition}`, error instanceof Error ? { error: error.message } : {});
       return false;
     }
   }
