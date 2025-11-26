@@ -843,6 +843,7 @@ app.post("/api/recommendations", async (req, res) => {
 });
 
 // Lovable compatibility alias for recommendations
+app.options("/api/recommendations/generate", cors()); // Enable CORS preflight
 app.post("/api/recommendations/generate", async (req, res) => {
   await initializeServices();
   await apiControllers.getRecommendations(req, res);
@@ -855,6 +856,7 @@ app.get("/api/trending", async (req, res) => {
 });
 
 // Lovable compatibility alias for trends
+app.options("/api/trends/current", cors()); // Enable CORS preflight
 app.get("/api/trends/current", async (req, res) => {
   // Add HTTP cache headers for better performance
   res.set({
