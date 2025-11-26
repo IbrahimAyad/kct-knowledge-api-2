@@ -836,6 +836,12 @@ app.post("/api/combinations/validate", async (req, res) => {
   await apiControllers.validateCombinations(req, res);
 });
 
+// CORS options for Lovable endpoints
+const corsOptions = {
+  origin: true, // Allow all origins for Lovable endpoints
+  credentials: true
+};
+
 // AI Recommendations API
 app.post("/api/recommendations", async (req, res) => {
   await initializeServices();
@@ -843,8 +849,8 @@ app.post("/api/recommendations", async (req, res) => {
 });
 
 // Lovable compatibility alias for recommendations
-app.options("/api/recommendations/generate", cors()); // Enable CORS preflight
-app.post("/api/recommendations/generate", async (req, res) => {
+app.options("/api/recommendations/generate", cors(corsOptions));
+app.post("/api/recommendations/generate", cors(corsOptions), async (req, res) => {
   await initializeServices();
   await apiControllers.getRecommendations(req, res);
 });
@@ -856,8 +862,8 @@ app.get("/api/trending", async (req, res) => {
 });
 
 // Lovable compatibility alias for trends
-app.options("/api/trends/current", cors()); // Enable CORS preflight
-app.get("/api/trends/current", async (req, res) => {
+app.options("/api/trends/current", cors(corsOptions));
+app.get("/api/trends/current", cors(corsOptions), async (req, res) => {
   // Add HTTP cache headers for better performance
   res.set({
     'Cache-Control': 'public, max-age=900, stale-while-revalidate=1800',
