@@ -848,6 +848,12 @@ app.get("/api/trending", async (req, res) => {
 
 // Lovable compatibility alias for trends
 app.get("/api/trends/current", async (req, res) => {
+  // Add HTTP cache headers for better performance
+  res.set({
+    'Cache-Control': 'public, max-age=900, stale-while-revalidate=1800',
+   'Vary': 'Accept-Encoding'
+  });
+
   await initializeServices();
   await apiControllers.getTrending(req, res);
 });
