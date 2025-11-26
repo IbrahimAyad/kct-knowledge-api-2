@@ -154,21 +154,29 @@ const getAllowedOrigins = () => {
 app.use(cors({
   origin: function (origin, callback) {
     const allowedOrigins = getAllowedOrigins();
-    
+
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    
+
     // Check if the origin is allowed (including wildcard support)
     const isAllowed = allowedOrigins.some(allowed => {
       if (allowed === origin) return true;
       if (allowed.includes('*')) {
-        const regex = new RegExp('^' + allowed.replace(/\*/g, '.*') + '$');
+        const regex = new RegExp('^' + allowed.replace(/\*/g, '.*').replace(/\./g, '\\.') + '$');
         return regex.test(origin);
       }
       return false;
     });
-    
-    callback(isAllowed ? null : new Error('Not allowed by CORS'), isAllowed);
+
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      // Log the rejection for debugging
+      logger.warn(`CORS: Rejected origin: ${origin}`, {
+        metadata: { allowedOrigins, attemptedOrigin: origin }
+      });
+      callback(null, false); // Don't throw error, just reject
+    }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
