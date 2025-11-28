@@ -103,8 +103,8 @@ export class MetricsCollector {
     responseTimeCritical: 3000, // 3s
     errorRateWarning: 0.05, // 5%
     errorRateCritical: 0.1, // 10%
-    memoryUsageWarning: 0.8, // 80%
-    memoryUsageCritical: 0.9, // 90%
+    memoryUsageWarning: 0.95, // 95% (adjusted for 32GB RAM allocation)
+    memoryUsageCritical: 0.98, // 98%
   };
 
   constructor() {
