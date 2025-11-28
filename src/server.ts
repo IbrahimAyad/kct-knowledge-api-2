@@ -96,7 +96,13 @@ app.use(cacheInvalidation(['*color*', '*trending*', '*style*', '*venue*']));
 const corsOptions = {
   origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
     const allowedOrigins = process.env.NODE_ENV === 'production'
-      ? ['https://kctmenswear.com', 'https://www.kctmenswear.com', 'https://kct-menswear-v2.vercel.app']
+      ? [
+          'https://kctmenswear.com',
+          'http://kctmenswear.com',  // Allow HTTP (will redirect to HTTPS)
+          'https://www.kctmenswear.com',
+          'http://www.kctmenswear.com',  // Allow HTTP (will redirect to HTTPS)
+          'https://kct-menswear-v2.vercel.app'
+        ]
       : ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174'];
 
     // Allow requests with no origin (mobile apps, curl, postman)
