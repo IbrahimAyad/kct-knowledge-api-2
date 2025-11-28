@@ -101,7 +101,8 @@ const corsOptions = {
           'http://kctmenswear.com',  // Allow HTTP (will redirect to HTTPS)
           'https://www.kctmenswear.com',
           'http://www.kctmenswear.com',  // Allow HTTP (will redirect to HTTPS)
-          'https://kct-menswear-v2.vercel.app'
+          'https://kct-menswear-v2.vercel.app',
+          'https://kct-menswear-2025.pages.dev'  // Cloudflare Pages deployment
         ]
       : ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174'];
 
