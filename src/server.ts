@@ -108,8 +108,9 @@ const corsOptions = {
     // Allow requests with no origin (mobile apps, curl, postman)
     if (!origin) return callback(null, true);
 
-    // Check if origin is in allowed list
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    // Check if origin is in allowed list or is a Lovable preview domain
+    const isLovablePreview = origin.includes('.lovable.app');
+    if (allowedOrigins.indexOf(origin) !== -1 || isLovablePreview) {
       console.log(`✅ CORS allowed: ${origin}`);
       callback(null, true);
     } else {
