@@ -2,6 +2,12 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import {
+  initializeSentry,
+  sentryRequestHandler,
+  sentryErrorHandler,
+  captureMessage
+} from "./config/sentry";
 // Import caching and performance middleware
 import { 
   httpCache, 
@@ -37,6 +43,7 @@ import { createApiResponse } from "./utils/data-loader";
 import { ValidationSchemas } from "./utils/validation-schemas";
 import { authenticateApiKey, addAuthenticatedFlag } from "./middleware/auth";
 import * as apiControllers from "./controllers/api";
+import { analyticsSummaryService } from "./services/analytics-summary-service";
 import {
   ColorRecommendationRequest,
   StyleProfileRequest,
@@ -45,6 +52,9 @@ import {
 
 const app = express();
 const PORT = process.env['PORT'] || 3000;
+
+// Initialize Sentry for error monitoring (must be first)
+initializeSentry();
 
 // Security and Performance Middleware
 app.use(helmet({
@@ -82,7 +92,7 @@ app.use('/api/', limiter);
 // Cache invalidation middleware for data modification endpoints
 app.use(cacheInvalidation(['*color*', '*trending*', '*style*', '*venue*']));
 
-// CORS Configuration
+// CORS Configuration with Monitoring
 const corsOptions = {
   origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
     const allowedOrigins = process.env.NODE_ENV === 'production'
@@ -94,9 +104,24 @@ const corsOptions = {
 
     // Check if origin is in allowed list
     if (allowedOrigins.indexOf(origin) !== -1) {
+      console.log(`✅ CORS allowed: ${origin}`);
       callback(null, true);
     } else {
-      console.log('CORS blocked origin:', origin);
+      // Log and monitor blocked origins
+      console.warn(`⛔ CORS blocked: ${origin}`);
+
+      // Send to Sentry for monitoring
+      captureMessage(
+        `CORS request blocked from origin: ${origin}`,
+        'warning',
+        {
+          origin,
+          allowedOrigins,
+          environment: process.env.NODE_ENV,
+          timestamp: new Date().toISOString()
+        }
+      );
+
       callback(null, false);
     }
   },
@@ -134,7 +159,8 @@ app.use((req, res, next) => {
     '/api/recommendations',
     '/api/venues',
     '/api/styles',
-    '/api/rules/check'
+    '/api/rules/check',
+    '/api/analytics' // Public analytics endpoints
   ];
 
   const isPublicPath = publicPaths.some(path =>
@@ -653,6 +679,56 @@ app.post("/api/rules/check", async (req, res) => {
   await initializeServices();
   await apiControllers.checkFashionRules(req, res);
 });
+
+// ===== ANALYTICS ENDPOINTS =====
+
+// Comprehensive analytics summary
+app.get("/api/analytics/summary", async (_req, res) => {
+  try {
+    await initializeServices();
+    const summary = await analyticsSummaryService.getSummary();
+    res.json(createApiResponse(true, summary));
+  } catch (error) {
+    res.status(500).json(createApiResponse(
+      false,
+      undefined,
+      error instanceof Error ? error.message : 'Failed to get analytics summary'
+    ));
+  }
+});
+
+// Backwards compatibility endpoint
+app.get("/api/analytics/get_analytics_summary", async (_req, res) => {
+  try {
+    await initializeServices();
+    const summary = await analyticsSummaryService.getSummary();
+    res.json(createApiResponse(true, summary));
+  } catch (error) {
+    res.status(500).json(createApiResponse(
+      false,
+      undefined,
+      error instanceof Error ? error.message : 'Failed to get analytics summary'
+    ));
+  }
+});
+
+// Quick stats endpoint for lightweight requests
+app.get("/api/analytics/stats", async (_req, res) => {
+  try {
+    await initializeServices();
+    const stats = await analyticsSummaryService.getQuickStats();
+    res.json(createApiResponse(true, stats));
+  } catch (error) {
+    res.status(500).json(createApiResponse(
+      false,
+      undefined,
+      error instanceof Error ? error.message : 'Failed to get quick stats'
+    ));
+  }
+});
+
+// Sentry error handler (must be before other error handlers)
+sentryErrorHandler(app);
 
 // Error handler
 app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

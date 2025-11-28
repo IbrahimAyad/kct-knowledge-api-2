@@ -27,6 +27,8 @@
   "author": "KCT Team",
   "license": "MIT",
   "dependencies": {
+    "@sentry/node": "^10.27.0",
+    "@sentry/profiling-node": "^10.27.0",
     "@types/ioredis": "^4.28.10",
     "@types/swagger-ui-express": "^4.1.8",
     "@types/ws": "^8.18.1",
