@@ -9,13 +9,13 @@ import {
   captureMessage
 } from "./config/sentry";
 // Import caching and performance middleware
-import { 
-  httpCache, 
-  cacheInvalidation, 
-  performanceTiming, 
-  memoryMonitoring 
+import {
+  httpCache,
+  cacheInvalidation,
+  performanceTiming,
+  memoryMonitoring
 } from "./middleware/cache";
-import { 
+import {
   smartCompression,
   responseOptimization,
   connectionOptimization,
@@ -23,6 +23,17 @@ import {
   memoryLeakPrevention,
   performanceHealthCheck
 } from "./middleware/performance";
+// Import cache headers and rate limiting
+import {
+  CacheStrategies,
+  clearCacheHeaders,
+  conditionalRequest
+} from "./middleware/cache-headers";
+import {
+  EndpointRateLimits,
+  createApiKeyRateLimiter,
+  getRateLimitStatus
+} from "./middleware/rate-limiting";
 // Import Swagger UI middleware
 import { setupSwagger, addDocumentationLinks } from "./middleware/swagger";
 // Import validation engines
@@ -73,21 +84,13 @@ app.use(memoryLeakPrevention());
 app.use(performanceTiming());
 app.use(memoryMonitoring());
 
-// Rate limiting for API endpoints
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 1000, // Limit each IP to 1000 requests per windowMs
-  message: {
-    success: false,
-    error: 'Too many requests from this IP, please try again later.',
-    timestamp: new Date().toISOString()
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+// Cache headers and conditional requests
+app.use(conditionalRequest());
+app.use(clearCacheHeaders());
 
-// Apply rate limiting to API routes
-app.use('/api/', limiter);
+// Global API key-based rate limiting (higher limits for authenticated requests)
+const globalLimiter = createApiKeyRateLimiter(500, 100);
+app.use('/api/', globalLimiter);
 
 // Cache invalidation middleware for data modification endpoints
 app.use(cacheInvalidation(['*color*', '*trending*', '*style*', '*venue*']));
@@ -168,7 +171,8 @@ app.use((req, res, next) => {
     '/api/venues',
     '/api/styles',
     '/api/rules/check',
-    '/api/analytics' // Public analytics endpoints
+    '/api/analytics', // Public analytics endpoints
+    '/api/rate-limit-status' // Rate limit status endpoint
   ];
 
   const isPublicPath = publicPaths.some(path =>
@@ -239,14 +243,16 @@ app.get("/", (_req, res) => {
   });
 });
 
-app.get("/health", (_req, res) => {
-  res.json({
-    status: "healthy",
-    timestamp: new Date().toISOString(),
-    version: "2.0.0",
-    services_initialized: servicesInitialized
+app.get("/health",
+  EndpointRateLimits.HEALTH,
+  (_req, res) => {
+    res.json({
+      status: "healthy",
+      timestamp: new Date().toISOString(),
+      version: "2.0.0",
+      services_initialized: servicesInitialized
+    });
   });
-});
 
 // Performance metrics endpoint
 app.get("/health/performance", performanceHealthCheck());
@@ -321,10 +327,12 @@ app.get("/api/v1/health", async (_req, res) => {
 });
 
 // Color Service Endpoints with caching
-app.get("/api/v1/colors", 
-  httpCache({ 
+app.get("/api/v1/colors",
+  EndpointRateLimits.COLORS,
+  CacheStrategies.LONG(),
+  httpCache({
     ttl: 24 * 60 * 60, // 24 hours
-    tags: ['colors'] 
+    tags: ['colors']
   }),
   async (_req, res) => {
     try {
@@ -332,7 +340,7 @@ app.get("/api/v1/colors",
       const colorFamilies = await colorService.getColorFamilies();
       const universalRules = await colorService.getUniversalRules();
       const trendingColors = await colorService.getTrendingColors();
-      
+
       res.json(createApiResponse(true, {
         color_families: colorFamilies,
         universal_rules: universalRules,
@@ -347,7 +355,8 @@ app.get("/api/v1/colors",
     }
   });
 
-app.post("/api/v1/colors/recommendations", 
+app.post("/api/v1/colors/recommendations",
+  EndpointRateLimits.AI_RECOMMENDATIONS,
   ValidationSchemas.validateColorRecommendationRequest,
   async (req, res) => {
     try {
@@ -636,10 +645,13 @@ app.get("/api/v1/info", async (_req, res) => {
 // ===== NEW PRIORITY API ENDPOINTS =====
 
 // Core Colors API
-app.get("/api/colors", async (req, res) => {
-  await initializeServices();
-  await apiControllers.getColors(req, res);
-});
+app.get("/api/colors",
+  EndpointRateLimits.COLORS,
+  CacheStrategies.LONG(),
+  async (req, res) => {
+    await initializeServices();
+    await apiControllers.getColors(req, res);
+  });
 
 app.get("/api/colors/:color/relationships", async (req, res) => {
   await initializeServices();
@@ -647,28 +659,38 @@ app.get("/api/colors/:color/relationships", async (req, res) => {
 });
 
 // Combinations Validation API
-app.post("/api/combinations/validate", async (req, res) => {
-  await initializeServices();
-  await apiControllers.validateCombinations(req, res);
-});
+app.post("/api/combinations/validate",
+  EndpointRateLimits.VALIDATION,
+  async (req, res) => {
+    await initializeServices();
+    await apiControllers.validateCombinations(req, res);
+  });
 
 // AI Recommendations API
-app.post("/api/recommendations", async (req, res) => {
-  await initializeServices();
-  await apiControllers.getRecommendations(req, res);
-});
+app.post("/api/recommendations",
+  EndpointRateLimits.AI_RECOMMENDATIONS,
+  async (req, res) => {
+    await initializeServices();
+    await apiControllers.getRecommendations(req, res);
+  });
 
 // Trending Analysis API
-app.get("/api/trending", async (req, res) => {
-  await initializeServices();
-  await apiControllers.getTrending(req, res);
-});
+app.get("/api/trending",
+  EndpointRateLimits.TRENDING,
+  CacheStrategies.SHORT(),
+  async (req, res) => {
+    await initializeServices();
+    await apiControllers.getTrending(req, res);
+  });
 
 // Backwards compatibility endpoint for /api/trends/current
-app.get("/api/trends/current", async (req, res) => {
-  await initializeServices();
-  await apiControllers.getTrending(req, res);
-});
+app.get("/api/trends/current",
+  EndpointRateLimits.TRENDING,
+  CacheStrategies.SHORT(),
+  async (req, res) => {
+    await initializeServices();
+    await apiControllers.getTrending(req, res);
+  });
 
 // Venue-Specific Recommendations API
 app.get("/api/venues/:type/recommendations", async (req, res) => {
@@ -691,49 +713,61 @@ app.post("/api/rules/check", async (req, res) => {
 // ===== ANALYTICS ENDPOINTS =====
 
 // Comprehensive analytics summary
-app.get("/api/analytics/summary", async (_req, res) => {
-  try {
-    await initializeServices();
-    const summary = await analyticsSummaryService.getSummary();
-    res.json(createApiResponse(true, summary));
-  } catch (error) {
-    res.status(500).json(createApiResponse(
-      false,
-      undefined,
-      error instanceof Error ? error.message : 'Failed to get analytics summary'
-    ));
-  }
-});
+app.get("/api/analytics/summary",
+  EndpointRateLimits.ANALYTICS,
+  CacheStrategies.MEDIUM(),
+  async (_req, res) => {
+    try {
+      await initializeServices();
+      const summary = await analyticsSummaryService.getSummary();
+      res.json(createApiResponse(true, summary));
+    } catch (error) {
+      res.status(500).json(createApiResponse(
+        false,
+        undefined,
+        error instanceof Error ? error.message : 'Failed to get analytics summary'
+      ));
+    }
+  });
 
 // Backwards compatibility endpoint
-app.get("/api/analytics/get_analytics_summary", async (_req, res) => {
-  try {
-    await initializeServices();
-    const summary = await analyticsSummaryService.getSummary();
-    res.json(createApiResponse(true, summary));
-  } catch (error) {
-    res.status(500).json(createApiResponse(
-      false,
-      undefined,
-      error instanceof Error ? error.message : 'Failed to get analytics summary'
-    ));
-  }
-});
+app.get("/api/analytics/get_analytics_summary",
+  EndpointRateLimits.ANALYTICS,
+  CacheStrategies.MEDIUM(),
+  async (_req, res) => {
+    try {
+      await initializeServices();
+      const summary = await analyticsSummaryService.getSummary();
+      res.json(createApiResponse(true, summary));
+    } catch (error) {
+      res.status(500).json(createApiResponse(
+        false,
+        undefined,
+        error instanceof Error ? error.message : 'Failed to get analytics summary'
+      ));
+    }
+  });
 
 // Quick stats endpoint for lightweight requests
-app.get("/api/analytics/stats", async (_req, res) => {
-  try {
-    await initializeServices();
-    const stats = await analyticsSummaryService.getQuickStats();
-    res.json(createApiResponse(true, stats));
-  } catch (error) {
-    res.status(500).json(createApiResponse(
-      false,
-      undefined,
-      error instanceof Error ? error.message : 'Failed to get quick stats'
-    ));
-  }
-});
+app.get("/api/analytics/stats",
+  EndpointRateLimits.ANALYTICS,
+  CacheStrategies.SHORT(),
+  async (_req, res) => {
+    try {
+      await initializeServices();
+      const stats = await analyticsSummaryService.getQuickStats();
+      res.json(createApiResponse(true, stats));
+    } catch (error) {
+      res.status(500).json(createApiResponse(
+        false,
+        undefined,
+        error instanceof Error ? error.message : 'Failed to get quick stats'
+      ));
+    }
+  });
+
+// Rate limit status endpoint
+app.get("/api/rate-limit-status", getRateLimitStatus());
 
 // Sentry error handler (must be before other error handlers)
 sentryErrorHandler(app);

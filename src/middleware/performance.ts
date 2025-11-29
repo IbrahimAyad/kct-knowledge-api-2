@@ -97,13 +97,17 @@ const performanceMonitor = new PerformanceMonitor();
 
 /**
  * Enhanced compression middleware with smart compression
+ * Supports Gzip and Deflate (Brotli requires separate package)
  */
 export function smartCompression() {
   const compressionMiddleware = compression({
     // Only compress responses larger than 1kb
     threshold: 1024,
-    // Compression level (1-9, 6 is default)
-    level: 6,
+    // Compression level (1-9)
+    // 6 = balanced (default)
+    // 9 = maximum compression (slower)
+    // 1 = fastest (less compression)
+    level: process.env.NODE_ENV === 'production' ? 6 : 4, // Slightly faster in development
     // Memory level (1-9, 8 is default)
     memLevel: 8,
     // Filter function to determine what to compress
@@ -117,13 +121,20 @@ export function smartCompression() {
       const contentType = res.getHeader('content-type') as string;
       if (contentType) {
         const type = contentType.toLowerCase();
-        if (type.includes('image/') || 
-            type.includes('video/') || 
+        if (type.includes('image/') ||
+            type.includes('video/') ||
             type.includes('audio/') ||
             type.includes('application/zip') ||
-            type.includes('application/gzip')) {
+            type.includes('application/gzip') ||
+            type.includes('application/x-brotli')) {
           return false;
         }
+      }
+
+      // Don't compress very small responses (overhead not worth it)
+      const contentLength = res.getHeader('content-length');
+      if (contentLength && parseInt(contentLength as string) < 1024) {
+        return false;
       }
 
       // Use default compression filter
@@ -131,7 +142,34 @@ export function smartCompression() {
     },
   });
 
-  return compressionMiddleware;
+  return (req: Request, res: Response, next: NextFunction) => {
+    // Add compression info headers in development
+    if (process.env.NODE_ENV !== 'production') {
+      const originalSend = res.send;
+      res.send = function(data: any) {
+        const acceptEncoding = req.get('Accept-Encoding') || '';
+        const usedEncoding = res.get('Content-Encoding') || 'none';
+
+        res.set('X-Compression-Support', acceptEncoding);
+        res.set('X-Compression-Used', usedEncoding);
+
+        // Calculate compression ratio if compressed
+        if (usedEncoding !== 'none' && data) {
+          const originalSize = Buffer.byteLength(JSON.stringify(data));
+          const compressedSize = res.get('Content-Length');
+          if (compressedSize) {
+            const ratio = ((1 - parseInt(compressedSize) / originalSize) * 100).toFixed(1);
+            res.set('X-Compression-Ratio', `${ratio}%`);
+            console.log(`🗜️ Compressed ${req.path}: ${Math.round(originalSize / 1024)}KB → ${Math.round(parseInt(compressedSize) / 1024)}KB (${ratio}% reduction)`);
+          }
+        }
+
+        return originalSend.call(this, data);
+      };
+    }
+
+    compressionMiddleware(req, res, next);
+  };
 }
 
 /**
