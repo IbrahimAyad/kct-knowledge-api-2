@@ -93,18 +93,25 @@ router.get(
       const [
         ga4Traffic,
         ga4Devices,
-        ga4Realtime,
         shopifySales,
         recommendationMetrics,
         topProducts,
       ] = await Promise.all([
         ga4AnalyticsService.getTrafficMetrics(`${days}daysAgo`, 'today'),
         ga4AnalyticsService.getDeviceMetrics(`${days}daysAgo`, 'today'),
-        ga4AnalyticsService.getRealtimeMetrics(),
         shopifyAnalyticsService.getSalesMetrics(startDateStr, endDateStr),
         recommendationAnalyticsService.getMetrics(days),
         recommendationAnalyticsService.getTopProducts('click', 5),
       ]);
+
+      // Try to get realtime data, but don't fail if unavailable
+      let ga4Realtime;
+      try {
+        ga4Realtime = await ga4AnalyticsService.getRealtimeMetrics();
+      } catch (error) {
+        console.warn('Realtime metrics unavailable:', error);
+        ga4Realtime = { activeUsers: 0, screenPageViewsPerMinute: 0, topPages: [], topCountries: [] };
+      }
 
       // Calculate conversion rate
       const conversionRate =
@@ -399,9 +406,9 @@ router.get('/health', async (req: Request, res: Response) => {
       redis: { status: 'unknown' },
     };
 
-    // Test GA4 connection
+    // Test GA4 connection (use traffic metrics instead of realtime)
     try {
-      await ga4AnalyticsService.getRealtimeMetrics();
+      await ga4AnalyticsService.getTrafficMetrics('7daysAgo', 'today');
       checks.ga4 = { status: 'healthy', message: 'GA4 API connected' };
     } catch (error) {
       checks.ga4 = {
