@@ -35,15 +35,42 @@ export interface GA4RealtimeMetrics {
 }
 
 export class GA4AnalyticsService {
-  private analyticsDataClient: BetaAnalyticsDataClient;
+  private analyticsDataClient: BetaAnalyticsDataClient | null = null;
   private propertyId: string;
+  private initialized = false;
 
   constructor() {
-    // Initialize with service account credentials from environment
-    this.analyticsDataClient = new BetaAnalyticsDataClient({
-      credentials: this.getCredentials(),
-    });
-    this.propertyId = `properties/${process.env.GA4_PROPERTY_ID}`;
+    this.propertyId = `properties/${process.env.GA4_PROPERTY_ID || ''}`;
+  }
+
+  /**
+   * Lazy initialization - only initialize when first method is called
+   */
+  private initialize() {
+    if (this.initialized) return;
+
+    try {
+      this.analyticsDataClient = new BetaAnalyticsDataClient({
+        credentials: this.getCredentials(),
+      });
+      this.initialized = true;
+    } catch (error) {
+      console.error('Failed to initialize GA4 Analytics Service:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get client (initialize if needed)
+   */
+  private getClient(): BetaAnalyticsDataClient {
+    if (!this.analyticsDataClient) {
+      this.initialize();
+    }
+    if (!this.analyticsDataClient) {
+      throw new Error('GA4 Analytics client not initialized');
+    }
+    return this.analyticsDataClient;
   }
 
   /**
@@ -83,7 +110,8 @@ export class GA4AnalyticsService {
     endDate: string = 'today'
   ): Promise<GA4TrafficMetrics> {
     try {
-      const [response] = await this.analyticsDataClient.runReport({
+      const client = this.getClient();
+      const [response] = await client.runReport({
         property: this.propertyId,
         dateRanges: [{ startDate, endDate }],
         metrics: [
@@ -125,7 +153,7 @@ export class GA4AnalyticsService {
     endDate: string = 'today'
   ): Promise<GA4DeviceMetrics> {
     try {
-      const [response] = await this.analyticsDataClient.runReport({
+      const [response] = await this.getClient().runReport({
         property: this.propertyId,
         dateRanges: [{ startDate, endDate }],
         dimensions: [{ name: 'deviceCategory' }],
@@ -167,7 +195,7 @@ export class GA4AnalyticsService {
     limit: number = 10
   ): Promise<GA4TopPage[]> {
     try {
-      const [response] = await this.analyticsDataClient.runReport({
+      const [response] = await this.getClient().runReport({
         property: this.propertyId,
         dateRanges: [{ startDate, endDate }],
         dimensions: [{ name: 'pagePath' }],
@@ -203,7 +231,7 @@ export class GA4AnalyticsService {
   async getRealtimeMetrics(): Promise<GA4RealtimeMetrics> {
     try {
       // Active users in last 30 minutes
-      const [usersResponse] = await this.analyticsDataClient.runRealtimeReport({
+      const [usersResponse] = await this.getClient().runRealtimeReport({
         property: this.propertyId,
         metrics: [
           { name: 'activeUsers' },
@@ -212,7 +240,7 @@ export class GA4AnalyticsService {
       });
 
       // Top pages realtime
-      const [pagesResponse] = await this.analyticsDataClient.runRealtimeReport({
+      const [pagesResponse] = await this.getClient().runRealtimeReport({
         property: this.propertyId,
         dimensions: [{ name: 'unifiedScreenName' }],
         metrics: [{ name: 'activeUsers' }],
@@ -226,7 +254,7 @@ export class GA4AnalyticsService {
       });
 
       // Top countries realtime
-      const [countriesResponse] = await this.analyticsDataClient.runRealtimeReport({
+      const [countriesResponse] = await this.getClient().runRealtimeReport({
         property: this.propertyId,
         dimensions: [{ name: 'country' }],
         metrics: [{ name: 'activeUsers' }],
@@ -277,7 +305,7 @@ export class GA4AnalyticsService {
     endDate: string = 'today'
   ): Promise<Array<{ date: string; sessions: number; users: number }>> {
     try {
-      const [response] = await this.analyticsDataClient.runReport({
+      const [response] = await this.getClient().runReport({
         property: this.propertyId,
         dateRanges: [{ startDate, endDate }],
         dimensions: [{ name: 'date' }],
@@ -306,7 +334,7 @@ export class GA4AnalyticsService {
     endDate: string = 'today'
   ) {
     try {
-      const [response] = await this.analyticsDataClient.runReport({
+      const [response] = await this.getClient().runReport({
         property: this.propertyId,
         dateRanges: [{ startDate, endDate }],
         metrics: [

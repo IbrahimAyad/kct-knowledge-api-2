@@ -36,35 +36,50 @@ export interface ShopifyTopProduct {
 }
 
 export class ShopifyAnalyticsService {
-  private shopify: any;
+  private shopify: any = null;
   private accessToken: string;
   private shop: string;
+  private initialized = false;
 
   constructor() {
     const shopDomain = process.env.SHOPIFY_STORE_URL;
     this.accessToken = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN || '';
+    this.shop = shopDomain ? shopDomain.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
+  }
 
-    if (!shopDomain || !this.accessToken) {
+  /**
+   * Lazy initialization
+   */
+  private initialize() {
+    if (this.initialized) return;
+
+    if (!this.shop || !this.accessToken) {
       throw new Error('SHOPIFY_STORE_URL and SHOPIFY_ADMIN_ACCESS_TOKEN must be set');
     }
 
-    // Remove protocol and trailing slash if present
-    this.shop = shopDomain.replace(/^https?:\/\//, '').replace(/\/$/, '');
-
-    // Initialize Shopify API (use 2024-01 or later)
-    this.shopify = shopifyApi({
-      apiSecretKey: this.accessToken,
-      apiVersion: ApiVersion.January24,
-      isCustomStoreApp: true,
-      isEmbeddedApp: false,
-      hostName: this.shop,
-    });
+    try {
+      // Initialize Shopify API (use 2024-01 or later)
+      this.shopify = shopifyApi({
+        apiSecretKey: this.accessToken,
+        apiVersion: ApiVersion.January24,
+        isCustomStoreApp: true,
+        isEmbeddedApp: false,
+        hostName: this.shop,
+      });
+      this.initialized = true;
+    } catch (error) {
+      console.error('Failed to initialize Shopify Analytics Service:', error);
+      throw error;
+    }
   }
 
   /**
    * Create GraphQL client for queries
    */
   private getGraphQLClient() {
+    if (!this.shopify) {
+      this.initialize();
+    }
     return new (this.shopify as any).clients.Graphql({
       session: {
         shop: this.shop,
