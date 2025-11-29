@@ -58,8 +58,10 @@ export class ShopifyAnalyticsService {
     }
 
     try {
-      // Initialize Shopify API for v12+ (removed deprecated isCustomStoreApp flag)
+      // Initialize Shopify API for v12+ custom apps
+      // For admin API access tokens, we use apiKey (any string) and apiSecretKey (access token)
       this.shopify = shopifyApi({
+        apiKey: 'custom-app', // Can be any string for custom apps
         apiSecretKey: this.accessToken,
         adminApiAccessToken: this.accessToken,
         apiVersion: ApiVersion.January24,
