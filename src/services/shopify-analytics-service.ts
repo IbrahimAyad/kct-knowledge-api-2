@@ -1,10 +1,8 @@
 /**
  * Shopify Analytics Service
  * Fetches sales, orders, and product data from Shopify Admin API
+ * Uses direct GraphQL calls to avoid SDK compatibility issues
  */
-
-import '@shopify/shopify-api/adapters/node';
-import { shopifyApi, ApiVersion } from '@shopify/shopify-api';
 
 export interface ShopifySalesMetrics {
   totalSales: number;
@@ -36,58 +34,45 @@ export interface ShopifyTopProduct {
 }
 
 export class ShopifyAnalyticsService {
-  private shopify: any = null;
   private accessToken: string;
   private shop: string;
-  private initialized = false;
+  private graphqlUrl: string;
 
   constructor() {
     const shopDomain = process.env.SHOPIFY_STORE_URL;
     this.accessToken = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN || '';
     this.shop = shopDomain ? shopDomain.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
+    this.graphqlUrl = `https://${this.shop}/admin/api/2024-01/graphql.json`;
   }
 
   /**
-   * Lazy initialization
+   * Execute GraphQL query directly against Shopify Admin API
    */
-  private initialize() {
-    if (this.initialized) return;
-
+  private async executeGraphQL(query: string, variables?: any): Promise<any> {
     if (!this.shop || !this.accessToken) {
       throw new Error('SHOPIFY_STORE_URL and SHOPIFY_ADMIN_ACCESS_TOKEN must be set');
     }
 
-    try {
-      // Initialize Shopify API for v12+ custom apps
-      // For admin API access tokens, we use apiKey (any string) and apiSecretKey (access token)
-      this.shopify = shopifyApi({
-        apiKey: 'custom-app', // Can be any string for custom apps
-        apiSecretKey: this.accessToken,
-        adminApiAccessToken: this.accessToken,
-        apiVersion: ApiVersion.January24,
-        isEmbeddedApp: false,
-        hostName: this.shop,
-      });
-      this.initialized = true;
-    } catch (error) {
-      console.error('Failed to initialize Shopify Analytics Service:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Create GraphQL client for queries
-   */
-  private getGraphQLClient() {
-    if (!this.shopify) {
-      this.initialize();
-    }
-    return new (this.shopify as any).clients.Graphql({
-      session: {
-        shop: this.shop,
-        accessToken: this.accessToken,
+    const response = await fetch(this.graphqlUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Access-Token': this.accessToken,
       },
+      body: JSON.stringify({ query, variables }),
     });
+
+    if (!response.ok) {
+      throw new Error(`Shopify API error: ${response.status} ${response.statusText}`);
+    }
+
+    const result: any = await response.json();
+
+    if (result.errors) {
+      throw new Error(`GraphQL errors: ${JSON.stringify(result.errors)}`);
+    }
+
+    return result.data;
   }
 
   /**
@@ -98,8 +83,6 @@ export class ShopifyAnalyticsService {
     endDate: string
   ): Promise<ShopifySalesMetrics> {
     try {
-      const client = this.getGraphQLClient();
-
       // Query orders within date range
       const ordersQuery = `
         query getOrders($query: String!) {
@@ -121,14 +104,9 @@ export class ShopifyAnalyticsService {
 
       const dateQuery = `created_at:>=${startDate} AND created_at:<=${endDate}`;
 
-      const ordersResponse = await client.query({
-        data: {
-          query: ordersQuery,
-          variables: { query: dateQuery },
-        },
-      });
+      const ordersData = await this.executeGraphQL(ordersQuery, { query: dateQuery });
 
-      const orders = ordersResponse.body.data.orders.edges;
+      const orders = ordersData.orders.edges;
       const totalOrders = orders.length;
       const totalSales = orders.reduce((sum: number, edge: any) => {
         return sum + parseFloat(edge.node.totalPriceSet.shopMoney.amount);
@@ -158,16 +136,14 @@ export class ShopifyAnalyticsService {
         }
       `;
 
-      const statsResponse = await client.query({
-        data: { query: statsQuery },
-      });
+      const statsData = await this.executeGraphQL(statsQuery);
 
       return {
         totalSales: Math.round(totalSales * 100) / 100,
         totalOrders,
         averageOrderValue: Math.round(averageOrderValue * 100) / 100,
-        totalProducts: statsResponse.body.data.productsCount?.count || 0,
-        totalCustomers: statsResponse.body.data.customersCount?.count || 0,
+        totalProducts: statsData.productsCount?.count || 0,
+        totalCustomers: statsData.customersCount?.count || 0,
       };
     } catch (error) {
       console.error('Error fetching Shopify sales metrics:', error);
@@ -180,8 +156,6 @@ export class ShopifyAnalyticsService {
    */
   async getRecentOrders(limit: number = 10): Promise<ShopifyOrder[]> {
     try {
-      const client = this.getGraphQLClient();
-
       const query = `
         query getRecentOrders($limit: Int!) {
           orders(first: $limit, reverse: true, sortKey: CREATED_AT) {
@@ -220,14 +194,9 @@ export class ShopifyAnalyticsService {
         }
       `;
 
-      const response = await client.query({
-        data: {
-          query,
-          variables: { limit },
-        },
-      });
+      const data = await this.executeGraphQL(query, { limit });
 
-      return response.body.data.orders.edges.map((edge: any) => ({
+      return data.orders.edges.map((edge: any) => ({
         id: edge.node.id,
         orderNumber: parseInt(edge.node.name.replace('#', '')),
         totalPrice: parseFloat(edge.node.totalPriceSet.shopMoney.amount),
@@ -255,8 +224,6 @@ export class ShopifyAnalyticsService {
     limit: number = 10
   ): Promise<ShopifyTopProduct[]> {
     try {
-      const client = this.getGraphQLClient();
-
       // Get all orders in date range with line items
       const query = `
         query getOrdersForProducts($query: String!) {
@@ -287,17 +254,12 @@ export class ShopifyAnalyticsService {
 
       const dateQuery = `created_at:>=${startDate} AND created_at:<=${endDate}`;
 
-      const response = await client.query({
-        data: {
-          query,
-          variables: { query: dateQuery },
-        },
-      });
+      const data = await this.executeGraphQL(query, { query: dateQuery });
 
       // Aggregate product sales
       const productSales = new Map<string, { title: string; quantity: number; sales: number }>();
 
-      response.body.data.orders.edges.forEach((order: any) => {
+      data.orders.edges.forEach((order: any) => {
         order.node.lineItems.edges.forEach((item: any) => {
           if (!item.node.product) return;
 
@@ -343,8 +305,6 @@ export class ShopifyAnalyticsService {
    */
   async getConversionData(productIds: string[]): Promise<Map<string, number>> {
     try {
-      const client = this.getGraphQLClient();
-
       // Get purchase count for each product (last 30 days)
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -374,17 +334,12 @@ export class ShopifyAnalyticsService {
 
       const dateQuery = `created_at:>=${startDate} AND created_at:<=${endDate}`;
 
-      const response = await client.query({
-        data: {
-          query,
-          variables: { query: dateQuery },
-        },
-      });
+      const data = await this.executeGraphQL(query, { query: dateQuery });
 
       // Count purchases per product
       const purchases = new Map<string, number>();
 
-      response.body.data.orders.edges.forEach((order: any) => {
+      data.orders.edges.forEach((order: any) => {
         order.node.lineItems.edges.forEach((item: any) => {
           if (!item.node.product) return;
           const productId = item.node.product.id;
@@ -404,8 +359,6 @@ export class ShopifyAnalyticsService {
    */
   async getShopInfo() {
     try {
-      const client = this.getGraphQLClient();
-
       const query = `
         query {
           shop {
@@ -417,11 +370,9 @@ export class ShopifyAnalyticsService {
         }
       `;
 
-      const response = await client.query({
-        data: { query },
-      });
+      const data = await this.executeGraphQL(query);
 
-      return response.body.data.shop;
+      return data.shop;
     } catch (error) {
       console.error('Error fetching shop info:', error);
       throw error;
