@@ -56,6 +56,7 @@ import { ValidationSchemas } from "./utils/validation-schemas";
 import { authenticateApiKey, addAuthenticatedFlag } from "./middleware/auth";
 import * as apiControllers from "./controllers/api";
 import { analyticsSummaryService } from "./services/analytics-summary-service";
+import analyticsRouter from "./routes/analytics";
 import {
   ColorRecommendationRequest,
   StyleProfileRequest,
@@ -850,6 +851,9 @@ app.get("/api/analytics/stats",
 
 // Rate limit status endpoint
 app.get("/api/rate-limit-status", getRateLimitStatus());
+
+// Analytics routes
+app.use("/api/analytics", analyticsRouter);
 
 // Sentry error handler (must be before other error handlers)
 sentryErrorHandler(app);
