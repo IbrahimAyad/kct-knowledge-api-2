@@ -2,6 +2,7 @@
  * Shopify Analytics Service
  * Fetches sales, orders, and product data from Shopify Admin API
  * Uses direct GraphQL calls to avoid SDK compatibility issues
+ * No SDK dependencies - pure fetch() implementation
  */
 
 export interface ShopifySalesMetrics {
