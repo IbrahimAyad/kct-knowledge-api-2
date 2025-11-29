@@ -46,6 +46,7 @@ import { cacheService } from "./services/cache-service";
 import { cacheInvalidationService } from "./services/cache-invalidation";
 import { healthMonitor } from "./services/health-monitor";
 import { metricsCollector } from "./services/metrics-collector";
+import { enhancedHealthService } from "./services/enhanced-health-service";
 import { knowledgeBankService } from "./services/knowledge-bank-service";
 import { colorService } from "./services/color-service";
 import { styleProfileService } from "./services/style-profile-service";
@@ -209,9 +210,11 @@ const initializeServices = async () => {
     ]);
     
     servicesInitialized = true;
+    enhancedHealthService.setServicesReady(true);
     console.log('✅ Knowledge bank services and validation engines initialized successfully');
   } catch (error) {
     console.error('❌ Failed to initialize services:', error);
+    enhancedHealthService.setServicesReady(false);
     throw error;
   }
 };
@@ -243,6 +246,7 @@ app.get("/", (_req, res) => {
   });
 });
 
+// Basic health check (backwards compatibility)
 app.get("/health",
   EndpointRateLimits.HEALTH,
   (_req, res) => {
@@ -252,6 +256,84 @@ app.get("/health",
       version: "2.0.0",
       services_initialized: servicesInitialized
     });
+  });
+
+// Comprehensive health check (detailed status)
+app.get("/health/detailed",
+  EndpointRateLimits.HEALTH,
+  async (_req, res) => {
+    try {
+      const health = await enhancedHealthService.getComprehensiveHealth();
+      const statusCode = health.status === 'pass' ? 200 : health.status === 'warn' ? 200 : 503;
+      res.status(statusCode).json(health);
+    } catch (error) {
+      res.status(503).json({
+        status: 'fail',
+        version: '2.0.0',
+        output: error instanceof Error ? error.message : 'Health check failed'
+      });
+    }
+  });
+
+// Readiness probe (Kubernetes/Railway compatible)
+app.get("/health/ready",
+  EndpointRateLimits.HEALTH,
+  async (_req, res) => {
+    try {
+      const health = await enhancedHealthService.getReadinessProbe();
+      const statusCode = health.status === 'pass' ? 200 : 503;
+      res.status(statusCode).json(health);
+    } catch (error) {
+      res.status(503).json({
+        status: 'fail',
+        version: '2.0.0',
+        checks: {
+          'error': {
+            status: 'fail',
+            output: error instanceof Error ? error.message : 'Readiness check failed'
+          }
+        }
+      });
+    }
+  });
+
+// Liveness probe (Kubernetes/Railway compatible)
+app.get("/health/live",
+  EndpointRateLimits.HEALTH,
+  async (_req, res) => {
+    try {
+      const health = await enhancedHealthService.getLivenessProbe();
+      const statusCode = health.status === 'pass' ? 200 : 503;
+      res.status(statusCode).json(health);
+    } catch (error) {
+      res.status(503).json({
+        status: 'fail',
+        version: '2.0.0',
+        checks: {
+          'error': {
+            status: 'fail',
+            output: 'Liveness check failed - process not responsive'
+          }
+        }
+      });
+    }
+  });
+
+// Startup probe (Kubernetes compatible)
+app.get("/health/startup",
+  EndpointRateLimits.HEALTH,
+  async (_req, res) => {
+    try {
+      const health = await enhancedHealthService.getStartupProbe();
+      const statusCode = health.status === 'pass' ? 200 : health.status === 'warn' ? 200 : 503;
+      res.status(statusCode).json(health);
+    } catch (error) {
+      res.status(503).json({
+        status: 'fail',
+        version: '2.0.0',
+        output: error instanceof Error ? error.message : 'Startup check failed'
+      });
+    }
   });
 
 // Performance metrics endpoint
