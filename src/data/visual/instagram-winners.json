@@ -1,11 +1,12 @@
 {
   "metadata": {
-    "version": "1.0.0",
-    "last_updated": "2024-01-09",
+    "version": "2.0.0",
+    "last_updated": "2025-11-30",
     "description": "Most liked and engaged suit combinations on Instagram",
-    "tracking_period": "2023-2024",
-    "total_posts_analyzed": 15420,
-    "hashtags_tracked": ["#menssuits", "#weddingsuit", "#groomstyle", "#suitandtie", "#dapper"]
+    "tracking_period": "2023-2025",
+    "total_posts_analyzed": 24893,
+    "hashtags_tracked": ["#menssuits", "#weddingsuit", "#groomstyle", "#suitandtie", "#dapper", "#chocolatebrown", "#terracotta", "#emeraldgreen"],
+    "2025_highlights": "Chocolate brown posts up 412%, terracotta up 289%, emerald up 178%"
   },
   "top_performers": {
     "all_time_champions": [
@@ -113,22 +114,36 @@
   "trending_combinations": {
     "current_month": [
       {
+        "combination": "chocolate_brown_velvet",
+        "growth_rate": "+412%",
+        "hashtags": ["#chocolatebrown", "#2025groom", "#pantone2025", "#mochamoto usse"],
+        "influencer_adoption": "very_high",
+        "average_likes": 4892,
+        "top_post_likes": 18234,
+        "trending": "🔥 EXPLOSIVE"
+      },
+      {
+        "combination": "terracotta_earth_tones",
+        "growth_rate": "+289%",
+        "hashtags": ["#terracotta", "#earthtones", "#westcoastwedding"],
+        "influencer_adoption": "high",
+        "average_likes": 3567,
+        "geographic_leaders": ["LA", "San Diego", "Phoenix"]
+      },
+      {
+        "combination": "emerald_velvet_luxury",
+        "growth_rate": "+178%",
+        "hashtags": ["#emeraldgreen", "#jeweltones", "#winterformal"],
+        "influencer_adoption": "high",
+        "average_likes": 4123,
+        "peak_months": ["November", "December", "January"]
+      },
+      {
         "combination": "sage_suit_variations",
         "growth_rate": "+127%",
-        "hashtags": ["#sagegreen", "#2024groom", "#gardenwedding"],
-        "influencer_adoption": "high"
-      },
-      {
-        "combination": "monochromatic_grey",
-        "growth_rate": "+89%",
-        "hashtags": ["#modernminimalist", "#greysuit", "#sleek"],
-        "influencer_adoption": "medium"
-      },
-      {
-        "combination": "burgundy_velvet",
-        "growth_rate": "+76%",
-        "hashtags": ["#luxewedding", "#fallgroom", "#velvet"],
-        "influencer_adoption": "high"
+        "hashtags": ["#sagegreen", "#2025groom", "#gardenwedding"],
+        "influencer_adoption": "high",
+        "note": "Still strong but chocolate brown overtaking"
       }
     ],
     "emerging_trends": {
