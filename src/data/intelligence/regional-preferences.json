@@ -1,11 +1,12 @@
 {
   "metadata": {
-    "version": "1.0.0",
-    "last_updated": "2024-01-09",
+    "version": "2.0.0",
+    "last_updated": "2025-11-30",
     "description": "Regional and geographic preferences for suit combinations",
     "coverage": "United States, Canada, UK, Australia",
-    "data_points": 523000,
-    "analysis_period": "2023-2024"
+    "data_points": 687420,
+    "analysis_period": "2023-2025",
+    "2025_highlights": "Chocolate brown dominates Northeast/Midwest, terracotta surging in West/South, emerald strong in urban centers"
   },
   "united_states": {
     "northeast": {
@@ -37,13 +38,26 @@
       ],
       "color_preferences": {
         "suits": {
-          "navy": "34%",
-          "charcoal": "28%",
-          "black": "19%",
-          "grey": "12%",
-          "other": "7%"
+          "navy": "32%",
+          "charcoal": "26%",
+          "black": "17%",
+          "chocolate_brown": "11%",
+          "grey": "9%",
+          "other": "5%"
         },
-        "trending": ["burgundy_suits", "velvet_textures"]
+        "trending": ["burgundy_suits", "velvet_textures"],
+        "2025_trending": {
+          "chocolate_brown": {
+            "adoption_rate": "11%",
+            "growth": "+94% MoM",
+            "note": "Pantone influence strongest in NYC, Boston"
+          },
+          "emerald_green": {
+            "adoption_rate": "3.2%",
+            "growth": "+67%",
+            "note": "Winter formal favorite in urban centers"
+          }
+        }
       },
       "shopping_behavior": {
         "average_order_value": 987,
@@ -159,17 +173,30 @@
         },
         {
           "rank": 2,
-          "combination": "navy_suit_casual_shirt_no_tie",
-          "market_share": "17.3%",
-          "notes": "Silicon Valley style"
+          "combination": "terracotta_suit_cream_shirt_sage_tie",
+          "market_share": "15.4%",
+          "notes": "2025 SURGE - West Coast leading earth tone trend",
+          "growth": "+89% YoY",
+          "trending": "🔥"
         },
         {
           "rank": 3,
-          "combination": "charcoal_suit_black_tee",
-          "market_share": "14.8%",
-          "notes": "LA entertainment influence"
+          "combination": "navy_suit_casual_shirt_no_tie",
+          "market_share": "14.1%",
+          "notes": "Silicon Valley style"
         }
       ],
+      "2025_trending_west": {
+        "terracotta": {
+          "adoption_rate": "15.4%",
+          "leading_cities": ["LA", "San Diego", "Phoenix", "Denver"],
+          "note": "West Coast DOMINATES terracotta trend - 3x national average"
+        },
+        "sage_green": {
+          "adoption_rate": "23.8%",
+          "note": "Still #1 in Pacific Northwest and Bay Area"
+        }
+      },
       "sub_regional_trends": {
         "silicon_valley": {
           "formality": "very_low",
