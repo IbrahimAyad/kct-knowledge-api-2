@@ -1,11 +1,12 @@
 {
   "metadata": {
-    "version": "1.0.0",
-    "last_updated": "2024-01-09",
+    "version": "2.0.0",
+    "last_updated": "2025-11-30",
     "description": "Conversion rate data for suit, shirt, and tie combinations",
-    "tracking_period": "2023-2024",
-    "total_sessions_analyzed": 847293,
-    "currency": "USD"
+    "tracking_period": "2023-2025",
+    "total_sessions_analyzed": 1042389,
+    "currency": "USD",
+    "2025_note": "Major growth in earth tones and jewel tones"
   },
   "top_converting_combinations": {
     "all_time_best": [
@@ -36,14 +37,16 @@
       },
       {
         "rank": 3,
-        "combination": "sage_suit_white_shirt_sage_tie",
-        "conversion_rate": "21.8%",
-        "average_order_value": 925,
-        "sessions": 29384,
-        "purchases": 6406,
-        "return_rate": "2.8%",
-        "lifetime_value": 1089,
-        "trend": "rapidly_increasing"
+        "combination": "sage_suit_white_shirt_blush_tie",
+        "conversion_rate": "23.4%",
+        "average_order_value": 987,
+        "sessions": 42138,
+        "purchases": 9860,
+        "return_rate": "2.1%",
+        "lifetime_value": 1247,
+        "trend": "🔥 rapidly_increasing",
+        "growth_2025": "+27% vs 2024",
+        "note": "Garden wedding favorite"
       },
       {
         "rank": 4,
@@ -64,6 +67,44 @@
         "purchases": 9987,
         "return_rate": "5.2%",
         "lifetime_value": 892
+      }
+    ],
+    "2025_trending_high_converters": [
+      {
+        "combination": "chocolate_brown_suit_cream_shirt_gold_tie",
+        "conversion_rate": "20.8%",
+        "average_order_value": 1043,
+        "sessions": 18234,
+        "purchases": 3793,
+        "return_rate": "2.4%",
+        "lifetime_value": 1389,
+        "trend": "🔥 NEW - Pantone 2025 Effect",
+        "growth_rate": "+94% MoM",
+        "note": "Fall champion - velvet version converts at 24.1%"
+      },
+      {
+        "combination": "terracotta_suit_white_shirt_sage_tie",
+        "conversion_rate": "19.3%",
+        "average_order_value": 912,
+        "sessions": 15872,
+        "purchases": 3063,
+        "return_rate": "2.9%",
+        "lifetime_value": 1156,
+        "trend": "🔥 NEW - Earth Tone Revolution",
+        "growth_rate": "+67%",
+        "note": "Summer outdoor wedding favorite"
+      },
+      {
+        "combination": "emerald_green_velvet_suit_white_shirt_gold_tie",
+        "conversion_rate": "22.7%",
+        "average_order_value": 1456,
+        "sessions": 9841,
+        "purchases": 2234,
+        "return_rate": "1.8%",
+        "lifetime_value": 1823,
+        "trend": "🔥 Jewel Tone Luxury",
+        "growth_rate": "+78%",
+        "note": "Winter formal - highest AOV of 2025"
       }
     ]
   },

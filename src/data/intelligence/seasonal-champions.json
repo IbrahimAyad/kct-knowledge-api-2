@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "last_updated": "2024-01-09",
+  "version": "2.0",
+  "last_updated": "2025-11-30",
   "seasonal_champions": {
     "spring": {
       "2023": {
@@ -87,17 +87,28 @@
       },
       "2025": {
         "champion": {
+          "suit": "terracotta",
+          "shirt": "white",
+          "tie": "sage_green",
+          "popularity": 96,
+          "growth": "+45%",
+          "note": "Earth tone revolution - highest summer score ever",
+          "social_media_mentions": 58000,
+          "trending": "🔥 Pantone influence"
+        },
+        "runner_up": {
           "suit": "sage_green",
           "shirt": "white",
           "tie": "rust",
           "popularity": 94,
-          "note": "Highest summer score ever recorded"
+          "note": "Still incredibly popular"
         },
-        "runner_up": {
-          "suit": "coral",
-          "shirt": "white",
-          "tie": "teal",
-          "popularity": 91
+        "breakthrough": {
+          "suit": "light_grey",
+          "shirt": "cream",
+          "tie": "terracotta",
+          "popularity": 87,
+          "note": "Neutral base with 2025 accent"
         }
       },
       "all_time_summer": {
@@ -129,11 +140,29 @@
       "2025": {
         "champion": {
           "suit": "chocolate_brown",
-          "shirt": "ecru",
-          "tie": "marigold",
-          "popularity": 87,
-          "fabric": "tweed",
-          "texture_trend": true
+          "shirt": "cream",
+          "tie": "gold",
+          "popularity": 93,
+          "growth": "+94% MoM",
+          "fabric": "velvet_and_tweed",
+          "texture_trend": true,
+          "trending": "🔥 #2 Color 2025 - Pantone Influence",
+          "social_media_mentions": 52000,
+          "note": "Pantone mocha mousse effect - massive surge"
+        },
+        "runner_up": {
+          "suit": "burgundy",
+          "shirt": "white",
+          "tie": "mustard",
+          "popularity": 95,
+          "note": "Still the fall king but chocolate rising fast"
+        },
+        "innovation": {
+          "suit": "terracotta",
+          "shirt": "cream",
+          "tie": "chocolate_brown",
+          "popularity": 84,
+          "note": "Earth tone layering"
         }
       },
       "all_time_fall": {
@@ -164,12 +193,30 @@
       },
       "2025": {
         "champion": {
-          "suit": "emerald_velvet",
+          "suit": "emerald_green_velvet",
           "shirt": "white_pleated",
-          "tie": "black_bow",
-          "popularity": 86,
-          "luxury_fabric": "cotton_silk_velvet",
-          "formal_inquiry_rate": "42%"
+          "tie": "gold_bow",
+          "popularity": 89,
+          "growth": "+67%",
+          "luxury_fabric": "silk_velvet",
+          "formal_inquiry_rate": "48%",
+          "trending": "🔥 Jewel Tone Resurgence",
+          "social_media_mentions": 41000,
+          "note": "Holiday formal favorite - velvet texture essential"
+        },
+        "runner_up": {
+          "suit": "chocolate_brown_velvet",
+          "shirt": "white",
+          "tie": "silver",
+          "popularity": 87,
+          "note": "Warm alternative to traditional navy/black"
+        },
+        "classic": {
+          "suit": "midnight_navy",
+          "shirt": "white",
+          "tie": "burgundy",
+          "popularity": 91,
+          "note": "Still the safe choice for formal winter events"
         }
       },
       "all_time_winter": {

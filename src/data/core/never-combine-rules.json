@@ -1,6 +1,7 @@
 {
-  "version": "1.0",
-  "last_updated": "2024-01-09",
+  "version": "2.0",
+  "last_updated": "2025-11-30",
+  "2025_updates": "Added rules for chocolate brown, terracotta, emerald green",
   "absolute_never_combine": [
     {
       "rule_id": "NC001",
@@ -78,6 +79,40 @@
       "reason": "Too casual/loud for formal wear",
       "severity": "critical",
       "items": ["neon_ties", "bright_orange_shirts", "electric_blue_accessories"]
+    },
+    {
+      "rule_id": "NC009",
+      "combination": {
+        "suit": "chocolate_brown",
+        "tie": "black"
+      },
+      "reason": "Too harsh - chocolate brown needs warm accents",
+      "severity": "high",
+      "recommended_alternatives": ["gold_tie", "cream_tie", "terracotta_tie"],
+      "2025_note": "Chocolate brown works best with warm tones"
+    },
+    {
+      "rule_id": "NC010",
+      "combination": {
+        "suit": "terracotta",
+        "shirt": "bright_white"
+      },
+      "reason": "Too stark - terracotta needs softer contrast",
+      "severity": "medium",
+      "recommended_alternatives": ["cream_shirt", "ecru_shirt", "light_tan_shirt"],
+      "2025_note": "Earth tones need natural pairings"
+    },
+    {
+      "rule_id": "NC011",
+      "combination": {
+        "suit": "emerald_green",
+        "tie": "burgundy"
+      },
+      "reason": "Christmas color clash - too holiday-specific",
+      "severity": "medium",
+      "exception": "intentional_holiday_events",
+      "recommended_alternatives": ["gold_tie", "silver_tie", "black_tie"],
+      "2025_note": "Emerald is trending but avoid obvious holiday combos"
     }
   ],
   "conditional_avoid": [

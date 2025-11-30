@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "version": "1.0.0",
-    "last_updated": "2024-01-09",
+    "version": "2.0.0",
+    "last_updated": "2025-11-30",
     "description": "Exact color codes for all suit, shirt, and tie colors in inventory",
     "color_spaces": ["hex", "rgb", "pantone", "cmyk"]
   },
@@ -106,6 +106,51 @@
         "rgb": [245, 222, 179],
         "pantone": "7506 C",
         "marketing_name": "Wheat"
+      }
+    },
+    "chocolate_brown": {
+      "standard": {
+        "hex": "#301E1E",
+        "rgb": [48, 30, 30],
+        "pantone": "19-1012 TCX",
+        "marketing_name": "Chocolate Brown",
+        "trending_2025": true
+      },
+      "warm_chocolate": {
+        "hex": "#3E2723",
+        "rgb": [62, 39, 35],
+        "pantone": "Cocoa Brown",
+        "marketing_name": "Warm Chocolate"
+      }
+    },
+    "terracotta": {
+      "standard": {
+        "hex": "#CC6644",
+        "rgb": [204, 102, 68],
+        "pantone": "16-1443 TCX",
+        "marketing_name": "Terracotta",
+        "trending_2025": true
+      },
+      "burnt_terracotta": {
+        "hex": "#B85C4E",
+        "rgb": [184, 92, 78],
+        "pantone": "Burnt Sienna",
+        "marketing_name": "Burnt Terracotta"
+      }
+    },
+    "emerald_green": {
+      "standard": {
+        "hex": "#046307",
+        "rgb": [4, 99, 7],
+        "pantone": "3425 C",
+        "marketing_name": "Emerald Green",
+        "trending_2025": true
+      },
+      "jewel_emerald": {
+        "hex": "#014421",
+        "rgb": [1, 68, 33],
+        "pantone": "Emerald Jewel",
+        "marketing_name": "Jewel Emerald"
       }
     }
   },
@@ -285,18 +330,41 @@
         "pantone": "5773 C",
         "marketing_name": "Sage"
       }
+    },
+    "terracotta": {
+      "standard": {
+        "hex": "#CC6644",
+        "rgb": [204, 102, 68],
+        "pantone": "16-1443 TCX",
+        "marketing_name": "Terracotta Tie",
+        "trending_2025": true
+      }
+    },
+    "chocolate_brown": {
+      "standard": {
+        "hex": "#3E2723",
+        "rgb": [62, 39, 35],
+        "pantone": "Cocoa Brown",
+        "marketing_name": "Chocolate Brown Tie",
+        "trending_2025": true
+      }
     }
   },
   "color_matching_rules": {
     "complementary_colors": {
       "navy": ["gold", "burgundy", "pink"],
       "charcoal": ["silver", "purple", "emerald"],
-      "burgundy": ["navy", "grey", "gold"]
+      "burgundy": ["navy", "grey", "gold"],
+      "chocolate_brown": ["cream", "gold", "terracotta"],
+      "terracotta": ["white", "cream", "sage"],
+      "emerald_green": ["white", "silver", "gold"],
+      "sage_green": ["blush", "white", "terracotta"]
     },
     "photography_notes": {
-      "high_contrast": ["black-white", "navy-white", "burgundy-white"],
-      "subtle_elegance": ["grey-silver", "tan-gold", "sage-mint"],
-      "bold_statement": ["burgundy-gold", "emerald-black", "purple-silver"]
+      "high_contrast": ["black-white", "navy-white", "burgundy-white", "emerald-white"],
+      "subtle_elegance": ["grey-silver", "tan-gold", "sage-mint", "chocolate-cream"],
+      "bold_statement": ["burgundy-gold", "emerald-black", "purple-silver", "terracotta-sage"],
+      "2025_trending": ["chocolate-gold", "terracotta-white", "emerald-silver", "sage-blush"]
     }
   }
 }

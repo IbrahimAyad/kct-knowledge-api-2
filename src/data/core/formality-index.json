@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "last_updated": "2024-01-09",
+  "version": "2.0",
+  "last_updated": "2025-11-30",
   "formality_scale": {
     "description": "1-10 scale where 10 is most formal (white tie) and 1 is most casual",
     "reference_points": {
@@ -55,7 +55,35 @@
       "base_formality": 6,
       "statement_level": "high",
       "best_for": "cocktail_to_formal",
-      "seasonal_boost": "fall_winter"
+      "seasonal_boost": "fall_winter",
+      "trending_2025": "🔥 #1 Wedding Color",
+      "popularity_score": 98
+    },
+    "chocolate_brown": {
+      "base_formality": 7,
+      "statement_level": "medium-high",
+      "best_for": "business_to_cocktail",
+      "seasonal_boost": "fall_winter",
+      "trending_2025": "🔥 NEW - Pantone 2025 Influence",
+      "popularity_score": 92,
+      "warmth": "high",
+      "versatility": "medium",
+      "fabric_modifiers": {
+        "velvet": "+2",
+        "tweed": "+1",
+        "standard_wool": "0"
+      }
+    },
+    "terracotta": {
+      "base_formality": 6,
+      "statement_level": "high",
+      "best_for": "cocktail_to_semi_formal",
+      "seasonal_boost": "fall",
+      "trending_2025": "🔥 NEW - Earth Tone Trend",
+      "popularity_score": 86,
+      "warmth": "very_high",
+      "best_combinations": ["white_shirt", "cream_shirt"],
+      "context": "outdoor_rustic_weddings"
     },
     "light_grey": {
       "base_formality": 6,
@@ -65,7 +93,38 @@
     "hunter_green": {
       "base_formality": 6,
       "uniqueness": "high",
-      "trending": "up"
+      "trending": "stable"
+    },
+    "emerald_green": {
+      "base_formality": 8,
+      "statement_level": "very_high",
+      "best_for": "cocktail_to_black_tie_optional",
+      "seasonal_boost": "winter",
+      "trending_2025": "🔥 NEW - Jewel Tone Resurgence",
+      "popularity_score": 88,
+      "fabric_preference": "velvet",
+      "luxury_factor": "very_high",
+      "event_appropriateness": {
+        "winter_formal": "perfect",
+        "holiday_events": "excellent",
+        "summer": "avoid"
+      }
+    },
+    "sage_green": {
+      "base_formality": 5,
+      "statement_level": "medium",
+      "best_for": "smart_casual_to_cocktail",
+      "seasonal_boost": "spring_summer",
+      "trending_2025": "🔥 HOT - Garden Wedding Favorite",
+      "popularity_score": 94,
+      "growth_rate": "+127%",
+      "versatility": "high",
+      "best_combinations": ["white_shirt", "blush_tie", "cream_accents"],
+      "event_appropriateness": {
+        "outdoor_wedding": "perfect",
+        "garden_party": "excellent",
+        "business": "too_casual"
+      }
     },
     "brown": {
       "base_formality": 5,
