@@ -9,6 +9,14 @@ import { shopifyAnalyticsService } from '../services/shopify-analytics-service';
 import { recommendationAnalyticsService } from '../services/recommendation-analytics-service';
 import { EndpointRateLimits } from '../middleware/rate-limiting';
 import { CacheStrategies } from '../middleware/cache-headers';
+import {
+  validateBody,
+  validateQuery,
+  validateParams,
+  analyticsTrackSchema,
+  analyticsDashboardSchema,
+  analyticsSessionSchema
+} from '../middleware/validation';
 
 const router = express.Router();
 
@@ -16,57 +24,51 @@ const router = express.Router();
  * POST /api/analytics/track
  * Track recommendation engagement events from frontend
  */
-router.post('/track', EndpointRateLimits.ANALYTICS, async (req: Request, res: Response) => {
-  try {
-    const {
-      eventType,
-      productId,
-      productTitle,
-      occasion,
-      source,
-      sessionId,
-    } = req.body;
+router.post(
+  '/track',
+  EndpointRateLimits.ANALYTICS,
+  validateBody(analyticsTrackSchema),
+  async (req: Request, res: Response) => {
+    try {
+      const {
+        eventType,
+        productId,
+        productTitle,
+        occasion,
+        source,
+        sessionId,
+      } = req.body;
 
-    // Validate required fields
-    if (!eventType || !productId || !source) {
-      return res.status(400).json({
+      // Track the event (validation already done by middleware)
+      await recommendationAnalyticsService.trackEvent({
+        eventType,
+        productId,
+        productTitle,
+        occasion,
+        source,
+        sessionId,
+        timestamp: Date.now(),
+      });
+
+      res.json({
+        success: true,
+        message: 'Event tracked successfully',
+        data: {
+          eventType,
+          productId,
+          timestamp: new Date().toISOString(),
+        },
+      });
+    } catch (error) {
+      console.error('Error tracking analytics event:', error);
+      res.status(500).json({
         success: false,
-        error: 'Missing required fields: eventType, productId, source',
+        error: 'Failed to track event',
+        message: error instanceof Error ? error.message : 'Unknown error',
       });
     }
-
-    // Validate event type
-    const validEventTypes = ['view', 'click', 'add_to_cart', 'purchase'];
-    if (!validEventTypes.includes(eventType)) {
-      return res.status(400).json({
-        success: false,
-        error: `Invalid eventType. Must be one of: ${validEventTypes.join(', ')}`,
-      });
-    }
-
-    // Track the event
-    await recommendationAnalyticsService.trackEvent({
-      eventType,
-      productId,
-      productTitle,
-      occasion,
-      source,
-      sessionId,
-      timestamp: Date.now(),
-    });
-
-    res.json({
-      success: true,
-      message: 'Event tracked successfully',
-    });
-  } catch (error) {
-    console.error('Error tracking analytics event:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to track event',
-    });
   }
-});
+);
 
 /**
  * GET /api/analytics/dashboard
@@ -77,9 +79,10 @@ router.get(
   '/dashboard',
   EndpointRateLimits.ANALYTICS,
   CacheStrategies.SHORT(),
+  validateQuery(analyticsDashboardSchema),
   async (req: Request, res: Response) => {
     try {
-      const days = parseInt(req.query.days as string) || 7;
+      const days = (req.query as any).days || 7;
 
       // Calculate date range
       const endDate = new Date();
@@ -368,6 +371,7 @@ router.get(
 router.get(
   '/session/:sessionId',
   EndpointRateLimits.GENERAL,
+  validateParams(analyticsSessionSchema),
   async (req: Request, res: Response) => {
     try {
       const { sessionId } = req.params;
@@ -389,6 +393,7 @@ router.get(
       res.status(500).json({
         success: false,
         error: 'Failed to fetch session journey',
+        message: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   }

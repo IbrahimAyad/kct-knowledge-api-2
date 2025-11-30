@@ -11,6 +11,16 @@ import { trendingAnalysisService } from '../services/trending-analysis-service';
 import { conversionService } from '../services/conversion-service';
 import { smartBundleService } from '../services/smart-bundle-service';
 import { logger } from '../utils/logger';
+import {
+  validateBody,
+  validateParams,
+  v2RecommendationsSchema,
+  completeTheLookSchema,
+  validateCombinationSchema,
+  analyzeOutfitSchema,
+  similarProductsSchema,
+  colorParamSchema
+} from '../middleware/validation';
 
 const router = Router();
 
@@ -60,18 +70,18 @@ const transformRecommendations = (kbRecommendations: any) => {
  * POST /api/v2/recommendations
  * Main recommendations endpoint for Complete the Look
  */
-router.post('/recommendations', async (req: Request, res: Response) => {
+router.post('/recommendations', validateBody(v2RecommendationsSchema), async (req: Request, res: Response) => {
   try {
     await ensureServicesInitialized();
-    
-    const { 
-      productId, 
-      category, 
-      color, 
-      style, 
+
+    const {
+      productId,
+      category,
+      color,
+      style,
       occasion,
       priceRange,
-      customerId 
+      customerId
     } = req.body;
 
     // Get comprehensive recommendations from Knowledge Bank
@@ -87,26 +97,12 @@ router.post('/recommendations', async (req: Request, res: Response) => {
     res.json(response);
   } catch (error) {
     logger.error('Error in /api/v2/recommendations:', error);
-    
-    // Fallback response
-    res.json({
-      success: true,
-      data: {
-        recommendations: [],
-        trending: [],
-        personalized: [],
-        categories: {
-          suits: [],
-          shirts: [],
-          ties: [],
-          accessories: []
-        }
-      },
-      metadata: {
-        total: 0,
-        confidence: 0,
-        source: 'fallback'
-      }
+
+    // Return error instead of fake success
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate recommendations',
+      message: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -115,7 +111,7 @@ router.post('/recommendations', async (req: Request, res: Response) => {
  * POST /api/v2/products/complete-the-look
  * Complete the Look feature for product pages
  */
-router.post('/products/complete-the-look', async (req: Request, res: Response) => {
+router.post('/products/complete-the-look', validateBody(completeTheLookSchema), async (req: Request, res: Response) => {
   try {
     await ensureServicesInitialized();
     
@@ -169,19 +165,11 @@ router.post('/products/complete-the-look', async (req: Request, res: Response) =
     });
   } catch (error) {
     logger.error('Error in /api/v2/products/complete-the-look:', error);
-    
-    res.json({
-      success: true,
-      data: {
-        outfitSuggestions: [],
-        complementaryItems: [],
-        trendingCombinations: [],
-        conversionScore: 0.5
-      },
-      metadata: {
-        productId: req.body.product?.id,
-        generated: new Date().toISOString()
-      }
+
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate complete-the-look suggestions',
+      message: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -213,15 +201,11 @@ router.get('/colors', async (_req: Request, res: Response) => {
     });
   } catch (error) {
     logger.error('Error in /api/v2/colors:', error);
-    
-    res.json({
-      success: true,
-      data: {
-        families: [],
-        rules: [],
-        trending: [],
-        relationships: {}
-      }
+
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch color data',
+      message: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -230,13 +214,13 @@ router.get('/colors', async (_req: Request, res: Response) => {
  * GET /api/v2/colors/:color
  * Get specific color information
  */
-router.get('/colors/:color', async (req: Request, res: Response) => {
+router.get('/colors/:color', validateParams(colorParamSchema), async (req: Request, res: Response) => {
   try {
     await ensureServicesInitialized();
-    
+
     const { color } = req.params;
     const complementaryColors = await colorService.findComplementaryColors(color);
-    
+
     res.json({
       success: true,
       data: {
@@ -247,14 +231,11 @@ router.get('/colors/:color', async (req: Request, res: Response) => {
     });
   } catch (error) {
     logger.error('Error in /api/v2/colors/:color:', error);
-    
-    res.json({
-      success: true,
-      data: {
-        color: req.params.color,
-        complementary: [],
-        relationships: []
-      }
+
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch color information',
+      message: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -283,18 +264,11 @@ router.get('/trending', async (_req: Request, res: Response) => {
     });
   } catch (error) {
     logger.error('Error in /api/v2/trending:', error);
-    
-    res.json({
-      success: true,
-      data: {
-        trending: [],
-        categories: {
-          suits: [],
-          shirts: [],
-          accessories: []
-        },
-        updated: new Date().toISOString()
-      }
+
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch trending data',
+      message: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -303,7 +277,7 @@ router.get('/trending', async (_req: Request, res: Response) => {
  * POST /api/v2/combinations/validate
  * Validate outfit combinations
  */
-router.post('/combinations/validate', async (req: Request, res: Response) => {
+router.post('/combinations/validate', validateBody(validateCombinationSchema), async (req: Request, res: Response) => {
   try {
     await ensureServicesInitialized();
     
@@ -328,16 +302,11 @@ router.post('/combinations/validate', async (req: Request, res: Response) => {
     });
   } catch (error) {
     logger.error('Error in /api/v2/combinations/validate:', error);
-    
-    res.json({
-      success: true,
-      data: {
-        valid: true,
-        score: 0.75,
-        recommendations: [],
-        conflicts: [],
-        improvements: []
-      }
+
+    res.status(500).json({
+      success: false,
+      error: 'Failed to validate combination',
+      message: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -346,7 +315,7 @@ router.post('/combinations/validate', async (req: Request, res: Response) => {
  * POST /api/v2/analyze/outfit
  * Analyze complete outfit
  */
-router.post('/analyze/outfit', async (req: Request, res: Response) => {
+router.post('/analyze/outfit', validateBody(analyzeOutfitSchema), async (req: Request, res: Response) => {
   try {
     await ensureServicesInitialized();
     
@@ -377,20 +346,11 @@ router.post('/analyze/outfit', async (req: Request, res: Response) => {
     });
   } catch (error) {
     logger.error('Error in /api/v2/analyze/outfit:', error);
-    
-    res.json({
-      success: true,
-      data: {
-        score: 0.75,
-        analysis: {
-          colorHarmony: 0.8,
-          styleConsistency: 0.85,
-          occasionAppropriateness: 0.9,
-          trendAlignment: 0.7
-        },
-        suggestions: [],
-        alternatives: []
-      }
+
+    res.status(500).json({
+      success: false,
+      error: 'Failed to analyze outfit',
+      message: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -399,7 +359,7 @@ router.post('/analyze/outfit', async (req: Request, res: Response) => {
  * POST /api/v2/products/similar
  * Find similar products
  */
-router.post('/products/similar', async (req: Request, res: Response) => {
+router.post('/products/similar', validateBody(similarProductsSchema), async (req: Request, res: Response) => {
   try {
     await ensureServicesInitialized();
     
@@ -426,18 +386,11 @@ router.post('/products/similar', async (req: Request, res: Response) => {
     });
   } catch (error) {
     logger.error('Error in /api/v2/products/similar:', error);
-    
-    res.json({
-      success: true,
-      data: {
-        similar: [],
-        alternatives: [],
-        trending: []
-      },
-      metadata: {
-        productId: req.body.product?.id,
-        count: req.body.limit || 5
-      }
+
+    res.status(500).json({
+      success: false,
+      error: 'Failed to find similar products',
+      message: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });

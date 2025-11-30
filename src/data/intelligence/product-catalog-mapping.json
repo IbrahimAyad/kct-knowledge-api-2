@@ -1,0 +1,682 @@
+{
+  "version": "2.0",
+  "last_updated": "2025-01-30",
+  "description": "Maps KCT product catalog to fashion knowledge base for AI recommendations",
+  "color_to_products": {},
+  "recommended_combinations": [],
+  "trending_2025_inventory": {
+    "burgundy": {
+      "suits": [
+        {
+          "title": "Burgundy European Prom Tuxedo with Black Velvet Lapel \u2013 2025 Edition",
+          "handle": "burgundy-european-prom-tuxedo-2025-velvet-lapel",
+          "price": 329.99,
+          "type": "Three-Piece Tuxedo"
+        },
+        {
+          "title": "Men\u2019s Light Blue Sequin Lapel Three-Piece Prom Tuxedo \u2013 A Statement in Sophistication",
+          "handle": "men-s-light-blue-sequin-lapel-three-piece-prom-tuxedo-a-statement-in-sophistication",
+          "price": 299.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Men\u2019s Burgundy Sequin Lapel Three-Piece Prom Tuxedo \u2013 Bold Elegance Meets Modern Glamour",
+          "handle": "men-s-burgundy-sequin-lapel-three-piece-prom-tuxedo-bold-elegance-meets-modern-glamour",
+          "price": 299.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Men's Slim-Fit Burgundy Three-Piece Suit",
+          "handle": "mens-slim-fit-burgundy-three-piece-suit",
+          "price": 259.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Men's Slim-Fit Burgundy Tuxedo Jacket with Black Satin Lapel",
+          "handle": "mens-slim-fit-burgundy-tuxedo-jacket-with-black-satin-lapel",
+          "price": 199.0,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Ocean Blue Textured Double-Breasted Suit - A Splash of Style",
+          "handle": "ocean-blue-textured-double-breasted-suit-a-splash-of-style",
+          "price": 249.99,
+          "type": "Double-Breasted Suit"
+        },
+        {
+          "title": "Burgundy Pinstripe Double-Breasted Suit - Distinguished Gentleman's Choice",
+          "handle": "premium-burgundy-pinstripe-double-breasted-suit-tailored-elegance",
+          "price": 249.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Hunter Green Tuxedo Jacket - Sophisticated Forest Elegance",
+          "handle": "hunter-green-tuxedo-jacket-kct-menswears-elegant-forest",
+          "price": 199.99,
+          "type": "Three-Piece Tuxedo"
+        },
+        {
+          "title": "Burgundy Velvet Double Breasted Tuxedo Black Slim Fit",
+          "handle": "burgundy-velvet-double-breasted-tuxedo-black-slim-fit",
+          "price": 279.99,
+          "type": "Double-Breasted Tuxedo"
+        },
+        {
+          "title": "Shiny Lavender Suit",
+          "handle": "shiny-lavender-satin-suit",
+          "price": 229.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Shiny Blush Pink Satin Suit | Sleek & Modern Pink Suit for Men",
+          "handle": "shiny-blush-pink-satin-suit",
+          "price": 229.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Shiny Red Suit",
+          "handle": "shiny-red-satin-suit",
+          "price": 229.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Shiny Navy Suit",
+          "handle": "shiny-navy-satin-suit",
+          "price": 229.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Shiny Black Suit",
+          "handle": "satin-black-suit",
+          "price": 229.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Burgundy Suit with Vest",
+          "handle": "burgundy-suit-with-vest",
+          "price": 199.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Wine on Wine Slim Tuxedo",
+          "handle": "wine-on-wine-slim-tuxedo",
+          "price": 199.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Burgundy Stretch Suit - Travelers Suit",
+          "handle": "burgundy-stretch-suit-travelers-suit",
+          "price": 249.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Slim Royal Blue Tuxedo",
+          "handle": "slim-royal-blue-tuxedo",
+          "price": 179.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Slim Light Grey Tuxedo",
+          "handle": "slim-light-grey-tuxedo-1",
+          "price": 179.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Slim Burgundy Tuxedo",
+          "handle": "slim-burgundy-tuxedo",
+          "price": 179.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Wine on Wine Tuxedo With Vest",
+          "handle": "wine-on-wine-tuxedo-with-vest",
+          "price": 199.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Two-Piece Burgundy Suit",
+          "handle": "two-piece-burgundy-suit",
+          "price": 169.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Burgundy Wine Three Piece Tuxedo",
+          "handle": "burgundy-wine-three-piece-tuxedo",
+          "price": 229.99,
+          "type": "Three-Piece Tuxedo"
+        },
+        {
+          "title": "Burgundy Kids Tux",
+          "handle": "burgundy-kids-tux",
+          "price": 129.99,
+          "type": "Kids Tuxedo"
+        },
+        {
+          "title": "Burgundy Prom Tuxedo Jacket -  Shiny Slim With Black Lapel",
+          "handle": "burgundy-prom-tuxedo-jacket-shiny-slim-with-black-lapel",
+          "price": 199.99,
+          "type": "Tuxedo Jacket"
+        },
+        {
+          "title": "Wine Velvet Tuxedo Blazer",
+          "handle": "wine-velvet-tuxedo-blazer",
+          "price": 229.99,
+          "type": "Tuxedo Jacket"
+        }
+      ],
+      "ties": [
+        {
+          "title": "Burgundy Ties & Bowties Collection",
+          "handle": "burgundy-wedding-bundle",
+          "price": 24.99
+        },
+        {
+          "title": "Burgundy Solo Ties",
+          "handle": "burgundy-solo-ties",
+          "price": 24.99
+        },
+        {
+          "title": "Light Blush Tuxedo with Matching Bowtie",
+          "handle": "light-blush-tuxedo-with-matching-bowtie",
+          "price": 229.99
+        },
+        {
+          "title": "Light Orange Tuxedo with Matching Bowtie",
+          "handle": "light-orange-tuxedo-with-matching-bowtie",
+          "price": 229.99
+        },
+        {
+          "title": "Light Gold Tuxedo with Matching Bowtie",
+          "handle": "light-gold-tuxedo-with-matching-bowtie",
+          "price": 229.99
+        },
+        {
+          "title": "Sly Blue Tuxedo with Matching Bowtie",
+          "handle": "sly-blue-tuxedo-with-matching-bowtie",
+          "price": 229.99
+        },
+        {
+          "title": "Burgundy Bowtie or Tie",
+          "handle": "burgundy-bowtie-or-tie",
+          "price": 24.99
+        },
+        {
+          "title": "Wine Suspender Bow-tie Set",
+          "handle": "wine-suspender-bow-tie-set",
+          "price": 44.99
+        },
+        {
+          "title": "Burgundy Skinny Tie",
+          "handle": "burgundy-skinny-tie",
+          "price": 20.0
+        }
+      ],
+      "accessories": [
+        {
+          "title": "Men's Refined Red Wine Velvet Blazer for Prestigious Events",
+          "handle": "mens-refined-red-wine-velvet-blazer-for-prestigious-events",
+          "price": 229.99
+        },
+        {
+          "title": "Glitter Burgundy Velvet Prom Blazer with Black Satin Lapel",
+          "handle": "glitter-burgundy-velvet-prom-blazer-with-black-satin-lapel",
+          "price": 249.99
+        },
+        {
+          "title": "Burgundy Paisley & Matching Bowtie with Black Shawl Lapel Prom Blazer",
+          "handle": "burgundy-paisley-with-black-lapel-blazer-with-matching-bowtie",
+          "price": 199.99
+        },
+        {
+          "title": "Burgundy Sparkle Prom Blazer with Hypnose Pattern",
+          "handle": "burgundy-sparkle-prom-blazer-with-hypnose-patternburgundy-sparkle-prom-blazer-with-hypnose-pattern",
+          "price": 249.99
+        },
+        {
+          "title": "Golden Paisley Burgundy Prom Blazer with Peak Lapel",
+          "handle": "golden-paisley-burgundy-prom-blazer-with-peak-lapel",
+          "price": 249.99
+        },
+        {
+          "title": "Burgundy with Diamond Pattern Prom Blazer",
+          "handle": "copy-of-green-with-diamond-pattern-prom-blazer",
+          "price": 249.99
+        },
+        {
+          "title": "Men's Burgundy Blazer with Black Floral Design",
+          "handle": "mens-burgundy-blazer-with-black-floral-design",
+          "price": 249.99
+        },
+        {
+          "title": "Burgundy with Black Floral Blazer",
+          "handle": "copy-of-rose-brown-sparkle-prom-blazer",
+          "price": 249.99
+        },
+        {
+          "title": "Wine Burgundy Vest and Tie Set",
+          "handle": "wine-burgundy-vest-and-tie-set",
+          "price": 49.99
+        },
+        {
+          "title": "Wool Wide Lapel Burgundy Peacoat",
+          "handle": "wool-wide-lapel-burgundy-peacoat",
+          "price": 249.99
+        },
+        {
+          "title": "Burgundy Sparkle Blazer",
+          "handle": "burgundy-sparkle-blazer",
+          "price": 249.99
+        },
+        {
+          "title": "Burgundy Velvet Blazer",
+          "handle": "burgundy-velvet-blazer",
+          "price": 229.99
+        },
+        {
+          "title": "Burgundy Gingham Pattern Sparkle Prom Blazer",
+          "handle": "burgundy-gingham-pattern-sparkle-prom-blazer",
+          "price": 249.99
+        },
+        {
+          "title": "Burgundy & Black Patterned Vested Slim Fit",
+          "handle": "copy-of-red-paisley-tuxedo-1",
+          "price": 299.99
+        },
+        {
+          "title": "Wine Floral Prom Blazer",
+          "handle": "wine-floral-prom-blazer",
+          "price": 249.99
+        },
+        {
+          "title": "Burgundy Cardigan",
+          "handle": "burgundy-cardigan",
+          "price": 149.99
+        },
+        {
+          "title": "Burgundy Fall Velvet",
+          "handle": "burgundy-fall-velvet",
+          "price": 199.99
+        },
+        {
+          "title": "Dark Burgundy Vest and Tie Set",
+          "handle": "burgundy-vest-and-tie-set",
+          "price": 49.99
+        },
+        {
+          "title": "Wine Velvet Blazer",
+          "handle": "wine-velvet-blazer",
+          "price": 229.99
+        }
+      ]
+    },
+    "sage_green": {
+      "suits": [
+        {
+          "title": "Classic Gray Double-Breasted Suit Ensemble",
+          "handle": "classic-gray-double-breasted-suit-ensemble",
+          "price": 249.99,
+          "type": "Double-Breasted Suit"
+        },
+        {
+          "title": "Sage Elegance Double-Breasted Suit Set",
+          "handle": "sage-elegance-double-breasted-suit-set",
+          "price": 249.99,
+          "type": "Double-Breasted Suit"
+        }
+      ],
+      "ties": [
+        {
+          "title": "Dusty Sage Ties & Bowties Collection",
+          "handle": "dusty-sage-ties-bowties",
+          "price": 24.99
+        }
+      ],
+      "accessories": []
+    },
+    "chocolate_brown": {
+      "suits": [
+        {
+          "title": "Men's Slim-Fit Brown Tweed Three-Piece Suit",
+          "handle": "mens-slim-fit-brown-tweed-three-piece-suit",
+          "price": 299.0,
+          "type": "Suit"
+        },
+        {
+          "title": "Classic Brown Check Double-Breasted Suit - The Connoisseur's Choice",
+          "handle": "classic-brown-check-double-breasted-suit-the-connoisseurs-choice",
+          "price": 249.99,
+          "type": "Double-Breasted Suit"
+        },
+        {
+          "title": "Light Brown Suit with Vest",
+          "handle": "light-brown-suit-with-vest",
+          "price": 199.99,
+          "type": "Suit"
+        }
+      ],
+      "ties": [
+        {
+          "title": "Nutmeg Ties & Bowties Collection",
+          "handle": "nutmeg-ties-bowties",
+          "price": 24.99
+        },
+        {
+          "title": "Medium Brown Ties & Bowties Collection",
+          "handle": "medium-brown-ties-bowties",
+          "price": 24.99
+        },
+        {
+          "title": "Chocolate Brown Ties & Bowties Collection",
+          "handle": "chocolate-brown-wedding-bundle",
+          "price": 24.99
+        },
+        {
+          "title": "Chocolate Brown Solo Ties",
+          "handle": "chocolate-brown-solo-ties",
+          "price": 24.99
+        },
+        {
+          "title": "Chocolate Brown Bowtie or Tie",
+          "handle": "chocolate-brown-bowtie-or-tie",
+          "price": 24.99
+        },
+        {
+          "title": "Brown Velvet Jacket + Bowtie",
+          "handle": "brown-velvet-jacket-bowtie",
+          "price": 229.99
+        },
+        {
+          "title": "Brown Suspender Bow-tie Set",
+          "handle": "brown-suspender-bow-tie-set",
+          "price": 39.99
+        }
+      ],
+      "accessories": [
+        {
+          "title": "Gold & Brown Floral Prom Tuxedo Blazer with Black Satin Lapel \u2013 2025 Showstopper",
+          "handle": "gold-floral-prom-tuxedo-blazer-2025-black-satin-lapel",
+          "price": 229.99
+        },
+        {
+          "title": "Black Floral Prom Tuxedo Blazer with Satin Lapel \u2013 2025 Edition",
+          "handle": "black-floral-prom-tuxedo-blazer-2025-satin-lapel",
+          "price": 229.99
+        },
+        {
+          "title": "Red Floral Prom Tuxedo Blazer with Black Satin Lapel",
+          "handle": "red-floral-prom-tuxedo-blazer-2025-black-satin-lapel",
+          "price": 229.99
+        },
+        {
+          "title": "Men\u2019s Bronze & Black Geometric Tuxedo Blazer \u2013 Luxury Prom & Wedding",
+          "handle": "men-s-bronze-black-geometric-tuxedo-blazer-luxury-prom-wedding",
+          "price": 199.99
+        },
+        {
+          "title": "Brown Cheetah Paisley Engraved Prom Blazer",
+          "handle": "brown-cheetah-paisley-engraved-prom-blazer",
+          "price": 249.99
+        },
+        {
+          "title": "Medium Brown Vest and Tie Set",
+          "handle": "medium-brown-vest-and-tie-set",
+          "price": 49.99
+        },
+        {
+          "title": "Chocolate Brown Vest and Tie Set",
+          "handle": "chocolate-brown-vest-and-tie-set",
+          "price": 49.99
+        },
+        {
+          "title": "Wool Wide Lapel Brown Peacoat",
+          "handle": "wool-wide-lapel-brown-peacoat",
+          "price": 249.99
+        },
+        {
+          "title": "Brown Chelsea Boots",
+          "handle": "brown-chelsea-boots",
+          "price": 99.99
+        },
+        {
+          "title": "Rose Brown Sparkle Prom Blazer",
+          "handle": "rose-brown-sparkle-prom-blazer",
+          "price": 249.99
+        }
+      ]
+    },
+    "emerald_green": {
+      "suits": [
+        {
+          "title": "Modern Black Double-Breasted Tuxedo with Satin Lapel \u2013 Luxury Prom & Formalwear 2025",
+          "handle": "black-double-breasted-prom-tuxedo-satin-lapel",
+          "price": 229.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Men's Slim-Fit Emerald Green Tuxedo with Black Satin Lapel",
+          "handle": "mens-slim-fit-emerald-green-tuxedo-with-black-satin-lapel",
+          "price": 259.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Men's Slim-Fit Emerald Green Tuxedo with Satin Lapel",
+          "handle": "mens-slim-fit-emerald-green-tuxedo-with-satin-lapel",
+          "price": 229.0,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "White Tuxedo with Black Trim - Timeless Elegance - 2024 Prom and Wedding Seasons",
+          "handle": "sophisticated-emerald-green-three-piece-suit-with-velvet-lapel-a-distinguished-choice-for-2024-prom-and-wedding-seasons",
+          "price": 329.99,
+          "type": "Three-Piece Tuxedo"
+        }
+      ],
+      "ties": [
+        {
+          "title": "Emerald Green & Gold Floral Prom Blazer with Matching Bowtie",
+          "handle": "emerald-green-gold-floral-prom-blazer-with-matching-bowtie",
+          "price": 229.99
+        },
+        {
+          "title": "Emerald Green Ties & Bowties Collection",
+          "handle": "emerald-green-wedding-bundle",
+          "price": 24.99
+        },
+        {
+          "title": "Emerald Green Solo Ties",
+          "handle": "emerald-green-solo-ties",
+          "price": 24.99
+        },
+        {
+          "title": "Emerald Green Bowtie or Tie",
+          "handle": "emerald-green-bowtie-or-tie",
+          "price": 24.99
+        }
+      ],
+      "accessories": [
+        {
+          "title": "Sparkling Emerald Green Loafers \u2013 Luxury Prom & Formal Shoes",
+          "handle": "sparkling-emerald-green-loafers-prom-shoes",
+          "price": 79.99
+        },
+        {
+          "title": "Emerald Green Satin Dress Shirt for Men \u2013 Luxurious Evening Wear",
+          "handle": "mens-emerald-green-satin-dress-shirt-sleek-elegance",
+          "price": 69.99
+        },
+        {
+          "title": "Emerald Green Vest and Tie Set",
+          "handle": "emerald-green-vest-and-tie-set",
+          "price": 49.99
+        }
+      ]
+    },
+    "light_blue": {
+      "suits": [
+        {
+          "title": "Light Blue Stretch Suit \u2013 Sleek & Modern 2-Piece for 2025",
+          "handle": "light-blue-stretch-suit-sleek-modern-2-piece-for-2025",
+          "price": 229.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Light Blue Stretch Blazer \u2013 Modern & Versatile for 2025",
+          "handle": "light-blue-stretch-blazer-modern-versatile-for-2025",
+          "price": 159.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Dusty Blue Three-Piece Suit \u2013 Timeless Elegance for 2025",
+          "handle": "dusty-blue-three-piece-suit-timeless-elegance-for-2025",
+          "price": 229.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Light Blue Three-Piece Suit \u2013 Modern Elegance for 2025",
+          "handle": "light-blue-three-piece-suit-modern-elegance-for-2025",
+          "price": 229.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Slate Blue Trimmed Tuxedo \u2013 Modern Elegance for 2025",
+          "handle": "slate-blue-trimmed-tuxedo-modern-elegance-for-2025",
+          "price": 249.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Slate Blue Velvet Suit \u2013 Luxury & Elegance for 2025",
+          "handle": "slate-blue-velvet-suit-luxury-elegance-for-2025",
+          "price": 249.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Light Blue Three-Piece Slim Fit Suit \u2013 A Modern Classic for 2025",
+          "handle": "light-blue-three-piece-slim-fit-suit-2025",
+          "price": 249.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Light Blue Slim Fit Stretch Suit \u2013 Sleek & Modern 2-Piece for 2025",
+          "handle": "light-blue-slim-fit-stretch-suit-2-piece-2025",
+          "price": 199.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Light Blue Double-Breasted Slim Stretch Suit \u2013 Modern Elegance for 2025",
+          "handle": "light-blue-double-breasted-slim-stretch-suit-2025",
+          "price": 249.99,
+          "type": "Double-Breasted Suit"
+        },
+        {
+          "title": "Men\u2019s Light Blue Paisley Jacquard Tuxedo \u2013 Slim Fit 3-Piece Set with Black Satin Lapels",
+          "handle": "mens-light-blue-paisley-tuxedo-slim-fit-3-piece-set",
+          "price": 249.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Men\u2019s Light Blue Sequin Lapel Three-Piece Prom Tuxedo \u2013 A Statement in Sophistication",
+          "handle": "men-s-light-blue-sequin-lapel-three-piece-prom-tuxedo-a-statement-in-sophistication",
+          "price": 299.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Light Blue Checkered Double-Breasted Suit - Breezy Elegance",
+          "handle": "kct-menswear-light-blue-checkered-double-breasted-suit-breezy-elegance",
+          "price": 249.99,
+          "type": "Double-Breasted Suit"
+        },
+        {
+          "title": "Elegant Powdered Blue Tuxedo - A Chic Choice for Prom and Wedding Seasons",
+          "handle": "elegant-powdered-blue-tuxedo-a-chic-choice-for-prom-and-wedding-seasons",
+          "price": 249.99,
+          "type": "Three-Piece Tuxedo"
+        },
+        {
+          "title": "Light Blue Linen Suit \u2013 Breathable & Stylish for 2025",
+          "handle": "light-blue-linen-suit-2025",
+          "price": 249.99,
+          "type": "Tuxedo"
+        }
+      ],
+      "ties": [
+        {
+          "title": "Powder Blue Ties & Bowties Collection",
+          "handle": "powder-blue-wedding-bundle",
+          "price": 24.99
+        },
+        {
+          "title": "Sly Blue Tuxedo with Matching Bowtie",
+          "handle": "sly-blue-tuxedo-with-matching-bowtie",
+          "price": 229.99
+        }
+      ],
+      "accessories": [
+        {
+          "title": "Aqua Floral Prom Blazer",
+          "handle": "aqua-floral-prom-blazer",
+          "price": 199.99
+        }
+      ]
+    }
+  },
+  "complete_the_look_bundles": [
+    {
+      "name": "Burgundy Wedding Package - #1 Trending 2025",
+      "suit_color": "burgundy",
+      "recommended_components": {
+        "suit": "burgundy 3-piece or tuxedo",
+        "shirt": "white or cream",
+        "tie": "gold or navy",
+        "shoes": "black patent or burgundy velvet"
+      },
+      "total_value_range": "$400-$600",
+      "trending_score": 98,
+      "occasions": [
+        "fall_wedding",
+        "winter_wedding",
+        "formal_gala"
+      ]
+    },
+    {
+      "name": "Sage Green Earth Tone Wedding",
+      "suit_color": "sage_green",
+      "recommended_components": {
+        "suit": "sage green suit",
+        "shirt": "white or cream",
+        "tie": "rust or terracotta",
+        "shoes": "tan or brown"
+      },
+      "total_value_range": "$350-$550",
+      "trending_score": 95,
+      "occasions": [
+        "spring_wedding",
+        "summer_wedding",
+        "rustic_wedding",
+        "outdoor_wedding"
+      ]
+    },
+    {
+      "name": "Chocolate Brown Pantone 2025",
+      "suit_color": "chocolate_brown",
+      "recommended_components": {
+        "suit": "chocolate brown 3-piece",
+        "shirt": "cream or light blue",
+        "tie": "rust or terracotta or navy",
+        "shoes": "brown leather"
+      },
+      "total_value_range": "$380-$580",
+      "trending_score": 91,
+      "occasions": [
+        "fall_wedding",
+        "winter_wedding"
+      ]
+    }
+  ],
+  "wedding_party_packages": [],
+  "occasion_specific": {
+    "wedding": [],
+    "prom": [],
+    "black_tie": [],
+    "business": []
+  }
+}

@@ -1,68 +1,114 @@
 {
-  "version": "1.0",
-  "last_updated": "2024-01-09T14:30:00Z",
-  "update_frequency": "real_time",
+  "version": "2.0",
+  "last_updated": "2025-01-30T00:00:00Z",
+  "update_frequency": "monthly",
   "current_trends": {
     "hot_right_now": [
+      {
+        "combination": {
+          "suit": "burgundy",
+          "shirt": "white",
+          "tie": "gold"
+        },
+        "trend_score": 98,
+        "growth_24h": "+18%",
+        "growth_7d": "+45%",
+        "growth_30d": "+89%",
+        "search_volume": 42500,
+        "social_mentions": 285000,
+        "influencer_posts": 412,
+        "hashtags": ["#BurgundyWedding2025", "#MerlotGroom", "#WineColoredSuit"],
+        "selling_velocity": "5.1x normal",
+        "reason": "#1 Wedding Color 2025 - Versatile & Romantic",
+        "target_demographic": "Wedding grooms 25-40"
+      },
       {
         "combination": {
           "suit": "sage_green",
           "shirt": "white",
           "tie": "rust"
         },
-        "trend_score": 94,
-        "growth_24h": "+12%",
-        "growth_7d": "+32%",
-        "growth_30d": "+67%",
-        "search_volume": 28500,
-        "social_mentions": 156000,
-        "influencer_posts": 234,
+        "trend_score": 95,
+        "growth_24h": "+14%",
+        "growth_7d": "+38%",
+        "growth_30d": "+72%",
+        "search_volume": 35200,
+        "social_mentions": 198000,
+        "influencer_posts": 289,
         "hashtags": ["#SageGreenGroom", "#RustTieWedding", "#EarthToneWedding"],
-        "selling_velocity": "3.2x normal"
+        "selling_velocity": "4.8x normal",
+        "reason": "Still climbing - Top 3 wedding color",
+        "note": "Predicted to plateau but continues rising"
       },
       {
         "combination": {
-          "suit": "powder_blue",
+          "suit": "chocolate_brown",
+          "shirt": "cream",
+          "tie": "terracotta"
+        },
+        "trend_score": 91,
+        "growth_24h": "+22%",
+        "growth_7d": "+51%",
+        "growth_30d": "+94%",
+        "search_volume": 28700,
+        "social_mentions": 142000,
+        "influencer_posts": 178,
+        "hashtags": ["#ChocolateBrownSuit", "#PantoneInfluence", "#EarthToneGroom"],
+        "selling_velocity": "3.9x normal",
+        "reason": "Pantone 2025 Color of the Year influence",
+        "note": "NEW ENTRY - Rising fast for Fall/Winter weddings"
+      },
+      {
+        "combination": {
+          "suit": "light_blue",
           "shirt": "white",
           "tie": "navy"
         },
-        "trend_score": 88,
-        "growth_24h": "+8%",
-        "growth_7d": "+24%",
-        "search_volume": 19200,
-        "tiktok_views": "2.3M",
-        "celebrity_spotted": "Recent A-list wedding"
-      },
-      {
-        "combination": {
-          "suit": "burgundy",
-          "shirt": "light_grey",
-          "tie": "patterned"
-        },
-        "trend_score": 85,
-        "growth_24h": "+15%",
-        "reason": "Fashion Week influence",
-        "target_demographic": "25-35 urban professionals"
+        "trend_score": 87,
+        "growth_24h": "+9%",
+        "growth_7d": "+28%",
+        "search_volume": 31400,
+        "tiktok_views": "3.8M",
+        "celebrity_spotted": "Multiple spring weddings",
+        "reason": "Spring/Summer 2025 favorite"
       }
     ],
     "rising_fast": [
       {
-        "color": "hunter_green",
+        "style": "double_breasted",
         "category": "suits",
-        "growth_rate": "+45% MoM",
-        "prediction": "Next big color for Fall 2024"
+        "growth_rate": "+67% MoM",
+        "prediction": "Major comeback - peaked lapels especially",
+        "reason": "Runway to wedding influence",
+        "best_for": "Confident statement makers, formal weddings"
+      },
+      {
+        "style": "three_piece",
+        "category": "suits",
+        "growth_rate": "+52% MoM",
+        "prediction": "Modern waistcoats with velvet/patterns",
+        "reason": "Old-school charm meets modern cuts",
+        "best_for": "Fall/winter weddings, formal church ceremonies"
+      },
+      {
+        "color": "emerald_green",
+        "category": "suits",
+        "growth_rate": "+48% MoM",
+        "pairs_well_with": ["black", "gold", "ivory"],
+        "prediction": "Dark green breaking into top 5"
       },
       {
         "color": "terracotta",
         "category": "ties",
         "growth_rate": "+38% MoM",
-        "pairs_well_with": ["navy", "charcoal", "tan"]
+        "pairs_well_with": ["navy", "charcoal", "tan", "chocolate_brown", "sage_green"]
       },
       {
-        "pattern": "subtle_plaid",
+        "pattern": "subtle_florals_paisley",
         "category": "suits",
-        "growth_rate": "+28% MoM",
-        "market": "Creative professionals"
+        "growth_rate": "+34% MoM",
+        "market": "Creative professionals, outdoor weddings",
+        "reason": "Pattern trend for 2025"
       }
     ],
     "declining": [
@@ -81,9 +127,10 @@
   },
   "by_category": {
     "suits": {
-      "top_trending": ["sage_green", "powder_blue", "hunter_green"],
-      "steady_performers": ["navy", "charcoal", "burgundy"],
-      "emerging": ["terracotta", "dusty_rose", "deep_teal"]
+      "top_trending": ["burgundy", "sage_green", "chocolate_brown", "light_blue", "emerald_green"],
+      "steady_performers": ["navy", "charcoal", "black_tuxedo"],
+      "emerging": ["terracotta", "dusty_rose", "deep_teal"],
+      "style_trends": ["double_breasted", "three_piece", "wide_peak_lapels", "velvet_accents", "monochromatic"]
     },
     "shirts": {
       "dominant": "white (72% of combinations)",
@@ -98,13 +145,22 @@
   },
   "event_specific_trends": {
     "weddings": {
-      "spring_2024": {
-        "trending": "sage_green_suits",
-        "growth": "+89% YoY"
+      "spring_2025": {
+        "trending": "burgundy_and_sage_green",
+        "growth": "+94% YoY",
+        "specific": "Burgundy with gold ties, Sage with rust/terracotta",
+        "style": "Double-breasted gaining traction"
       },
-      "summer_2024": {
-        "trending": "linen_everything",
-        "specific": "Sage linen with rust ties"
+      "summer_2025": {
+        "trending": "light_blue_and_tan",
+        "specific": "Light blue linen, Tan with navy ties",
+        "growth": "+67% YoY"
+      },
+      "fall_winter_2025": {
+        "trending": "chocolate_brown_and_velvet_accents",
+        "specific": "Chocolate brown with terracotta, Velvet burgundy with gold",
+        "growth": "+82% YoY",
+        "note": "Pantone influence strong"
       }
     },
     "business": {

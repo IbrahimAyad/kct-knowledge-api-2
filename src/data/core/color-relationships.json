@@ -1,6 +1,7 @@
 {
-  "version": "1.0",
-  "last_updated": "2024-01-09",
+  "version": "2.0",
+  "last_updated": "2025-01-30",
+  "update_notes": "Added 2025 trending colors (chocolate_brown, terracotta, emerald_green), updated burgundy and sage_green trend scores",
   "color_relationships": {
     "navy": {
       "perfect_matches": {
@@ -48,15 +49,17 @@
       "perfect_matches": {
         "shirts": ["white", "light_blue", "cream"],
         "ties": ["navy", "gold", "burgundy_pattern", "grey"],
-        "confidence": 95
+        "confidence": 98
       },
       "good_matches": {
         "shirts": ["light_pink", "light_grey"],
         "ties": ["mustard", "forest_green"],
-        "confidence": 83
+        "confidence": 86
       },
-      "popularity_score": 95,
-      "trending": "stable"
+      "popularity_score": 98,
+      "trending": "🔥 #1 Wedding Color 2025",
+      "growth_rate": "+89% YoY",
+      "seasonal_peak": "fall_winter_spring"
     },
     "black": {
       "perfect_matches": {
@@ -90,11 +93,19 @@
     "sage_green": {
       "perfect_matches": {
         "shirts": ["white", "cream", "light_blue"],
-        "ties": ["blush_pink", "rust", "navy", "brown"],
-        "confidence": 92
+        "ties": ["blush_pink", "rust", "navy", "brown", "terracotta"],
+        "confidence": 95
       },
-      "trending": "up_30_percent",
-      "popularity_peak": "spring_2024"
+      "good_matches": {
+        "shirts": ["light_grey", "lavender"],
+        "ties": ["sage_pattern", "olive", "gold"],
+        "confidence": 88
+      },
+      "trending": "🔥 Top 3 Wedding Color - Still Climbing",
+      "growth_rate": "+72% from 2024",
+      "popularity_score": 95,
+      "popularity_peak": "spring_summer_2025",
+      "note": "Predicted plateau never happened - continues rising"
     },
     "hunter_green": {
       "perfect_matches": {
@@ -136,6 +147,59 @@
       },
       "seasonal_restriction": "summer_preferred",
       "venue_specific": ["beach", "tropical", "outdoor_summer"]
+    },
+    "chocolate_brown": {
+      "perfect_matches": {
+        "shirts": ["white", "cream", "light_blue", "pale_pink"],
+        "ties": ["rust", "terracotta", "navy", "burgundy", "gold", "sage_green"],
+        "confidence": 94
+      },
+      "good_matches": {
+        "shirts": ["light_grey", "lavender"],
+        "ties": ["chocolate_pattern", "olive", "mustard"],
+        "confidence": 87
+      },
+      "trending": "🔥 NEW - Pantone 2025 Influence",
+      "growth_rate": "+94% MoM",
+      "popularity_score": 92,
+      "seasonal_peak": "fall_winter",
+      "pairs_especially_well_with": "terracotta ties for earth tone wedding trend"
+    },
+    "terracotta": {
+      "perfect_matches": {
+        "shirts": ["white", "cream", "sage", "light_blue"],
+        "ties": ["navy", "chocolate_brown", "forest_green", "burgundy"],
+        "confidence": 89
+      },
+      "good_matches": {
+        "shirts": ["light_grey", "pale_yellow"],
+        "ties": ["rust", "olive", "terracotta_pattern"],
+        "confidence": 84
+      },
+      "trending": "up_38_percent",
+      "growth_rate": "+38% MoM",
+      "popularity_score": 86,
+      "pairs_well_with": ["navy", "charcoal", "tan", "chocolate_brown", "sage_green"],
+      "seasonal_favorite": "fall",
+      "note": "Rising fast as tie color, emerging as suit color"
+    },
+    "emerald_green": {
+      "perfect_matches": {
+        "shirts": ["white", "cream", "black"],
+        "ties": ["gold", "burgundy", "emerald_pattern", "black", "ivory"],
+        "confidence": 91
+      },
+      "good_matches": {
+        "shirts": ["light_grey", "champagne"],
+        "ties": ["navy", "silver"],
+        "confidence": 82
+      },
+      "trending": "rising_fast",
+      "growth_rate": "+48% MoM",
+      "popularity_score": 88,
+      "formality": "high",
+      "best_for": "formal_evening_weddings",
+      "note": "Dark green breaking into top 5"
     }
   },
   "universal_rules": {
