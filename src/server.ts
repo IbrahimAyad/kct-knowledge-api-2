@@ -57,7 +57,8 @@ import { authenticateApiKey, addAuthenticatedFlag } from "./middleware/auth";
 import * as apiControllers from "./controllers/api";
 import { analyticsSummaryService } from "./services/analytics-summary-service";
 import analyticsRouter from "./routes/analytics";
-import seoRouter from "./routes/seo-routes";
+// SEO routes temporarily disabled - Puppeteer requires Chrome which isn't in Alpine Docker
+// import seoRouter from "./routes/seo-routes";
 import voiceRouter from "./routes/voice-routes";
 import {
   ColorRecommendationRequest,
@@ -858,8 +859,8 @@ app.get("/api/rate-limit-status", getRateLimitStatus());
 // Analytics routes
 app.use("/api/analytics", analyticsRouter);
 
-// SEO Crawler routes
-app.use("/api/seo", seoRouter);
+// SEO Crawler routes - temporarily disabled (Puppeteer needs Chrome)
+// app.use("/api/seo", seoRouter);
 
 // Voice AI routes
 app.use("/api/v3/voice", voiceRouter);
