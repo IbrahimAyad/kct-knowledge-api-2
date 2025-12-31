@@ -5,11 +5,17 @@
 
 import { Router, Request, Response, NextFunction } from 'express';
 import multer from 'multer';
+import rateLimit from 'express-rate-limit';
 import { voiceService } from '../services/voice-service';
-import { chatService } from '../services/chat-integration-service';
+import { chatService } from '../services/chat-service';
 import { logger } from '../utils/logger';
-import { authMiddleware } from '../middleware/auth';
-import { rateLimitMiddleware } from '../middleware/rate-limit';
+
+// Rate limiter for voice endpoints
+const voiceRateLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 30, // 30 requests per minute
+  message: { success: false, error: 'Too many voice requests, please try again later' }
+});
 
 const router = Router();
 
@@ -32,14 +38,10 @@ const upload = multer({
 /**
  * @route POST /api/v3/voice/transcribe
  * @desc Transcribe audio to text
- * @access Protected
+ * @access Public
  */
 router.post('/transcribe',
-  authMiddleware,
-  rateLimitMiddleware({ 
-    windowMs: 60000, // 1 minute
-    max: 30 // 30 requests per minute
-  }),
+  voiceRateLimiter,
   upload.single('audio'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -85,14 +87,10 @@ router.post('/transcribe',
 /**
  * @route POST /api/v3/voice/synthesize
  * @desc Convert text to speech
- * @access Protected
+ * @access Public
  */
 router.post('/synthesize',
-  authMiddleware,
-  rateLimitMiddleware({ 
-    windowMs: 60000,
-    max: 50
-  }),
+  voiceRateLimiter,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { 
@@ -145,14 +143,10 @@ router.post('/synthesize',
 /**
  * @route POST /api/v3/voice/chat
  * @desc Voice-based chat interaction
- * @access Protected
+ * @access Public
  */
 router.post('/chat',
-  authMiddleware,
-  rateLimitMiddleware({ 
-    windowMs: 60000,
-    max: 20
-  }),
+  voiceRateLimiter,
   upload.single('audio'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -188,7 +182,7 @@ router.post('/chat',
       // Step 3: Synthesize response
       const synthesis = await voiceService.synthesize({
         text: chatResponse.response,
-        emotion: this.determineEmotion(chatResponse),
+        emotion: determineEmotion(chatResponse),
         voiceProfile: req.body.voiceProfile
       });
 
@@ -206,7 +200,10 @@ router.post('/chat',
           duration: synthesis.duration,
           format: synthesis.format
         },
-        metadata: chatResponse.metadata
+        metadata: {
+          ...chatResponse.metadata,
+          suggestedNavigation: chatResponse.metadata?.navigation?.destination
+        }
       });
     } catch (error) {
       next(error);
@@ -263,10 +260,10 @@ router.get('/languages', async (req: Request, res: Response) => {
 /**
  * @route POST /api/v3/voice/feedback
  * @desc Submit voice interaction feedback
- * @access Protected
+ * @access Public
  */
 router.post('/feedback',
-  authMiddleware,
+  voiceRateLimiter,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { 

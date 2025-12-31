@@ -57,6 +57,8 @@ import { authenticateApiKey, addAuthenticatedFlag } from "./middleware/auth";
 import * as apiControllers from "./controllers/api";
 import { analyticsSummaryService } from "./services/analytics-summary-service";
 import analyticsRouter from "./routes/analytics";
+import seoRouter from "./routes/seo-routes";
+import voiceRouter from "./routes/voice-routes";
 import {
   ColorRecommendationRequest,
   StyleProfileRequest,
@@ -174,7 +176,8 @@ app.use((req, res, next) => {
     '/api/styles',
     '/api/rules/check',
     '/api/analytics', // Public analytics endpoints
-    '/api/rate-limit-status' // Rate limit status endpoint
+    '/api/rate-limit-status', // Rate limit status endpoint
+    '/api/v3/voice' // Voice AI endpoints (customer-facing)
   ];
 
   const isPublicPath = publicPaths.some(path =>
@@ -855,6 +858,12 @@ app.get("/api/rate-limit-status", getRateLimitStatus());
 // Analytics routes
 app.use("/api/analytics", analyticsRouter);
 
+// SEO Crawler routes
+app.use("/api/seo", seoRouter);
+
+// Voice AI routes
+app.use("/api/v3/voice", voiceRouter);
+
 // Sentry error handler (must be before other error handlers)
 sentryErrorHandler(app);
 
@@ -912,6 +921,12 @@ app.listen(PORT, async () => {
   console.log(`  - Style Profile Consistency`);
   console.log(`  - Venue Requirements`);
   console.log(`  - Pattern Mixing Guidelines`);
+  console.log(`\n🎤 VOICE AI ENDPOINTS:`);
+  console.log(`  - Transcribe audio: POST /api/v3/voice/transcribe`);
+  console.log(`  - Text to speech: POST /api/v3/voice/synthesize`);
+  console.log(`  - Voice chat: POST /api/v3/voice/chat`);
+  console.log(`  - Voice streaming: GET /api/v3/voice/stream/:sessionId`);
+  console.log(`  - Supported languages: GET /api/v3/voice/languages`);
   console.log(`\n⚡ Rate Limiting: 1000 requests/15min per IP`);
   console.log(`🛡️ Security: Helmet, CORS, API Key Authentication`);
   console.log(`🎨 AI-Powered: Confidence scoring, alternative suggestions, trend analysis`);
