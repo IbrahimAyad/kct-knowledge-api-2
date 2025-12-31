@@ -305,43 +305,65 @@ class VoiceService {
    * OpenAI Whisper transcription
    */
   private async transcribeWithOpenAI(request: TranscriptionRequest): Promise<TranscriptionResponse> {
-    const formData = new FormData();
-    
-    // Handle different audio input types
-    if (request.audio instanceof Buffer) {
-      formData.append('file', new Blob([request.audio]), 'audio.webm');
-    } else if (request.audio instanceof Blob) {
-      formData.append('file', request.audio, 'audio.webm');
-    } else {
-      // Base64 string
-      const buffer = Buffer.from(request.audio, 'base64');
-      formData.append('file', new Blob([buffer]), 'audio.webm');
+    try {
+      // Convert audio to Buffer if needed
+      let audioBuffer: Buffer;
+      if (request.audio instanceof Buffer) {
+        audioBuffer = request.audio;
+      } else if (typeof request.audio === 'string') {
+        // Base64 string
+        audioBuffer = Buffer.from(request.audio, 'base64');
+      } else {
+        throw new Error('Unsupported audio format');
+      }
+
+      // Create multipart form data manually for Node.js compatibility
+      const boundary = '----FormBoundary' + Math.random().toString(36).substring(2);
+      const filename = 'audio.webm';
+
+      // Build multipart body
+      let body = '';
+      body += `--${boundary}\r\n`;
+      body += `Content-Disposition: form-data; name="file"; filename="${filename}"\r\n`;
+      body += `Content-Type: audio/webm\r\n\r\n`;
+
+      const bodyStart = Buffer.from(body, 'utf8');
+      const bodyEnd = Buffer.from(`\r\n--${boundary}\r\nContent-Disposition: form-data; name="model"\r\n\r\nwhisper-1\r\n--${boundary}--\r\n`, 'utf8');
+
+      const fullBody = Buffer.concat([bodyStart, audioBuffer, bodyEnd]);
+
+      const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.openaiApiKey}`,
+          'Content-Type': `multipart/form-data; boundary=${boundary}`
+        },
+        body: fullBody
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        logger.error('OpenAI transcription failed:', { status: response.status, error: errorText });
+        throw new Error(`OpenAI API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      return {
+        text: data.text || '',
+        confidence: 0.95,
+        language: request.language || 'en',
+        segments: data.segments
+      };
+    } catch (error) {
+      logger.error('Transcription error:', error);
+      // Return empty transcription on error rather than crashing
+      return {
+        text: '',
+        confidence: 0,
+        language: request.language || 'en'
+      };
     }
-    
-    formData.append('model', 'whisper-1');
-    formData.append('language', request.language || 'en');
-    
-    // Add fashion context as prompt for better accuracy
-    if (request.context && request.context.length > 0) {
-      formData.append('prompt', request.context.join(', '));
-    }
-    
-    const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${this.openaiApiKey}`
-      },
-      body: formData
-    });
-    
-    const data = await response.json();
-    
-    return {
-      text: data.text,
-      confidence: 0.95, // Whisper doesn't provide confidence scores
-      language: request.language || 'en',
-      segments: data.segments
-    };
   }
 
   /**
