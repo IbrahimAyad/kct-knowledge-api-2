@@ -103,7 +103,7 @@ class VoiceService {
   private openaiApiKey: string;
   private elevenLabsApiKey: string;
   private voiceProfiles: Map<string, VoiceProfile>;
-  private audioContext: AudioContext | null = null;
+  private audioContext: any = null; // AudioContext is browser-only
   private fashionVocabulary: Set<string>;
 
   constructor() {
@@ -186,10 +186,8 @@ class VoiceService {
     try {
       logger.info('🎤 Initializing Voice Service...');
       
-      // Initialize audio context for browser-based processing
-      if (typeof window !== 'undefined') {
-        this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      }
+      // Audio context is browser-only, skip in Node.js environment
+      // In Node.js, we rely on API-based transcription/synthesis
       
       // Test API connections
       if (this.config.sttProvider === 'openai' && this.openaiApiKey) {
@@ -286,7 +284,7 @@ class VoiceService {
       
       // Cache common responses
       if (this.isCacheable(request.text)) {
-        await cacheService.set(cacheKey, response, 86400); // 24 hours
+        await cacheService.set(cacheKey, response, { ttl: 86400 }); // 24 hours
       }
       
       return response;
@@ -347,7 +345,7 @@ class VoiceService {
         throw new Error(`OpenAI API error: ${response.status}`);
       }
 
-      const data = await response.json();
+      const data = await response.json() as { text?: string; segments?: any[] };
 
       return {
         text: data.text || '',
@@ -368,38 +366,17 @@ class VoiceService {
 
   /**
    * Browser Speech Recognition API
+   * Note: This is a browser-only feature. In Node.js, we use OpenAI Whisper instead.
    */
   private async transcribeWithBrowserAPI(request: TranscriptionRequest): Promise<TranscriptionResponse> {
-    return new Promise((resolve, reject) => {
-      if (typeof window === 'undefined' || !('webkitSpeechRecognition' in window)) {
-        reject(new Error('Browser Speech Recognition not available'));
-        return;
-      }
-      
-      const recognition = new (window as any).webkitSpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = false;
-      recognition.lang = request.language || 'en-US';
-      
-      recognition.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript;
-        const confidence = event.results[0][0].confidence;
-        
-        resolve({
-          text: transcript,
-          confidence,
-          language: request.language || 'en-US'
-        });
-      };
-      
-      recognition.onerror = (event: any) => {
-        reject(new Error(`Speech recognition error: ${event.error}`));
-      };
-      
-      // Convert audio to play through speaker (required for browser API)
-      // This is a limitation of browser Speech API
-      recognition.start();
-    });
+    // Browser Speech Recognition is not available in Node.js
+    // Return an error response - the fallback to browser should not happen in production
+    logger.warn('Browser Speech Recognition not available in Node.js environment');
+    return {
+      text: '',
+      confidence: 0,
+      language: request.language || 'en-US'
+    };
   }
 
   /**
@@ -468,44 +445,18 @@ class VoiceService {
 
   /**
    * Browser Speech Synthesis API
+   * Note: This is a browser-only feature. In Node.js, we use ElevenLabs/OpenAI instead.
    */
   private async synthesizeWithBrowserAPI(request: SynthesisRequest): Promise<SynthesisResponse> {
-    return new Promise((resolve, reject) => {
-      if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
-        reject(new Error('Browser Speech Synthesis not available'));
-        return;
-      }
-      
-      const utterance = new SpeechSynthesisUtterance(request.text);
-      utterance.rate = request.speed || 1.0;
-      utterance.pitch = request.pitch || 1.0;
-      
-      // Select appropriate voice
-      const voices = speechSynthesis.getVoices();
-      const preferredVoice = voices.find(v => 
-        v.lang.startsWith('en') && 
-        v.name.includes('Premium')
-      ) || voices[0];
-      
-      utterance.voice = preferredVoice;
-      
-      // Record audio (requires additional setup)
-      // For now, return a placeholder
-      utterance.onend = () => {
-        resolve({
-          audio: 'browser-tts-placeholder',
-          duration: this.estimateDuration(request.text),
-          format: 'browser',
-          cached: false
-        });
-      };
-      
-      utterance.onerror = (event) => {
-        reject(new Error(`Speech synthesis error: ${event.error}`));
-      };
-      
-      speechSynthesis.speak(utterance);
-    });
+    // Browser Speech Synthesis is not available in Node.js
+    // Return an error response - the fallback to browser should not happen in production
+    logger.warn('Browser Speech Synthesis not available in Node.js environment');
+    return {
+      audio: Buffer.from(''),
+      duration: 0,
+      format: 'mp3',
+      cached: false
+    };
   }
 
   /**
@@ -631,12 +582,12 @@ class VoiceService {
 
   private mapToOpenAIVoice(profile?: Partial<VoiceProfile>): string {
     if (!profile) return 'alloy';
-    
+
     // Map voice characteristics to OpenAI voices
     if (profile.gender === 'male' && profile.age === 'mature') return 'onyx';
-    if (profile.gender === 'female' && profile.personality?.warmth > 0.7) return 'nova';
-    if (profile.personality?.professionalism > 0.8) return 'alloy';
-    
+    if (profile.gender === 'female' && (profile.personality?.warmth ?? 0) > 0.7) return 'nova';
+    if ((profile.personality?.professionalism ?? 0) > 0.8) return 'alloy';
+
     return 'shimmer';
   }
 

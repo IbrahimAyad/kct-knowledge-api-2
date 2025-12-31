@@ -130,9 +130,11 @@ router.post('/synthesize',
       // Send audio data
       if (synthesis.audio instanceof Buffer) {
         res.send(synthesis.audio);
-      } else {
+      } else if (typeof synthesis.audio === 'string') {
         // Base64 encoded
         res.send(Buffer.from(synthesis.audio, 'base64'));
+      } else {
+        res.send(synthesis.audio);
       }
     } catch (error) {
       next(error);
@@ -299,7 +301,7 @@ router.post('/feedback',
 );
 
 // Helper function to determine emotion based on chat response
-function determineEmotion(chatResponse: any): string {
+function determineEmotion(chatResponse: any): 'neutral' | 'friendly' | 'professional' | 'enthusiastic' | 'empathetic' {
   if (chatResponse.metadata?.sentiment === 'positive') return 'enthusiastic';
   if (chatResponse.metadata?.framework === 'restore') return 'empathetic';
   if (chatResponse.metadata?.framework === 'precision') return 'professional';
