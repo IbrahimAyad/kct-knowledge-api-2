@@ -39,6 +39,8 @@ router.post(
       const {
         eventType,
         sessionId,
+        userId,
+        userEmail,
         pageUrl,
         data,
         timestamp,
@@ -49,7 +51,10 @@ router.post(
         source,
       } = req.body;
 
-      const eventTimestamp = timestamp || Date.now();
+      // Handle timestamp - can be string (ISO) or number (unix ms)
+      const eventTimestamp = timestamp
+        ? (typeof timestamp === 'string' ? new Date(timestamp).getTime() : timestamp)
+        : Date.now();
       const userAgent = req.headers['user-agent'] || '';
 
       // Prepare event data - merge new flexible format with legacy fields
@@ -59,9 +64,9 @@ router.post(
       if (occasion) eventData.occasion = occasion;
       if (source) eventData.source = source;
 
-      // Extract user info if available
-      const userId = (data as any)?.userId || undefined;
-      const customerEmail = (data as any)?.userEmail || undefined;
+      // Use userId/userEmail from request body (Lovable format)
+      const finalUserId = userId || (data as any)?.userId || undefined;
+      const finalUserEmail = userEmail || (data as any)?.userEmail || undefined;
 
       // Store in Railway PostgreSQL (primary storage)
       try {
@@ -72,8 +77,8 @@ router.post(
           [
             eventType,
             sessionId,
-            userId,
-            customerEmail,
+            finalUserId,
+            finalUserEmail,
             pageUrl || '',
             userAgent,
             JSON.stringify(eventData),

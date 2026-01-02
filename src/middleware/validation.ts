@@ -15,9 +15,11 @@ import { Request, Response, NextFunction } from 'express';
 export const analyticsTrackSchema = z.object({
   eventType: z.string().optional().default('unknown'),
   sessionId: z.string().optional().default('unknown'),
+  userId: z.string().nullable().optional(), // Lovable sends camelCase
+  userEmail: z.string().nullable().optional(), // Lovable sends camelCase
   pageUrl: z.string().optional(),
   data: z.record(z.string(), z.any()).optional(), // Flexible JSONB data field
-  timestamp: z.number().optional(),
+  timestamp: z.union([z.string(), z.number()]).optional(), // Accept string or number
 
   // Legacy fields for backward compatibility
   productId: z.string().optional(),
