@@ -163,12 +163,22 @@ export const validate = (schema: z.ZodSchema, type: SchemaType = 'body') => {
           message: err.message,
         }));
 
+        // Log validation failures for debugging
+        console.log('❌ Validation failed:', JSON.stringify({
+          source,
+          payload: req[source as keyof typeof req],
+          errors
+        }).substring(0, 300));
+
         return res.status(400).json({
           success: false,
           error: 'Validation failed',
           details: errors,
         });
       }
+
+      // Log unexpected validation errors
+      console.log('❌ Unexpected validation error:', error);
 
       return res.status(400).json({
         success: false,
