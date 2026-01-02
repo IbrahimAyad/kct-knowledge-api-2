@@ -283,7 +283,29 @@ class DatabaseService {
         outcome_value DECIMAL(10,2),
         metadata ${isPostgreSQL ? 'JSONB' : 'TEXT'},
         recorded_at TIMESTAMP DEFAULT ${isPostgreSQL ? 'NOW()' : 'CURRENT_TIMESTAMP'}
-      )`
+      )`,
+
+      // Analytics events table (unified event warehouse)
+      `CREATE TABLE IF NOT EXISTS analytics_events (
+        id ${isPostgreSQL ? 'SERIAL PRIMARY KEY' : 'INTEGER PRIMARY KEY AUTOINCREMENT'},
+        event_type VARCHAR(100) NOT NULL,
+        session_id VARCHAR(255) NOT NULL,
+        user_id VARCHAR(255),
+        customer_email VARCHAR(255),
+        page_url VARCHAR(500),
+        user_agent TEXT,
+        event_data ${isPostgreSQL ? 'JSONB' : 'TEXT'},
+        timestamp BIGINT NOT NULL,
+        created_at TIMESTAMP DEFAULT ${isPostgreSQL ? 'NOW()' : 'CURRENT_TIMESTAMP'}
+      )`,
+
+      // Analytics events indexes (PostgreSQL only)
+      ...(isPostgreSQL ? [
+        `CREATE INDEX IF NOT EXISTS idx_analytics_event_type ON analytics_events(event_type)`,
+        `CREATE INDEX IF NOT EXISTS idx_analytics_session_id ON analytics_events(session_id)`,
+        `CREATE INDEX IF NOT EXISTS idx_analytics_user_id ON analytics_events(user_id)`,
+        `CREATE INDEX IF NOT EXISTS idx_analytics_timestamp ON analytics_events(timestamp)`
+      ] : [])
     ];
   }
 

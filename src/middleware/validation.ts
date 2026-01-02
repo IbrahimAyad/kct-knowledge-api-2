@@ -10,13 +10,19 @@ import { Request, Response, NextFunction } from 'express';
 // Analytics Schemas
 // ============================================
 
+// Flexible analytics track schema - accepts any event type
 export const analyticsTrackSchema = z.object({
-  eventType: z.enum(['view', 'click', 'add_to_cart', 'purchase']),
-  productId: z.string().min(1, 'productId is required'),
+  eventType: z.string().min(1, 'eventType is required'),
+  sessionId: z.string().min(1, 'sessionId is required'),
+  pageUrl: z.string().optional(),
+  data: z.record(z.string(), z.any()).optional(), // Flexible JSONB data field
+  timestamp: z.number().optional(),
+
+  // Legacy fields for backward compatibility
+  productId: z.string().optional(),
   productTitle: z.string().optional(),
   occasion: z.string().optional(),
-  source: z.string().min(1, 'source is required'),
-  sessionId: z.string().optional(),
+  source: z.string().optional(),
 });
 
 export const analyticsDashboardSchema = z.object({

@@ -7,6 +7,8 @@ import express, { Request, Response } from 'express';
 import { ga4AnalyticsService } from '../services/ga4-analytics-service';
 import { shopifyAnalyticsService } from '../services/shopify-analytics-service';
 import { recommendationAnalyticsService } from '../services/recommendation-analytics-service';
+import { supabaseAnalyticsService } from '../services/supabase-analytics-service';
+import { databaseService } from '../config/database';
 import { EndpointRateLimits } from '../middleware/rate-limiting';
 import { CacheStrategies } from '../middleware/cache-headers';
 import {
@@ -22,7 +24,8 @@ const router = express.Router();
 
 /**
  * POST /api/analytics/track
- * Track recommendation engagement events from frontend
+ * Track analytics events from frontend (flexible format)
+ * Stores in Railway PostgreSQL and optionally Redis for backward compatibility
  */
 router.post(
   '/track',
@@ -32,31 +35,78 @@ router.post(
     try {
       const {
         eventType,
+        sessionId,
+        pageUrl,
+        data,
+        timestamp,
+        // Legacy fields for backward compatibility
         productId,
         productTitle,
         occasion,
         source,
-        sessionId,
       } = req.body;
 
-      // Track the event (validation already done by middleware)
-      await recommendationAnalyticsService.trackEvent({
-        eventType,
-        productId,
-        productTitle,
-        occasion,
-        source,
-        sessionId,
-        timestamp: Date.now(),
-      });
+      const eventTimestamp = timestamp || Date.now();
+      const userAgent = req.headers['user-agent'] || '';
+
+      // Prepare event data - merge new flexible format with legacy fields
+      const eventData: any = data || {};
+      if (productId) eventData.productId = productId;
+      if (productTitle) eventData.productTitle = productTitle;
+      if (occasion) eventData.occasion = occasion;
+      if (source) eventData.source = source;
+
+      // Extract user info if available
+      const userId = (data as any)?.userId || undefined;
+      const customerEmail = (data as any)?.userEmail || undefined;
+
+      // Store in Railway PostgreSQL (primary storage)
+      try {
+        await databaseService.execute(
+          `INSERT INTO analytics_events
+           (event_type, session_id, user_id, customer_email, page_url, user_agent, event_data, timestamp)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            eventType,
+            sessionId,
+            userId,
+            customerEmail,
+            pageUrl || '',
+            userAgent,
+            JSON.stringify(eventData),
+            eventTimestamp
+          ]
+        );
+      } catch (dbError) {
+        console.error('Failed to store event in Railway PostgreSQL:', dbError);
+        // Don't fail the request if database is unavailable
+      }
+
+      // Track legacy product events in Redis (backward compatibility)
+      if (productId && ['view', 'click', 'add_to_cart', 'purchase'].includes(eventType)) {
+        try {
+          await recommendationAnalyticsService.trackEvent({
+            eventType: eventType as any,
+            productId,
+            productTitle: productTitle || '',
+            occasion,
+            source: source || 'web',
+            sessionId,
+            timestamp: eventTimestamp,
+          });
+        } catch (redisError) {
+          console.error('Failed to track event in Redis:', redisError);
+          // Continue without Redis tracking
+        }
+      }
 
       res.json({
         success: true,
         message: 'Event tracked successfully',
         data: {
           eventType,
-          productId,
-          timestamp: new Date().toISOString(),
+          sessionId,
+          timestamp: new Date(eventTimestamp).toISOString(),
         },
       });
     } catch (error) {
@@ -753,5 +803,315 @@ router.get('/health', async (req: Request, res: Response) => {
     });
   }
 });
+
+/**
+ * GET /api/analytics/device-conversion
+ * Mobile vs Desktop behavior and conversion rates
+ * Combines GA4 device metrics with Supabase event data
+ */
+router.get(
+  '/device-conversion',
+  EndpointRateLimits.ANALYTICS,
+  CacheStrategies.SHORT(),
+  async (req: Request, res: Response) => {
+    try {
+      const days = parseInt(req.query.days as string) || 7;
+      const warnings: string[] = [];
+
+      // Get GA4 device metrics
+      let ga4Devices: any = { desktop: 0, mobile: 0, tablet: 0 };
+      try {
+        ga4Devices = await ga4AnalyticsService.getDeviceMetrics(`${days}daysAgo`, 'today');
+      } catch (error) {
+        console.warn('GA4 device metrics unavailable:', error);
+        warnings.push('GA4 device metrics unavailable');
+      }
+
+      // Get Supabase device breakdown
+      let supabaseDevices: any = { desktop: 0, mobile: 0, tablet: 0, unknown: 0 };
+      try {
+        supabaseDevices = await supabaseAnalyticsService.getDeviceBreakdown(days);
+      } catch (error) {
+        console.warn('Supabase device metrics unavailable:', error);
+        warnings.push('Supabase device breakdown unavailable');
+      }
+
+      // Get conversion funnel from Supabase
+      let funnel: any = { page_views: 0, product_views: 0, add_to_carts: 0, purchases: 0 };
+      try {
+        funnel = await supabaseAnalyticsService.getConversionFunnel(days);
+      } catch (error) {
+        console.warn('Conversion funnel unavailable:', error);
+        warnings.push('Conversion funnel data unavailable');
+      }
+
+      // Calculate conversion rates
+      const conversionRate = funnel.page_views > 0
+        ? ((funnel.purchases / funnel.page_views) * 100).toFixed(2)
+        : '0.00';
+
+      const addToCartRate = funnel.page_views > 0
+        ? ((funnel.add_to_carts / funnel.page_views) * 100).toFixed(2)
+        : '0.00';
+
+      const purchaseRate = funnel.add_to_carts > 0
+        ? ((funnel.purchases / funnel.add_to_carts) * 100).toFixed(2)
+        : '0.00';
+
+      // Merge device data from both sources
+      const deviceData = {
+        desktop: {
+          users_ga4: ga4Devices.desktop,
+          sessions_supabase: supabaseDevices.desktop,
+          total_users: ga4Devices.desktop + supabaseDevices.desktop,
+        },
+        mobile: {
+          users_ga4: ga4Devices.mobile,
+          sessions_supabase: supabaseDevices.mobile,
+          total_users: ga4Devices.mobile + supabaseDevices.mobile,
+        },
+        tablet: {
+          users_ga4: ga4Devices.tablet,
+          sessions_supabase: supabaseDevices.tablet,
+          total_users: ga4Devices.tablet + supabaseDevices.tablet,
+        },
+      };
+
+      res.json({
+        success: true,
+        data: {
+          device_breakdown: deviceData,
+          conversion_funnel: {
+            page_views: funnel.page_views,
+            product_views: funnel.product_views,
+            add_to_carts: funnel.add_to_carts,
+            purchases: funnel.purchases,
+          },
+          conversion_rates: {
+            overall_conversion: parseFloat(conversionRate),
+            add_to_cart_rate: parseFloat(addToCartRate),
+            purchase_completion_rate: parseFloat(purchaseRate),
+          },
+        },
+        warnings: warnings.length > 0 ? warnings : undefined,
+      });
+    } catch (error) {
+      console.error('Error fetching device conversion data:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to fetch device conversion data',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  }
+);
+
+/**
+ * GET /api/analytics/attribution
+ * Marketing attribution and ROI analysis
+ * Combines GA4 traffic sources with Shopify revenue data
+ */
+router.get(
+  '/attribution',
+  EndpointRateLimits.ANALYTICS,
+  CacheStrategies.SHORT(),
+  async (req: Request, res: Response) => {
+    try {
+      const days = parseInt(req.query.days as string) || 7;
+      const warnings: string[] = [];
+
+      // Calculate date range for Shopify
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - days);
+      const startDateStr = startDate.toISOString().split('T')[0];
+      const endDateStr = endDate.toISOString().split('T')[0];
+
+      // Get GA4 traffic sources
+      let trafficSources: any[] = [];
+      try {
+        trafficSources = await ga4AnalyticsService.getTrafficSources(`${days}daysAgo`, 'today', 20);
+      } catch (error) {
+        console.warn('GA4 traffic sources unavailable:', error);
+        warnings.push('GA4 traffic sources unavailable');
+      }
+
+      // Get Shopify revenue metrics
+      let shopifyMetrics: any = { totalSales: 0, totalOrders: 0, averageOrderValue: 0 };
+      try {
+        shopifyMetrics = await shopifyAnalyticsService.getSalesMetrics(startDateStr, endDateStr);
+      } catch (error) {
+        console.warn('Shopify metrics unavailable:', error);
+        warnings.push('Shopify revenue data unavailable');
+      }
+
+      // Calculate ROI metrics for each traffic source
+      const attributionData = trafficSources.map(source => {
+        const revenuePerSession = source.sessions > 0
+          ? (source.revenue / source.sessions)
+          : 0;
+
+        const conversionRate = source.sessions > 0
+          ? ((source.revenue > 0 ? 1 : 0) / source.sessions * 100)
+          : 0;
+
+        return {
+          source: source.source,
+          medium: source.medium,
+          sessions: source.sessions,
+          revenue: source.revenue,
+          revenue_per_session: parseFloat(revenuePerSession.toFixed(2)),
+          conversion_rate: parseFloat(conversionRate.toFixed(2)),
+        };
+      });
+
+      // Sort by revenue
+      attributionData.sort((a, b) => b.revenue - a.revenue);
+
+      // Calculate total metrics
+      const totalSessions = trafficSources.reduce((sum, s) => sum + s.sessions, 0);
+      const totalRevenue = trafficSources.reduce((sum, s) => sum + s.revenue, 0);
+
+      res.json({
+        success: true,
+        data: {
+          traffic_sources: attributionData,
+          summary: {
+            total_sessions: totalSessions,
+            total_revenue_attributed: totalRevenue,
+            total_shopify_revenue: shopifyMetrics.totalSales,
+            total_orders: shopifyMetrics.totalOrders,
+            average_order_value: shopifyMetrics.averageOrderValue,
+            attribution_coverage: totalSessions > 0
+              ? parseFloat(((totalRevenue / shopifyMetrics.totalSales) * 100).toFixed(2))
+              : 0,
+          },
+        },
+        warnings: warnings.length > 0 ? warnings : undefined,
+      });
+    } catch (error) {
+      console.error('Error fetching attribution data:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to fetch attribution data',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  }
+);
+
+/**
+ * GET /api/analytics/customer-journey
+ * Customer journey timeline reconstruction
+ * Uses Supabase events + GA4 multi-session tracking
+ */
+router.get(
+  '/customer-journey',
+  EndpointRateLimits.ANALYTICS,
+  async (req: Request, res: Response) => {
+    try {
+      const sessionId = req.query.sessionId as string;
+      const days = parseInt(req.query.days as string) || 7;
+
+      if (!sessionId) {
+        return res.status(400).json({
+          success: false,
+          error: 'sessionId query parameter is required',
+        });
+      }
+
+      const warnings: string[] = [];
+
+      // Get journey from Supabase (primary source)
+      let journey: any[] = [];
+      try {
+        journey = await supabaseAnalyticsService.getSessionJourney(sessionId);
+      } catch (error) {
+        console.warn('Supabase journey unavailable:', error);
+        warnings.push('Supabase session journey unavailable');
+      }
+
+      // Get journey from Railway PostgreSQL (if available)
+      let railwayEvents: any[] = [];
+      try {
+        railwayEvents = await databaseService.query(
+          `SELECT event_type, page_url, event_data, timestamp, created_at
+           FROM analytics_events
+           WHERE session_id = ?
+           ORDER BY timestamp ASC`,
+          [sessionId]
+        );
+      } catch (error) {
+        console.warn('Railway journey unavailable:', error);
+        warnings.push('Railway session journey unavailable');
+      }
+
+      // Merge journeys from both sources
+      const allEvents = [
+        ...journey.map(event => ({
+          timestamp: event.timestamp,
+          event_type: event.event_type,
+          page_url: event.page_url,
+          event_data: event.event_data,
+          source: 'supabase',
+        })),
+        ...railwayEvents.map(event => ({
+          timestamp: new Date(event.created_at).toISOString(),
+          event_type: event.event_type,
+          page_url: event.page_url,
+          event_data: typeof event.event_data === 'string'
+            ? JSON.parse(event.event_data)
+            : event.event_data,
+          source: 'railway',
+        })),
+      ];
+
+      // Sort by timestamp and deduplicate
+      const uniqueEvents = allEvents
+        .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+        .filter((event, index, arr) => {
+          // Keep event if it's the first or different from previous
+          if (index === 0) return true;
+          const prev = arr[index - 1];
+          return event.timestamp !== prev.timestamp || event.event_type !== prev.event_type;
+        });
+
+      // Calculate journey metrics
+      const duration = uniqueEvents.length > 1
+        ? new Date(uniqueEvents[uniqueEvents.length - 1].timestamp).getTime() -
+          new Date(uniqueEvents[0].timestamp).getTime()
+        : 0;
+
+      const pageViews = uniqueEvents.filter(e => e.event_type === 'page_view').length;
+      const interactions = uniqueEvents.filter(e => e.event_type !== 'page_view').length;
+
+      res.json({
+        success: true,
+        data: {
+          session_id: sessionId,
+          journey: uniqueEvents,
+          metrics: {
+            total_events: uniqueEvents.length,
+            page_views: pageViews,
+            interactions: interactions,
+            duration_ms: duration,
+            duration_minutes: parseFloat((duration / 60000).toFixed(2)),
+            avg_time_per_page: pageViews > 0
+              ? parseFloat((duration / pageViews / 1000).toFixed(2))
+              : 0,
+          },
+        },
+        warnings: warnings.length > 0 ? warnings : undefined,
+      });
+    } catch (error) {
+      console.error('Error fetching customer journey:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to fetch customer journey',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  }
+);
 
 export default router;
