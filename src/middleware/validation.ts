@@ -165,8 +165,8 @@ export const validate = (schema: z.ZodSchema, type: SchemaType = 'body') => {
 
         // Log validation failures for debugging
         console.log('❌ Validation failed:', JSON.stringify({
-          source,
-          payload: req[source as keyof typeof req],
+          type,
+          payload: req[type as keyof typeof req],
           errors
         }).substring(0, 300));
 
