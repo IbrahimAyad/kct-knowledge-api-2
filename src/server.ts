@@ -48,6 +48,7 @@ import { healthMonitor } from "./services/health-monitor";
 import { metricsCollector } from "./services/metrics-collector";
 import { enhancedHealthService } from "./services/enhanced-health-service";
 import { knowledgeBankService } from "./services/knowledge-bank-service";
+import { databaseService } from "./config/database";
 import { colorService } from "./services/color-service";
 import { styleProfileService } from "./services/style-profile-service";
 import { conversionService } from "./services/conversion-service";
@@ -203,9 +204,13 @@ let servicesInitialized = false;
 const initializeServices = async () => {
   if (servicesInitialized) return;
   try {
+    console.log('🔄 Initializing database connection...');
+    await databaseService.initialize();
+    await databaseService.createTables();
+
     console.log('🔄 Initializing knowledge bank services...');
     await knowledgeBankService.initialize();
-    
+
     console.log('🔄 Initializing validation engines...');
     await Promise.allSettled([
       validationEngine.initialize(),
@@ -213,7 +218,7 @@ const initializeServices = async () => {
       formalityRulesEngine.initialize(),
       seasonalRulesEngine.initialize()
     ]);
-    
+
     servicesInitialized = true;
     enhancedHealthService.setServicesReady(true);
     console.log('✅ Knowledge bank services and validation engines initialized successfully');
