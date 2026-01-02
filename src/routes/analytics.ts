@@ -516,6 +516,143 @@ router.get(
 );
 
 /**
+ * GET /api/analytics/top-products
+ * Top products with views, add-to-cart, purchases, and revenue
+ */
+router.get(
+  '/top-products',
+  EndpointRateLimits.ANALYTICS,
+  CacheStrategies.SHORT(),
+  async (req: Request, res: Response) => {
+    try {
+      const days = parseInt(req.query.days as string) || 7;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      const warnings: string[] = [];
+
+      // Calculate date range
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - days);
+
+      const startDateStr = startDate.toISOString().split('T')[0];
+      const endDateStr = endDate.toISOString().split('T')[0];
+
+      // Try to get GA4 product views first
+      let ga4Products: any[] = [];
+      try {
+        ga4Products = await ga4AnalyticsService.getTopProductsByViews(
+          `${days}daysAgo`,
+          'today',
+          limit
+        );
+      } catch (error) {
+        console.warn('GA4 product views unavailable:', error);
+        warnings.push('GA4 product views unavailable');
+      }
+
+      // Get Shopify top products (by revenue)
+      let shopifyProducts: any[] = [];
+      try {
+        shopifyProducts = await shopifyAnalyticsService.getTopProducts(
+          startDateStr,
+          endDateStr,
+          limit
+        );
+      } catch (error) {
+        console.warn('Shopify product data unavailable:', error);
+        warnings.push('Shopify product data unavailable');
+      }
+
+      // Merge data - prioritize products with both GA4 and Shopify data
+      const productMap = new Map<string, any>();
+
+      // Add Shopify products first (revenue and purchase data is critical)
+      shopifyProducts.forEach(product => {
+        productMap.set(product.productId, {
+          id: product.productId,
+          name: product.title,
+          views: 0,
+          add_to_cart: 0,
+          purchases: product.totalQuantity,
+          revenue: product.totalSales,
+        });
+      });
+
+      // Enhance with GA4 view/cart data if available
+      ga4Products.forEach(product => {
+        const existing = productMap.get(product.itemId);
+        if (existing) {
+          existing.views = product.views;
+          existing.add_to_cart = product.addToCarts;
+        } else {
+          // GA4 only product (has views but maybe no purchases yet)
+          productMap.set(product.itemId, {
+            id: product.itemId,
+            name: product.itemName,
+            views: product.views,
+            add_to_cart: product.addToCarts,
+            purchases: product.purchases,
+            revenue: product.revenue,
+          });
+        }
+      });
+
+      // Convert to array and sort by revenue
+      const topProducts = Array.from(productMap.values())
+        .sort((a, b) => b.revenue - a.revenue)
+        .slice(0, limit);
+
+      res.json({
+        success: true,
+        data: topProducts,
+        warnings: warnings.length > 0 ? warnings : undefined,
+      });
+    } catch (error) {
+      console.error('Error fetching top products:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to fetch top products',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  }
+);
+
+/**
+ * GET /api/analytics/traffic-sources
+ * Traffic source breakdown with sessions and revenue
+ */
+router.get(
+  '/traffic-sources',
+  EndpointRateLimits.ANALYTICS,
+  CacheStrategies.SHORT(),
+  async (req: Request, res: Response) => {
+    try {
+      const days = parseInt(req.query.days as string) || 7;
+
+      const trafficSources = await ga4AnalyticsService.getTrafficSources(
+        `${days}daysAgo`,
+        'today',
+        20 // Get top 20 sources
+      );
+
+      res.json({
+        success: true,
+        data: trafficSources,
+      });
+    } catch (error) {
+      console.error('Error fetching traffic sources:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to fetch traffic sources',
+        warnings: ['GA4 data unavailable'],
+      });
+    }
+  }
+);
+
+/**
  * GET /api/analytics/session/:sessionId
  * Get attribution journey for a session
  */

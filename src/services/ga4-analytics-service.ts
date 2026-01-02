@@ -378,6 +378,96 @@ export class GA4AnalyticsService {
   }
 
   /**
+   * Get traffic sources breakdown (source/medium with sessions and revenue)
+   */
+  async getTrafficSources(
+    startDate: string = '7daysAgo',
+    endDate: string = 'today',
+    limit: number = 10
+  ): Promise<Array<{ source: string; medium: string; sessions: number; revenue: number }>> {
+    try {
+      const [response] = await this.getClient().runReport({
+        property: this.propertyId,
+        dateRanges: [{ startDate, endDate }],
+        dimensions: [
+          { name: 'sessionSource' },
+          { name: 'sessionMedium' },
+        ],
+        metrics: [
+          { name: 'sessions' },
+          { name: 'purchaseRevenue' },
+        ],
+        orderBys: [
+          {
+            metric: { metricName: 'sessions' },
+            desc: true,
+          },
+        ],
+        limit,
+      });
+
+      return (
+        response.rows?.map((row) => ({
+          source: row.dimensionValues?.[0]?.value || '(direct)',
+          medium: row.dimensionValues?.[1]?.value || '(none)',
+          sessions: parseInt(row.metricValues?.[0]?.value || '0'),
+          revenue: parseFloat(row.metricValues?.[1]?.value || '0'),
+        })) || []
+      );
+    } catch (error) {
+      console.error('Error fetching GA4 traffic sources:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get top products by views (using item-scoped dimensions)
+   */
+  async getTopProductsByViews(
+    startDate: string = '7daysAgo',
+    endDate: string = 'today',
+    limit: number = 10
+  ): Promise<Array<{ itemName: string; itemId: string; views: number; addToCarts: number; purchases: number; revenue: number }>> {
+    try {
+      const [response] = await this.getClient().runReport({
+        property: this.propertyId,
+        dateRanges: [{ startDate, endDate }],
+        dimensions: [
+          { name: 'itemName' },
+          { name: 'itemId' },
+        ],
+        metrics: [
+          { name: 'itemsViewed' },
+          { name: 'addToCarts' },
+          { name: 'itemsPurchased' },
+          { name: 'itemRevenue' },
+        ],
+        orderBys: [
+          {
+            metric: { metricName: 'itemsViewed' },
+            desc: true,
+          },
+        ],
+        limit,
+      });
+
+      return (
+        response.rows?.map((row) => ({
+          itemName: row.dimensionValues?.[0]?.value || 'Unknown',
+          itemId: row.dimensionValues?.[1]?.value || '',
+          views: parseInt(row.metricValues?.[0]?.value || '0'),
+          addToCarts: parseInt(row.metricValues?.[1]?.value || '0'),
+          purchases: parseInt(row.metricValues?.[2]?.value || '0'),
+          revenue: parseFloat(row.metricValues?.[3]?.value || '0'),
+        })) || []
+      );
+    } catch (error) {
+      console.warn('GA4 product views not available:', error);
+      return [];
+    }
+  }
+
+  /**
    * Empty metrics for fallback
    */
   private getEmptyTrafficMetrics(): GA4TrafficMetrics {
