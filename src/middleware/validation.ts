@@ -23,7 +23,7 @@ export const analyticsTrackSchema = z.object({
   productTitle: z.string().optional(),
   occasion: z.string().optional(),
   source: z.string().optional(),
-});
+}).passthrough(); // Allow extra fields from frontend
 
 export const analyticsDashboardSchema = z.object({
   days: z.string().optional().transform(val => {
