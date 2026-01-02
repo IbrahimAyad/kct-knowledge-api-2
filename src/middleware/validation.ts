@@ -11,9 +11,10 @@ import { Request, Response, NextFunction } from 'express';
 // ============================================
 
 // Flexible analytics track schema - accepts any event type
+// Made ultra-flexible to accept whatever format frontend sends
 export const analyticsTrackSchema = z.object({
-  eventType: z.string().min(1, 'eventType is required'),
-  sessionId: z.string().min(1, 'sessionId is required'),
+  eventType: z.string().optional().default('unknown'),
+  sessionId: z.string().optional().default('unknown'),
   pageUrl: z.string().optional(),
   data: z.record(z.string(), z.any()).optional(), // Flexible JSONB data field
   timestamp: z.number().optional(),

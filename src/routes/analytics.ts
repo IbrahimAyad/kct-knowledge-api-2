@@ -33,6 +33,9 @@ router.post(
   validateBody(analyticsTrackSchema),
   async (req: Request, res: Response) => {
     try {
+      // Log raw payload for debugging
+      console.log('📊 Analytics track payload:', JSON.stringify(req.body).substring(0, 200));
+
       const {
         eventType,
         sessionId,
