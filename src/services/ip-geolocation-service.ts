@@ -8,9 +8,10 @@ import { logger } from '../utils/logger';
 export interface GeoLocation {
   ip: string;
   city: string;
+  state: string; // State/Region name (e.g., "Michigan", "California")
   country: string;
   countryCode: string;
-  region: string;
+  region: string; // Region code (e.g., "MI", "CA")
   timezone: string;
   lat?: number;
   lon?: number;
@@ -39,7 +40,7 @@ class IpGeolocationService {
       }
 
       // Fetch from ip-api.com
-      const response = await fetch(`${this.API_URL}/${ip}?fields=status,message,country,countryCode,region,city,lat,lon,timezone,query`);
+      const response = await fetch(`${this.API_URL}/${ip}?fields=status,message,country,countryCode,region,regionName,city,lat,lon,timezone,query`);
 
       if (!response.ok) {
         logger.error(`IP geolocation API error: ${response.status}`);
@@ -56,9 +57,10 @@ class IpGeolocationService {
       const geoData: GeoLocation = {
         ip: data.query || ip,
         city: data.city || 'Unknown',
+        state: data.regionName || 'Unknown', // State name (e.g., "Michigan")
         country: data.country || 'Unknown',
         countryCode: data.countryCode || '',
-        region: data.region || '',
+        region: data.region || '', // Region code (e.g., "MI")
         timezone: data.timezone || '',
         lat: data.lat,
         lon: data.lon,

@@ -77,8 +77,8 @@ router.post(
       try {
         await databaseService.execute(
           `INSERT INTO analytics_events
-           (event_type, session_id, user_id, customer_email, page_url, user_agent, ip_address, city, country, event_data, timestamp)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+           (event_type, session_id, user_id, customer_email, page_url, user_agent, ip_address, city, state, country, event_data, timestamp)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             eventType,
             sessionId,
@@ -88,6 +88,7 @@ router.post(
             userAgent,
             ipAddress,
             geoData?.city || null,
+            geoData?.state || null,
             geoData?.country || null,
             JSON.stringify(eventData),
             eventTimestamp
@@ -1148,6 +1149,7 @@ router.get(
       const results = await databaseService.query(
         `SELECT
           country,
+          state,
           city,
           COUNT(*) as total_events,
           COUNT(DISTINCT session_id) as unique_sessions,
@@ -1158,17 +1160,19 @@ router.get(
          FROM analytics_events
          WHERE created_at >= ?
            AND country IS NOT NULL
-         GROUP BY country, city
+         GROUP BY country, state, city
          ORDER BY total_events DESC`,
         [startDate.toISOString()]
       );
 
-      // Aggregate by country
+      // Aggregate by country, state, and city
       const countryStats: Record<string, any> = {};
+      const stateStats: any[] = [];
       const cityStats: any[] = [];
 
       results.forEach((row: any) => {
         const country = row.country || 'Unknown';
+        const state = row.state || 'Unknown';
         const city = row.city || 'Unknown';
 
         // Country aggregation
@@ -1181,7 +1185,6 @@ router.get(
             product_views: 0,
             add_to_carts: 0,
             purchases: 0,
-            cities: [],
           };
         }
 
@@ -1191,9 +1194,34 @@ router.get(
         countryStats[country].add_to_carts += parseInt(row.add_to_carts);
         countryStats[country].purchases += parseInt(row.purchases);
 
+        // State stats (for US primarily, but works for any country with states/regions)
+        const stateKey = `${country}-${state}`;
+        const existingState = stateStats.find(s => s.country === country && s.state === state);
+
+        if (existingState) {
+          existingState.total_events += parseInt(row.total_events);
+          existingState.unique_sessions += parseInt(row.unique_sessions);
+          existingState.page_views += parseInt(row.page_views);
+          existingState.product_views += parseInt(row.product_views);
+          existingState.add_to_carts += parseInt(row.add_to_carts);
+          existingState.purchases += parseInt(row.purchases);
+        } else {
+          stateStats.push({
+            country,
+            state,
+            total_events: parseInt(row.total_events),
+            unique_sessions: parseInt(row.unique_sessions),
+            page_views: parseInt(row.page_views),
+            product_views: parseInt(row.product_views),
+            add_to_carts: parseInt(row.add_to_carts),
+            purchases: parseInt(row.purchases),
+          });
+        }
+
         // City stats
         cityStats.push({
           country,
+          state,
           city,
           total_events: parseInt(row.total_events),
           unique_sessions: parseInt(row.unique_sessions),
@@ -1215,15 +1243,25 @@ router.get(
           : '0%',
       }));
 
+      // Calculate conversion rates for states and sort
+      const states = stateStats.map((state: any) => ({
+        ...state,
+        conversion_rate: state.page_views > 0
+          ? ((state.purchases / state.page_views) * 100).toFixed(2) + '%'
+          : '0%',
+      })).sort((a, b) => b.total_events - a.total_events);
+
       res.json({
         success: true,
         data: {
           summary: {
             total_countries: countries.length,
+            total_states: states.length,
             total_cities: cityStats.length,
             timeframe: `${days} days`,
           },
           by_country: countries.slice(0, 20), // Top 20 countries
+          by_state: states.slice(0, 50), // Top 50 states/regions
           by_city: cityStats.slice(0, 50), // Top 50 cities
         },
         timestamp: new Date().toISOString(),

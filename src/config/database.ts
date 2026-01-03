@@ -239,9 +239,11 @@ class DatabaseService {
         statements: [
           `ALTER TABLE analytics_events ADD COLUMN IF NOT EXISTS ip_address VARCHAR(45)`,
           `ALTER TABLE analytics_events ADD COLUMN IF NOT EXISTS city VARCHAR(100)`,
+          `ALTER TABLE analytics_events ADD COLUMN IF NOT EXISTS state VARCHAR(100)`,
           `ALTER TABLE analytics_events ADD COLUMN IF NOT EXISTS country VARCHAR(100)`,
           `CREATE INDEX IF NOT EXISTS idx_analytics_country ON analytics_events(country)`,
           `CREATE INDEX IF NOT EXISTS idx_analytics_city ON analytics_events(city)`,
+          `CREATE INDEX IF NOT EXISTS idx_analytics_state ON analytics_events(state)`,
         ]
       }
     ];
