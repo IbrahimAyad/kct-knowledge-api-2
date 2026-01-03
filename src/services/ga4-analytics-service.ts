@@ -230,19 +230,19 @@ export class GA4AnalyticsService {
    */
   async getRealtimeMetrics(): Promise<GA4RealtimeMetrics> {
     try {
-      // Active users in last 30 minutes
+      // Active users and events in last 30 minutes
       const [usersResponse] = await this.getClient().runRealtimeReport({
         property: this.propertyId,
         metrics: [
           { name: 'activeUsers' },
-          { name: 'screenPageViewsPerMinute' },
+          { name: 'eventCount' }, // Valid realtime metric (replaces screenPageViewsPerMinute)
         ],
       });
 
-      // Top pages realtime
+      // Top pages realtime (using pagePath instead of unifiedScreenName)
       const [pagesResponse] = await this.getClient().runRealtimeReport({
         property: this.propertyId,
-        dimensions: [{ name: 'unifiedScreenName' }],
+        dimensions: [{ name: 'pagePathPlusQueryString' }], // Valid realtime dimension
         metrics: [{ name: 'activeUsers' }],
         orderBys: [
           {
@@ -270,9 +270,12 @@ export class GA4AnalyticsService {
       const activeUsers = parseInt(
         usersResponse.rows?.[0]?.metricValues?.[0]?.value || '0'
       );
-      const screenPageViewsPerMinute = parseFloat(
+
+      // eventCount gives us total events, approximate page views per minute
+      const eventCount = parseInt(
         usersResponse.rows?.[0]?.metricValues?.[1]?.value || '0'
       );
+      const screenPageViewsPerMinute = eventCount / 30; // Approximate over 30 min window
 
       const topPages =
         pagesResponse.rows?.map(
