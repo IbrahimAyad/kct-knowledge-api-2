@@ -351,9 +351,8 @@ class DatabaseService {
         `CREATE INDEX IF NOT EXISTS idx_analytics_event_type ON analytics_events(event_type)`,
         `CREATE INDEX IF NOT EXISTS idx_analytics_session_id ON analytics_events(session_id)`,
         `CREATE INDEX IF NOT EXISTS idx_analytics_user_id ON analytics_events(user_id)`,
-        `CREATE INDEX IF NOT EXISTS idx_analytics_timestamp ON analytics_events(timestamp)`,
-        `CREATE INDEX IF NOT EXISTS idx_analytics_country ON analytics_events(country)`,
-        `CREATE INDEX IF NOT EXISTS idx_analytics_city ON analytics_events(city)`
+        `CREATE INDEX IF NOT EXISTS idx_analytics_timestamp ON analytics_events(timestamp)`
+        // Note: city and country indexes are created in migrations after columns are added
       ] : [])
     ];
   }
