@@ -190,17 +190,20 @@ class DatabaseService {
       }
     }
 
+    // Run migrations to add new columns to existing tables
+    await this.runMigrations();
+
     // Add foreign key constraints after all tables are created (PostgreSQL only)
     if (this.config.type === 'postgresql') {
       const constraints = [
-        `ALTER TABLE conversation_messages 
-         ADD CONSTRAINT conversation_messages_conversation_id_fkey 
+        `ALTER TABLE conversation_messages
+         ADD CONSTRAINT conversation_messages_conversation_id_fkey
          FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE`,
-        `ALTER TABLE conversation_state 
-         ADD CONSTRAINT conversation_state_conversation_id_fkey 
+        `ALTER TABLE conversation_state
+         ADD CONSTRAINT conversation_state_conversation_id_fkey
          FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE`,
-        `ALTER TABLE conversation_outcomes 
-         ADD CONSTRAINT conversation_outcomes_conversation_id_fkey 
+        `ALTER TABLE conversation_outcomes
+         ADD CONSTRAINT conversation_outcomes_conversation_id_fkey
          FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE`
       ];
 
@@ -215,6 +218,47 @@ class DatabaseService {
           }
         }
       }
+    }
+  }
+
+  /**
+   * Run database migrations to add new columns to existing tables
+   */
+  private async runMigrations(): Promise<void> {
+    const isPostgreSQL = this.config?.type === 'postgresql';
+
+    if (!isPostgreSQL) {
+      // SQLite migrations would go here if needed
+      return;
+    }
+
+    const migrations = [
+      // Migration 1: Add IP geolocation columns to analytics_events
+      {
+        name: 'Add IP geolocation columns to analytics_events',
+        statements: [
+          `ALTER TABLE analytics_events ADD COLUMN IF NOT EXISTS ip_address VARCHAR(45)`,
+          `ALTER TABLE analytics_events ADD COLUMN IF NOT EXISTS city VARCHAR(100)`,
+          `ALTER TABLE analytics_events ADD COLUMN IF NOT EXISTS country VARCHAR(100)`,
+          `CREATE INDEX IF NOT EXISTS idx_analytics_country ON analytics_events(country)`,
+          `CREATE INDEX IF NOT EXISTS idx_analytics_city ON analytics_events(city)`,
+        ]
+      }
+    ];
+
+    for (const migration of migrations) {
+      logger.info(`🔄 Running migration: ${migration.name}`);
+      for (const statement of migration.statements) {
+        try {
+          await this.execute(statement);
+        } catch (error: any) {
+          // Ignore "already exists" errors
+          if (!error.message?.includes('already exists') && !error.code?.includes('42701')) {
+            logger.warn(`⚠️ Migration statement failed: ${error.message}`);
+          }
+        }
+      }
+      logger.info(`✅ Migration completed: ${migration.name}`);
     }
   }
 
