@@ -294,6 +294,9 @@ class DatabaseService {
         customer_email VARCHAR(255),
         page_url VARCHAR(500),
         user_agent TEXT,
+        ip_address VARCHAR(45),
+        city VARCHAR(100),
+        country VARCHAR(100),
         event_data ${isPostgreSQL ? 'JSONB' : 'TEXT'},
         timestamp BIGINT NOT NULL,
         created_at TIMESTAMP DEFAULT ${isPostgreSQL ? 'NOW()' : 'CURRENT_TIMESTAMP'}
@@ -304,7 +307,9 @@ class DatabaseService {
         `CREATE INDEX IF NOT EXISTS idx_analytics_event_type ON analytics_events(event_type)`,
         `CREATE INDEX IF NOT EXISTS idx_analytics_session_id ON analytics_events(session_id)`,
         `CREATE INDEX IF NOT EXISTS idx_analytics_user_id ON analytics_events(user_id)`,
-        `CREATE INDEX IF NOT EXISTS idx_analytics_timestamp ON analytics_events(timestamp)`
+        `CREATE INDEX IF NOT EXISTS idx_analytics_timestamp ON analytics_events(timestamp)`,
+        `CREATE INDEX IF NOT EXISTS idx_analytics_country ON analytics_events(country)`,
+        `CREATE INDEX IF NOT EXISTS idx_analytics_city ON analytics_events(city)`
       ] : [])
     ];
   }

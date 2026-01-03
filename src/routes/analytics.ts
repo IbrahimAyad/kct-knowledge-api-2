@@ -8,6 +8,7 @@ import { ga4AnalyticsService } from '../services/ga4-analytics-service';
 import { shopifyAnalyticsService } from '../services/shopify-analytics-service';
 import { recommendationAnalyticsService } from '../services/recommendation-analytics-service';
 import { supabaseAnalyticsService } from '../services/supabase-analytics-service';
+import { ipGeolocationService } from '../services/ip-geolocation-service';
 import { databaseService } from '../config/database';
 import { EndpointRateLimits } from '../middleware/rate-limiting';
 import { CacheStrategies } from '../middleware/cache-headers';
@@ -57,6 +58,10 @@ router.post(
         : Date.now();
       const userAgent = req.headers['user-agent'] || '';
 
+      // Extract IP and geolocate
+      const ipAddress = ipGeolocationService.extractIP(req);
+      const geoData = await ipGeolocationService.geolocate(ipAddress);
+
       // Prepare event data - merge new flexible format with legacy fields
       const eventData: any = data || {};
       if (productId) eventData.productId = productId;
@@ -72,8 +77,8 @@ router.post(
       try {
         await databaseService.execute(
           `INSERT INTO analytics_events
-           (event_type, session_id, user_id, customer_email, page_url, user_agent, event_data, timestamp)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+           (event_type, session_id, user_id, customer_email, page_url, user_agent, ip_address, city, country, event_data, timestamp)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             eventType,
             sessionId,
@@ -81,6 +86,9 @@ router.post(
             finalUserEmail,
             pageUrl || '',
             userAgent,
+            ipAddress,
+            geoData?.city || null,
+            geoData?.country || null,
             JSON.stringify(eventData),
             eventTimestamp
           ]
@@ -1116,6 +1124,115 @@ router.get(
       res.status(500).json({
         success: false,
         error: 'Failed to fetch customer journey',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  }
+);
+
+/**
+ * GET /api/analytics/geographic
+ * Geographic analytics - traffic and conversions by location
+ */
+router.get(
+  '/geographic',
+  EndpointRateLimits.ANALYTICS,
+  CacheStrategies.SHORT(),
+  async (req: Request, res: Response) => {
+    try {
+      const days = parseInt(req.query.days as string) || 7;
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - days);
+
+      // Query Railway PostgreSQL for geographic data
+      const results = await databaseService.query(
+        `SELECT
+          country,
+          city,
+          COUNT(*) as total_events,
+          COUNT(DISTINCT session_id) as unique_sessions,
+          COUNT(CASE WHEN event_type = 'page_view' THEN 1 END) as page_views,
+          COUNT(CASE WHEN event_type = 'product_view' THEN 1 END) as product_views,
+          COUNT(CASE WHEN event_type = 'add_to_cart' THEN 1 END) as add_to_carts,
+          COUNT(CASE WHEN event_type = 'purchase' THEN 1 END) as purchases
+         FROM analytics_events
+         WHERE created_at >= ?
+           AND country IS NOT NULL
+         GROUP BY country, city
+         ORDER BY total_events DESC`,
+        [startDate.toISOString()]
+      );
+
+      // Aggregate by country
+      const countryStats: Record<string, any> = {};
+      const cityStats: any[] = [];
+
+      results.forEach((row: any) => {
+        const country = row.country || 'Unknown';
+        const city = row.city || 'Unknown';
+
+        // Country aggregation
+        if (!countryStats[country]) {
+          countryStats[country] = {
+            country,
+            total_events: 0,
+            unique_sessions: 0,
+            page_views: 0,
+            product_views: 0,
+            add_to_carts: 0,
+            purchases: 0,
+            cities: [],
+          };
+        }
+
+        countryStats[country].total_events += parseInt(row.total_events);
+        countryStats[country].page_views += parseInt(row.page_views);
+        countryStats[country].product_views += parseInt(row.product_views);
+        countryStats[country].add_to_carts += parseInt(row.add_to_carts);
+        countryStats[country].purchases += parseInt(row.purchases);
+
+        // City stats
+        cityStats.push({
+          country,
+          city,
+          total_events: parseInt(row.total_events),
+          unique_sessions: parseInt(row.unique_sessions),
+          page_views: parseInt(row.page_views),
+          product_views: parseInt(row.product_views),
+          add_to_carts: parseInt(row.add_to_carts),
+          purchases: parseInt(row.purchases),
+          conversion_rate: row.page_views > 0
+            ? ((parseInt(row.purchases) / parseInt(row.page_views)) * 100).toFixed(2) + '%'
+            : '0%',
+        });
+      });
+
+      // Calculate conversion rates for countries
+      const countries = Object.values(countryStats).map((country: any) => ({
+        ...country,
+        conversion_rate: country.page_views > 0
+          ? ((country.purchases / country.page_views) * 100).toFixed(2) + '%'
+          : '0%',
+      }));
+
+      res.json({
+        success: true,
+        data: {
+          summary: {
+            total_countries: countries.length,
+            total_cities: cityStats.length,
+            timeframe: `${days} days`,
+          },
+          by_country: countries.slice(0, 20), // Top 20 countries
+          by_city: cityStats.slice(0, 50), // Top 50 cities
+        },
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error) {
+      console.error('Error fetching geographic analytics:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to fetch geographic analytics',
         message: error instanceof Error ? error.message : 'Unknown error',
       });
     }
