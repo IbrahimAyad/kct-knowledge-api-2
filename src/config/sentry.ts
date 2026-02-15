@@ -1,22 +1,17 @@
 /**
  * Sentry Configuration for Error Monitoring
+ *
+ * CRITICAL: This module must be imported BEFORE express or any other
+ * instrumented library. Sentry.init() runs at module load time so that
+ * subsequent imports of express, http, etc. are properly monkey-patched.
  */
 
 import * as Sentry from '@sentry/node';
 import { nodeProfilingIntegration } from '@sentry/profiling-node';
-import { logger } from '../utils/logger';
 
-/**
- * Initialize Sentry error monitoring
- */
-export function initializeSentry() {
-  const sentryDsn = process.env.SENTRY_DSN;
-
-  if (!sentryDsn) {
-    logger.warn('SENTRY_DSN not configured - error monitoring disabled');
-    return;
-  }
-
+// Initialize Sentry immediately at module load time (before express is imported)
+const sentryDsn = process.env.SENTRY_DSN;
+if (sentryDsn) {
   try {
     Sentry.init({
       dsn: sentryDsn,
@@ -60,15 +55,20 @@ export function initializeSentry() {
       ],
     });
 
-    logger.info('✅ Sentry error monitoring initialized', {
-      metadata: {
-        environment: process.env.NODE_ENV,
-        dsn: sentryDsn.split('@')[1] // Log only the domain part
-      }
-    });
+    console.log(`✅ Sentry error monitoring initialized (env: ${process.env.NODE_ENV}, dsn: ${sentryDsn.split('@')[1]})`);
   } catch (error) {
-    logger.error('Failed to initialize Sentry:', error);
+    console.error('Failed to initialize Sentry:', error);
   }
+} else {
+  console.warn('SENTRY_DSN not configured - error monitoring disabled');
+}
+
+/**
+ * Kept for backward compatibility - now a no-op since init happens at import time
+ */
+export function initializeSentry() {
+  // Sentry is already initialized at module load time above.
+  // This function exists for backward compatibility with server.ts
 }
 
 /**

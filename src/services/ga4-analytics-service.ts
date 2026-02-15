@@ -24,6 +24,7 @@ export interface GA4DeviceMetrics {
 export interface GA4TopPage {
   page: string;
   views: number;
+  users: number;
   avgTimeOnPage: number;
 }
 
@@ -201,6 +202,7 @@ export class GA4AnalyticsService {
         dimensions: [{ name: 'pagePath' }],
         metrics: [
           { name: 'screenPageViews' },
+          { name: 'totalUsers' },
           { name: 'averageSessionDuration' },
         ],
         orderBys: [
@@ -216,7 +218,8 @@ export class GA4AnalyticsService {
         response.rows?.map((row) => ({
           page: row.dimensionValues?.[0]?.value || '',
           views: parseInt(row.metricValues?.[0]?.value || '0'),
-          avgTimeOnPage: parseFloat(row.metricValues?.[1]?.value || '0'),
+          users: parseInt(row.metricValues?.[1]?.value || '0'),
+          avgTimeOnPage: parseFloat(row.metricValues?.[2]?.value || '0'),
         })) || []
       );
     } catch (error) {

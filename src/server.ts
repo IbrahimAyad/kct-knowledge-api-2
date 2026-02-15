@@ -1,13 +1,14 @@
-import express from "express";
-import cors from "cors";
-import helmet from "helmet";
-import rateLimit from "express-rate-limit";
+// CRITICAL: Sentry must be imported FIRST, before express, so it can instrument it
 import {
   initializeSentry,
   sentryRequestHandler,
   sentryErrorHandler,
   captureMessage
 } from "./config/sentry";
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 // Import caching and performance middleware
 import {
   httpCache,
@@ -100,8 +101,13 @@ app.use(clearCacheHeaders());
 const globalLimiter = createApiKeyRateLimiter(500, 100);
 app.use('/api/', globalLimiter);
 
-// Cache invalidation middleware for data modification endpoints
-app.use(cacheInvalidation(['*color*', '*trending*', '*style*', '*venue*']));
+// Cache invalidation middleware - ONLY for fashion data modification endpoints
+// Do NOT apply globally: analytics POST writes were clearing trending/color caches on every page view
+app.use('/api/v1', cacheInvalidation(['*color*', '*trending*', '*style*', '*venue*']));
+app.use('/api/v2', cacheInvalidation(['*color*', '*trending*', '*style*', '*venue*']));
+app.use('/api/colors', cacheInvalidation(['*color*']));
+app.use('/api/combinations', cacheInvalidation(['*color*', '*style*']));
+app.use('/api/recommendations', cacheInvalidation(['*trending*', '*style*']));
 
 // CORS Configuration with Monitoring
 const corsOptions = {

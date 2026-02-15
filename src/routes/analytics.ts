@@ -421,7 +421,7 @@ router.get(
       const formattedData = topPages.map(page => ({
         page_path: page.page,
         views: page.views,
-        unique_visitors: Math.round(page.views * 0.7), // Estimate unique visitors
+        unique_visitors: page.users || page.views, // Use real GA4 user count if available
       }));
 
       res.json({
