@@ -7,6 +7,22 @@ import { cacheService } from './cache-service';
 import { dataLoader } from '../utils/data-loader';
 import { logger } from '../utils/logger';
 
+/**
+ * Deterministic score from a string seed — same input always produces same output.
+ * Replaces Math.random() so API responses are stable and reproducible.
+ * @param seed Any string (e.g. color name, combo description)
+ * @param min Minimum value (default 0)
+ * @param max Maximum value (default 1)
+ */
+function stableScore(seed: string, min = 0, max = 1): number {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = ((hash << 5) - hash + seed.charCodeAt(i)) | 0;
+  }
+  const normalized = (Math.abs(hash) % 10000) / 10000; // 0-1
+  return min + normalized * (max - min);
+}
+
 export interface TrendingCombination {
   combination: {
     suit: string;
@@ -154,10 +170,11 @@ class TrendingAnalysisService {
       
       // Calculate trend scores and momentum
       const enrichedTrending = await Promise.all(trending.map(async (combo: any) => {
+        const comboKey = `${combo.suit || combo.suit_color || ''}_${combo.shirt || combo.shirt_color || ''}_${combo.tie || combo.tie_color || ''}`;
         const momentum = this.calculateMomentum(combo, timeframe);
         const demographics = await this.analyzeDemographics(combo);
         const conversionImpact = await this.getConversionImpact(combo);
-        
+
         return {
           combination: combo.combination || {
             suit: combo.suit || combo.suit_color,
@@ -166,11 +183,11 @@ class TrendingAnalysisService {
           },
           trend_score: this.calculateTrendScore(combo, momentum, conversionImpact),
           momentum: momentum.direction,
-          growth_24h: combo.growth_24h || `+${Math.floor(Math.random() * 20) + 5}%`,
-          growth_7d: combo.growth_7d || `+${Math.floor(Math.random() * 40) + 10}%`,
-          growth_30d: combo.growth_30d || `+${Math.floor(Math.random() * 80) + 20}%`,
-          search_volume: combo.search_volume || Math.floor(Math.random() * 50000) + 5000,
-          social_mentions: combo.social_mentions || Math.floor(Math.random() * 200000) + 10000,
+          growth_24h: combo.growth_24h || `+${Math.floor(stableScore(comboKey + '_24h', 5, 25))}%`,
+          growth_7d: combo.growth_7d || `+${Math.floor(stableScore(comboKey + '_7d', 10, 50))}%`,
+          growth_30d: combo.growth_30d || `+${Math.floor(stableScore(comboKey + '_30d', 20, 100))}%`,
+          search_volume: combo.search_volume || Math.floor(stableScore(comboKey + '_sv', 5000, 55000)),
+          social_mentions: combo.social_mentions || Math.floor(stableScore(comboKey + '_sm', 10000, 210000)),
           conversion_rate: conversionImpact.rate,
           confidence: momentum.confidence,
           reasons: this.generateTrendReasons(combo, momentum, demographics),
@@ -439,16 +456,17 @@ class TrendingAnalysisService {
       const trending = categoryData.top_trending || categoryData.rising || [];
       
       for (const color of trending) {
+        const colorName = typeof color === 'string' ? color : color.color || String(color);
         colors.push({
-          color: typeof color === 'string' ? color : color.color || color,
+          color: colorName,
           category: cat as any,
-          trend_score: Math.random() * 30 + 70, // 70-100
+          trend_score: stableScore(colorName + '_ts', 70, 100),
           momentum: this.determineMomentum(color, timeframe),
-          growth_rate: `+${Math.floor(Math.random() * 50) + 15}%`,
+          growth_rate: `+${Math.floor(stableScore(colorName + '_gr', 15, 65))}%`,
           seasonal_factor: this.calculateSeasonalFactor(color),
           venue_popularity: this.calculateVenuePopularity(color),
           demographic_appeal: this.calculateDemographicAppeal(color),
-          prediction_confidence: Math.random() * 0.3 + 0.7 // 0.7-1.0
+          prediction_confidence: stableScore(colorName + '_pc', 0.7, 1.0)
         });
       }
     }
@@ -522,15 +540,17 @@ class TrendingAnalysisService {
     primary_segments: string[];
     appeal_scores: { [key: string]: number };
   }> {
-    // Simulate demographic analysis
+    // Deterministic demographic analysis based on combo characteristics
+    const comboSeed = JSON.stringify(combo.combination || combo);
     const segments = ['25-35 professionals', 'wedding party', 'fashion forward', 'classic traditional'];
-    const primary = segments.slice(0, Math.floor(Math.random() * 3) + 1);
-    
+    const segmentCount = Math.floor(stableScore(comboSeed + '_seg', 1, 4));
+    const primary = segments.slice(0, segmentCount);
+
     const appeal_scores: { [key: string]: number } = {};
     for (const segment of segments) {
-      appeal_scores[segment] = Math.random() * 0.4 + 0.6; // 0.6-1.0
+      appeal_scores[segment] = stableScore(comboSeed + segment, 0.6, 1.0);
     }
-    
+
     return { primary_segments: primary, appeal_scores };
   }
 
@@ -550,10 +570,11 @@ class TrendingAnalysisService {
       }
     }
     
-    // Estimate based on similar combinations
+    // Estimate based on combo seed (deterministic)
+    const comboSeed = JSON.stringify(combo.combination || combo);
     return {
-      rate: Math.random() * 0.15 + 0.15, // 15-30%
-      confidence: 0.7
+      rate: stableScore(comboSeed + '_cvr', 0.15, 0.30),
+      confidence: 0.5 // Lower confidence for estimated values
     };
   }
 
@@ -596,12 +617,12 @@ class TrendingAnalysisService {
       },
       trend_score: 90 - index * 5,
       momentum: index < 2 ? 'rising' : 'stable',
-      growth_24h: `+${Math.floor(Math.random() * 15) + 5}%`,
-      growth_7d: `+${Math.floor(Math.random() * 30) + 10}%`,
-      growth_30d: `+${Math.floor(Math.random() * 60) + 20}%`,
-      search_volume: Math.floor(Math.random() * 30000) + 5000,
-      social_mentions: Math.floor(Math.random() * 100000) + 10000,
-      conversion_rate: Math.random() * 0.15 + 0.15,
+      growth_24h: `+${Math.floor(stableScore(season + '_s24h_' + index, 5, 20))}%`,
+      growth_7d: `+${Math.floor(stableScore(season + '_s7d_' + index, 10, 40))}%`,
+      growth_30d: `+${Math.floor(stableScore(season + '_s30d_' + index, 20, 80))}%`,
+      search_volume: Math.floor(stableScore(season + '_ssv_' + index, 5000, 35000)),
+      social_mentions: Math.floor(stableScore(season + '_ssm_' + index, 10000, 110000)),
+      conversion_rate: stableScore(season + '_scvr_' + index, 0.15, 0.30),
       confidence: 0.85,
       reasons: [`Perfect for ${season} events`, 'Seasonally trending'],
       target_demographics: ['wedding party', 'seasonal shoppers']
@@ -623,7 +644,7 @@ class TrendingAnalysisService {
       category: index % 3 === 0 ? 'suits' : index % 3 === 1 ? 'shirts' : 'ties',
       trend_score: 85 - index * 5,
       momentum: 'rising',
-      growth_rate: `+${Math.floor(Math.random() * 40) + 20}%`,
+      growth_rate: `+${Math.floor(stableScore(color + '_cgr', 20, 60))}%`,
       seasonal_factor: 1.0,
       venue_popularity: {},
       demographic_appeal: {},
@@ -746,9 +767,9 @@ class TrendingAnalysisService {
       trending_styles: this.generateDemographicStyles(demo),
       color_preferences: this.getDemographicColors(demo),
       spending_patterns: {
-        average_order_value: Math.floor(Math.random() * 500) + 400,
-        bundle_preference: Math.random() * 0.4 + 0.6,
-        premium_uptake: Math.random() * 0.3 + 0.3
+        average_order_value: Math.floor(stableScore(demo + '_aov', 400, 900)),
+        bundle_preference: stableScore(demo + '_bp', 0.6, 1.0),
+        premium_uptake: stableScore(demo + '_pu', 0.3, 0.6)
       }
     }));
   }
@@ -842,33 +863,38 @@ class TrendingAnalysisService {
   }
 
   private determineMomentum(color: any, timeframe: string): 'rising' | 'stable' | 'declining' | 'emerging' {
-    const momentum = ['rising', 'stable', 'emerging', 'declining'];
-    return momentum[Math.floor(Math.random() * momentum.length)] as any;
+    const colorStr = typeof color === 'string' ? color : color.color || String(color);
+    const momentum: ('rising' | 'stable' | 'emerging' | 'declining')[] = ['rising', 'stable', 'emerging', 'declining'];
+    const idx = Math.floor(stableScore(colorStr + timeframe + '_mom', 0, momentum.length));
+    return momentum[Math.min(idx, momentum.length - 1)];
   }
 
   private calculateSeasonalFactor(color: any): number {
-    return Math.random() * 0.4 + 0.6; // 0.6-1.0
+    const colorStr = typeof color === 'string' ? color : color.color || String(color);
+    return stableScore(colorStr + '_sf', 0.6, 1.0);
   }
 
   private calculateVenuePopularity(color: any): { [venue: string]: number } {
+    const colorStr = typeof color === 'string' ? color : color.color || String(color);
     const venues = ['church', 'beach', 'garden', 'ballroom'];
     const popularity: { [venue: string]: number } = {};
-    
+
     for (const venue of venues) {
-      popularity[venue] = Math.random() * 0.5 + 0.5; // 0.5-1.0
+      popularity[venue] = stableScore(colorStr + venue, 0.5, 1.0);
     }
-    
+
     return popularity;
   }
 
   private calculateDemographicAppeal(color: any): { [demographic: string]: number } {
+    const colorStr = typeof color === 'string' ? color : color.color || String(color);
     const demographics = ['25-35_professionals', 'wedding_party', 'mature_traditional'];
     const appeal: { [demographic: string]: number } = {};
-    
+
     for (const demo of demographics) {
-      appeal[demo] = Math.random() * 0.4 + 0.6; // 0.6-1.0
+      appeal[demo] = stableScore(colorStr + demo, 0.6, 1.0);
     }
-    
+
     return appeal;
   }
 }

@@ -193,32 +193,7 @@ class DatabaseService {
     // Run migrations to add new columns to existing tables
     await this.runMigrations();
 
-    // Add foreign key constraints after all tables are created (PostgreSQL only)
-    if (this.config.type === 'postgresql') {
-      const constraints = [
-        `ALTER TABLE conversation_messages
-         ADD CONSTRAINT conversation_messages_conversation_id_fkey
-         FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE`,
-        `ALTER TABLE conversation_state
-         ADD CONSTRAINT conversation_state_conversation_id_fkey
-         FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE`,
-        `ALTER TABLE conversation_outcomes
-         ADD CONSTRAINT conversation_outcomes_conversation_id_fkey
-         FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE`
-      ];
-
-      for (const constraint of constraints) {
-        try {
-          await this.execute(constraint);
-          logger.info(`✅ Added foreign key constraint`);
-        } catch (error: any) {
-          // Ignore if constraint already exists
-          if (!error.message?.includes('already exists')) {
-            logger.warn(`⚠️ Could not add foreign key constraint: ${error.message}`);
-          }
-        }
-      }
-    }
+    // NOTE: FK constraints for conversation tables removed — those services are archived.
   }
 
   /**
@@ -268,68 +243,9 @@ class DatabaseService {
     const isPostgreSQL = this.config?.type === 'postgresql';
     
     return [
-      // Conversations table
-      `CREATE TABLE IF NOT EXISTS conversations (
-        id ${isPostgreSQL ? 'UUID PRIMARY KEY DEFAULT gen_random_uuid()' : 'TEXT PRIMARY KEY'}, 
-        customer_id TEXT,
-        session_id TEXT UNIQUE NOT NULL,
-        framework_type TEXT CHECK (framework_type IN ('atelier_ai', 'restore', 'precision')),
-        current_stage TEXT,
-        context ${isPostgreSQL ? 'JSONB' : 'TEXT'},
-        started_at TIMESTAMP DEFAULT ${isPostgreSQL ? 'NOW()' : 'CURRENT_TIMESTAMP'},
-        ended_at TIMESTAMP,
-        status TEXT CHECK (status IN ('active', 'completed', 'abandoned')) DEFAULT 'active',
-        satisfaction_score INTEGER CHECK (satisfaction_score >= 1 AND satisfaction_score <= 10),
-        conversion_outcome BOOLEAN,
-        created_at TIMESTAMP DEFAULT ${isPostgreSQL ? 'NOW()' : 'CURRENT_TIMESTAMP'},
-        updated_at TIMESTAMP DEFAULT ${isPostgreSQL ? 'NOW()' : 'CURRENT_TIMESTAMP'}
-      )`,
-      
-      // Messages table
-      `CREATE TABLE IF NOT EXISTS conversation_messages (
-        id ${isPostgreSQL ? 'UUID PRIMARY KEY DEFAULT gen_random_uuid()' : 'TEXT PRIMARY KEY'},
-        conversation_id TEXT,
-        role TEXT CHECK (role IN ('user', 'assistant')) NOT NULL,
-        content TEXT NOT NULL,
-        intent TEXT,
-        confidence_score DECIMAL(3,2),
-        response_layer INTEGER CHECK (response_layer IN (1, 2, 3)),
-        context ${isPostgreSQL ? 'JSONB' : 'TEXT'},
-        timestamp TIMESTAMP DEFAULT ${isPostgreSQL ? 'NOW()' : 'CURRENT_TIMESTAMP'}
-      )`,
-      
-      // Conversation state table
-      `CREATE TABLE IF NOT EXISTS conversation_state (
-        id ${isPostgreSQL ? 'UUID PRIMARY KEY DEFAULT gen_random_uuid()' : 'TEXT PRIMARY KEY'},
-        conversation_id TEXT,
-        state_key TEXT NOT NULL,
-        state_value ${isPostgreSQL ? 'JSONB' : 'TEXT'},
-        updated_at TIMESTAMP DEFAULT ${isPostgreSQL ? 'NOW()' : 'CURRENT_TIMESTAMP'},
-        UNIQUE(conversation_id, state_key)
-      )`,
-      
-      // Customer preferences table
-      `CREATE TABLE IF NOT EXISTS customer_preferences (
-        id ${isPostgreSQL ? 'UUID PRIMARY KEY DEFAULT gen_random_uuid()' : 'TEXT PRIMARY KEY'},
-        customer_id TEXT NOT NULL,
-        preference_key TEXT NOT NULL,
-        preference_value ${isPostgreSQL ? 'JSONB' : 'TEXT'},
-        learned_from_conversation_id TEXT,
-        confidence_score DECIMAL(3,2),
-        created_at TIMESTAMP DEFAULT ${isPostgreSQL ? 'NOW()' : 'CURRENT_TIMESTAMP'},
-        updated_at TIMESTAMP DEFAULT ${isPostgreSQL ? 'NOW()' : 'CURRENT_TIMESTAMP'},
-        UNIQUE(customer_id, preference_key)
-      )`,
-      
-      // Outcomes table for metrics tracking
-      `CREATE TABLE IF NOT EXISTS conversation_outcomes (
-        id ${isPostgreSQL ? 'UUID PRIMARY KEY DEFAULT gen_random_uuid()' : 'TEXT PRIMARY KEY'},
-        conversation_id TEXT,
-        outcome_type TEXT CHECK (outcome_type IN ('conversion', 'satisfaction', 'resolution', 'escalation')),
-        outcome_value DECIMAL(10,2),
-        metadata ${isPostgreSQL ? 'JSONB' : 'TEXT'},
-        recorded_at TIMESTAMP DEFAULT ${isPostgreSQL ? 'NOW()' : 'CURRENT_TIMESTAMP'}
-      )`,
+      // NOTE: Conversation tables (conversations, conversation_messages, conversation_state,
+      // conversation_outcomes, customer_preferences) removed — those services are archived.
+      // Tables may still exist in the database but we no longer create or depend on them.
 
       // Analytics events table (unified event warehouse)
       `CREATE TABLE IF NOT EXISTS analytics_events (

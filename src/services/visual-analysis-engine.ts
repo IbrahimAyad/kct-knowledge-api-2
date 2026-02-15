@@ -4,6 +4,19 @@ import { colorService } from "./color-service";
 import { styleProfileService } from "./style-profile-service";
 import { cacheService } from "./cache-service";
 
+/**
+ * Deterministic score from a string seed — same input always produces same output.
+ * Replaces Math.random() so scoring is stable and reproducible.
+ */
+function stableScore(seed: string, min = 0, max = 1): number {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = ((hash << 5) - hash + seed.charCodeAt(i)) | 0;
+  }
+  const normalized = (Math.abs(hash) % 10000) / 10000;
+  return min + normalized * (max - min);
+}
+
 export interface VisualAnalysisRequest {
   image_url?: string;
   image_base64?: string;
@@ -471,13 +484,13 @@ class VisualAnalysisEngine {
         versatility_score: this.calculateVersatilityScore(style.results.style_classification),
         occasion_suitability: style.results.style_classification?.occasion_suitability?.map((occasion: string) => ({
           occasion,
-          suitability_score: Math.random() * 0.3 + 0.7, // Enhanced scoring would be implemented
+          suitability_score: stableScore(occasion + '_suitability', 0.7, 1.0), // Enhanced scoring would be implemented
           reasoning: `Style aligns well with ${occasion} requirements`
         })) || [],
         style_evolution_trend: {
-          current_trend_alignment: Math.random() * 0.4 + 0.6,
-          seasonal_relevance: Math.random() * 0.3 + 0.7,
-          timeless_factor: Math.random() * 0.3 + 0.7
+          current_trend_alignment: stableScore(style.results.style_classification?.primary_style + '_trend', 0.6, 1.0),
+          seasonal_relevance: stableScore(style.results.style_classification?.primary_style + '_seasonal', 0.7, 1.0),
+          timeless_factor: stableScore(style.results.style_classification?.primary_style + '_timeless', 0.7, 1.0)
         }
       },
       color_analysis: enhancedColorAnalysis,
@@ -520,12 +533,12 @@ class VisualAnalysisEngine {
             overall_score: outfit.overall_score,
             color_harmony: outfit.visual_harmony_score,
             style_consistency: outfit.style_coherence_score,
-            proportional_balance: Math.random() * 0.3 + 0.7
+            proportional_balance: stableScore(outfit.outfit_id + '_proportional', 0.7, 1.0)
           },
           practical_considerations: {
             weather_suitability: ['mild', 'cool'],
             maintenance_level: 'medium' as const,
-            versatility_rating: Math.random() * 0.4 + 0.6
+            versatility_rating: stableScore(outfit.outfit_id + '_versatility', 0.6, 1.0)
           }
         })) || [],
         styling_tips: this.generateStylingTips(style.results.style_classification, colors.results.color_analysis),
@@ -585,14 +598,14 @@ class VisualAnalysisEngine {
       style_confidence: style.results.style_classification?.confidence || 0,
       color_confidence: colors.results.color_analysis?.dominant_colors?.length > 0 ? 0.8 : 0.4,
       pattern_confidence: patterns.results.pattern_recognition?.patterns?.length > 0 ? 0.7 : 0.5,
-      recommendation_reliability: Math.random() * 0.3 + 0.7 // Enhanced calculation needed
+      recommendation_reliability: stableScore('confidence_metrics_reliability', 0.7, 1.0) // Enhanced calculation needed
     };
   }
 
   private calculateStyleTransformation(sourceAnalysis: VisualAnalysisResult, targetStyle: any): any {
     // This would implement sophisticated style transformation logic
     return {
-      feasibility_score: Math.random() * 0.4 + 0.6,
+      feasibility_score: stableScore(sourceAnalysis.style_analysis.primary_style + '_' + targetStyle, 0.6, 1.0),
       required_changes: [
         {
           element: 'color_scheme',
@@ -643,7 +656,7 @@ class VisualAnalysisEngine {
   }
 
   private calculateVersatilityScore(styleClassification: any): number {
-    return Math.random() * 0.4 + 0.6; // Simplified - would use actual style analysis
+    return stableScore((styleClassification?.primary_style || 'unknown') + '_versatility', 0.6, 1.0); // Simplified - would use actual style analysis
   }
 
   private getPatternMixingCompatibility(patternType: string): string[] {
@@ -688,7 +701,7 @@ class VisualAnalysisEngine {
   }
 
   private calculateHarmonyPotential(color: any, allColors: any[]): number {
-    return Math.random() * 0.4 + 0.6; // Simplified
+    return stableScore(color.hex + '_harmony', 0.6, 1.0); // Simplified
   }
 
   private extractColorPalette(colors: any[]): { primary: string; secondary: string[]; accent: string[] } {
@@ -747,7 +760,7 @@ class VisualAnalysisEngine {
   }
 
   private calculateStyleCoherence(match: any): number {
-    return Math.random() * 0.4 + 0.6; // Simplified
+    return stableScore(match.item_id + '_coherence', 0.6, 1.0); // Simplified
   }
 
   private getRecommendedUsage(match: any): string[] {

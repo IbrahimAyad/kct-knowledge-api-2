@@ -5,6 +5,19 @@ import { conversionService } from "./conversion-service";
 import { trendingAnalysisService } from "./trending-analysis-service";
 import { cacheService } from "./cache-service";
 
+/**
+ * Deterministic score from a string seed — same input always produces same output.
+ * Replaces Math.random() so scoring is stable and reproducible.
+ */
+function stableScore(seed: string, min = 0, max = 1): number {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = ((hash << 5) - hash + seed.charCodeAt(i)) | 0;
+  }
+  const normalized = (Math.abs(hash) % 10000) / 10000;
+  return min + normalized * (max - min);
+}
+
 export interface OutfitBundle {
   bundle_id: string;
   name: string;
@@ -1010,11 +1023,12 @@ class AIScoringSystem {
   }
 
   private calculateOccasionRelevance(occasion: string, context?: any): number {
-    return Math.random() * 0.4 + 0.6; // Simplified
+    return stableScore(occasion + '_occ_rel', 0.6, 1.0);
   }
 
   private calculateStylePreferenceMatch(bundle: OutfitBundle, customer?: any): number {
-    return Math.random() * 0.4 + 0.6; // Simplified
+    const seed = bundle.pieces?.map(p => p.type).join('_') || 'default';
+    return stableScore(seed + '_spm', 0.6, 1.0);
   }
 
   private async analyzeColorHarmony(colors: string[]): Promise<number> {
@@ -1023,7 +1037,8 @@ class AIScoringSystem {
       const harmonies = await Promise.all(
         colors.slice(1).map(color => colorService.findComplementaryColors(color))
       );
-      return Math.random() * 0.3 + 0.7; // Simplified - would use actual harmony analysis
+      // Deterministic score based on color combination
+      return stableScore(colors.join('_') + '_harmony', 0.7, 1.0);
     } catch {
       return 0.7;
     }
@@ -1058,15 +1073,17 @@ class AIScoringSystem {
   }
 
   private analyzeProportionalBalance(pieces: any[]): number {
-    return Math.random() * 0.3 + 0.7; // Simplified
+    const seed = pieces.map(p => p.type || p.name || '').join('_');
+    return stableScore(seed + '_propbal', 0.7, 1.0);
   }
 
   private analyzeFormalityAlignment(pieces: any[], targetFormality: string): number {
-    return Math.random() * 0.3 + 0.7; // Simplified
+    const seed = pieces.map(p => p.type || '').join('_') + targetFormality;
+    return stableScore(seed + '_formal', 0.7, 1.0);
   }
 
   private identifyHarmonyIssues(pieces: any[]): any[] {
-    return []; // Simplified
+    return []; // No real ML model — returns empty rather than fabricated issues
   }
 
   // Additional helper methods would be implemented here...

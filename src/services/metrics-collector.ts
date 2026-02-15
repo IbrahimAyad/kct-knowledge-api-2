@@ -402,10 +402,11 @@ Performance Report (${period}):
   private checkAlerts(): void {
     const now = new Date().toISOString();
 
-    // Check cache hit rate
+    // Check cache hit rate (only after enough operations to be meaningful)
     const cacheMetrics = cacheService.getMetrics();
     const totalCacheOps = cacheMetrics.hits + cacheMetrics.misses;
-    if (totalCacheOps > 0) {
+    const MIN_CACHE_OPS_FOR_ALERT = 20; // Don't alert on startup when cache is still warming
+    if (totalCacheOps >= MIN_CACHE_OPS_FOR_ALERT) {
       const hitRate = cacheMetrics.hits / totalCacheOps;
       
       if (hitRate < this.thresholds.cacheHitRateCritical) {

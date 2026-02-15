@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { smartBundleService, BundleGenerationRequest, BundleCustomizationRequest } from '../services/smart-bundle-service';
 import { aiScoringSystem, ScoringRequest } from '../services/ai-scoring-system';
+import { cacheService } from '../services/cache-service';
 import { createApiResponse } from '../utils/data-loader';
 import { logger } from '../utils/logger';
 
@@ -520,27 +521,33 @@ export const getBundlePerformanceAnalytics = async (req: Request, res: Response)
       ));
     }
 
-    // This would integrate with analytics services
+    // NOTE: Real analytics integration needed — these are deterministic placeholder values
+    const stableHash = (s: string, min: number, max: number) => {
+      let h = 0;
+      for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+      return min + ((Math.abs(h) % 10000) / 10000) * (max - min);
+    };
+
     const result = {
       bundle_performance: bundle_ids.map((bundle_id: string) => ({
         bundle_id,
         metrics: {
-          conversion_rate: Math.random() * 0.2 + 0.05, // 5-25%
-          revenue: Math.random() * 10000 + 1000, // $1k-$11k
-          customer_satisfaction: Math.random() * 0.3 + 0.7, // 70-100%
-          return_rate: Math.random() * 0.1 + 0.02, // 2-12%
-          view_count: Math.floor(Math.random() * 1000 + 100) // 100-1100 views
+          conversion_rate: stableHash(bundle_id + '_cvr', 0.05, 0.25),
+          revenue: stableHash(bundle_id + '_rev', 1000, 11000),
+          customer_satisfaction: stableHash(bundle_id + '_sat', 0.7, 1.0),
+          return_rate: stableHash(bundle_id + '_ret', 0.02, 0.12),
+          view_count: Math.floor(stableHash(bundle_id + '_views', 100, 1100))
         },
         trends: {
-          conversion_trend: Math.random() * 0.4 - 0.2, // -20% to +20%
-          revenue_trend: Math.random() * 0.6 - 0.3, // -30% to +30%
-          satisfaction_trend: Math.random() * 0.2 - 0.1 // -10% to +10%
+          conversion_trend: stableHash(bundle_id + '_ct', -0.2, 0.2),
+          revenue_trend: stableHash(bundle_id + '_rt', -0.3, 0.3),
+          satisfaction_trend: stableHash(bundle_id + '_st', -0.1, 0.1)
         }
       })),
       summary: {
-        total_revenue: bundle_ids.length * (Math.random() * 10000 + 1000),
-        average_conversion_rate: Math.random() * 0.2 + 0.05,
-        overall_satisfaction: Math.random() * 0.3 + 0.7,
+        total_revenue: bundle_ids.reduce((sum, id) => sum + stableHash(id + '_rev', 1000, 11000), 0),
+        average_conversion_rate: stableHash(bundle_ids.join('') + '_acvr', 0.05, 0.25),
+        overall_satisfaction: stableHash(bundle_ids.join('') + '_osat', 0.7, 1.0),
         top_performer: bundle_ids[0],
         needs_attention: bundle_ids[bundle_ids.length - 1]
       },
@@ -564,24 +571,23 @@ export const getBundlePerformanceAnalytics = async (req: Request, res: Response)
  */
 export const getSmartBundleHealth = async (req: Request, res: Response) => {
   try {
+    // Pull real metrics from cache service instead of hardcoded values
+    const cacheMetrics = cacheService.getMetrics();
+    const totalOps = cacheMetrics.hits + cacheMetrics.misses;
+    const hitRate = totalOps > 0 ? Math.round((cacheMetrics.hits / totalOps) * 100) : 0;
+
     const health = {
       service_status: 'healthy',
       initialized: true,
       dependencies: {
-        ai_scoring_system: 'healthy',
-        fashion_clip_service: 'healthy',
-        visual_analysis_engine: 'healthy',
-        color_extraction_service: 'healthy'
+        ai_scoring_system: 'active',
+        fashion_clip_service: 'active',
+        visual_analysis_engine: 'active',
+        color_extraction_service: 'active'
       },
       performance: {
-        average_generation_time: '2.3s',
-        cache_hit_rate: '78%',
-        success_rate: '99.2%'
-      },
-      inventory: {
-        total_items: 1250,
-        available_items: 1180,
-        out_of_stock: 70
+        cache_hit_rate: `${hitRate}%`,
+        uptime_seconds: Math.round(process.uptime())
       },
       last_health_check: new Date().toISOString()
     };

@@ -257,7 +257,7 @@ export const getRecommendations = async (req: Request, res: Response) => {
         rank: index + 1,
         ai_confidence: 0.95 - (index * 0.05),
         personalization_score: 0.90,
-        trending_factor: Math.random() * 0.2 + 0.8 // Simulate trending data
+        trending_factor: 0.85 // Stable default — real trending integration needed
       })) || [],
       alternative_options: recommendations.complete_looks?.slice(3, 8).map((combo: any, index: number) => ({
         ...combo,

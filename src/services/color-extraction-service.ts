@@ -3,6 +3,19 @@ import { fashionClipService } from "./fashion-clip-service";
 import { colorService } from "./color-service";
 import { cacheService } from "./cache-service";
 
+/**
+ * Deterministic score from a string seed — same input always produces same output.
+ * Replaces Math.random() so scoring is stable and reproducible.
+ */
+function stableScore(seed: string, min = 0, max = 1): number {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = ((hash << 5) - hash + seed.charCodeAt(i)) | 0;
+  }
+  const normalized = (Math.abs(hash) % 10000) / 10000;
+  return min + normalized * (max - min);
+}
+
 export interface ColorExtractionRequest {
   image_url?: string;
   image_base64?: string;
@@ -421,7 +434,7 @@ class ColorExtractionService {
         rgb,
         hsl,
         percentage: color.percentage || 0,
-        confidence: Math.random() * 0.3 + 0.7, // Would be calculated based on extraction quality
+        confidence: stableScore(color.hex + '_confidence', 0.7, 1.0), // Would be calculated based on extraction quality
         color_family: color.color_family || this.determineColorFamily(color.hex),
         color_temperature: this.determineColorTemperature(hsl.h),
         brightness_level: this.determineBrightnessLevel(hsl.l) as any,
@@ -537,15 +550,15 @@ class ColorExtractionService {
       current_trend_alignment: trendAlignment,
       trending_status: this.determineTrendingStatus(trendAlignment),
       trend_forecast: {
-        next_6_months: Math.random() * 0.4 + 0.6,
-        next_12_months: Math.random() * 0.4 + 0.5,
-        longevity_prediction: Math.random() * 0.4 + 0.6
+        next_6_months: stableScore('trend_forecast_6m', 0.6, 1.0),
+        next_12_months: stableScore('trend_forecast_12m', 0.5, 0.9),
+        longevity_prediction: stableScore('trend_forecast_longevity', 0.6, 1.0)
       },
       fashion_week_relevance: [
         {
           season: 'SS2024',
-          designer_usage: Math.random() * 0.3 + 0.4,
-          runway_frequency: Math.random() * 0.2 + 0.1
+          designer_usage: stableScore('SS2024_designer', 0.4, 0.7),
+          runway_frequency: stableScore('SS2024_runway', 0.1, 0.3)
         }
       ]
     };
@@ -678,7 +691,7 @@ class ColorExtractionService {
   }
 
   private calculateReadabilityScore(hex: string): number {
-    return Math.random() * 0.4 + 0.6; // Simplified
+    return stableScore(hex + '_readability', 0.6, 1.0); // Simplified
   }
 
   private filterSimilarColors(colors: any[], threshold: number): any[] {
