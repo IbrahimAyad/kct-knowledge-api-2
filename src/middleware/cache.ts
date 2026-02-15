@@ -177,19 +177,22 @@ export function performanceTiming() {
 
     const originalSend = res.send;
     res.send = function(data: any) {
-      const endTime = process.hrtime.bigint();
-      const responseTime = Number(endTime - startTime) / 1000000; // Convert to milliseconds
-      
-      // Add performance headers
-      res.set({
-        'X-Response-Time': `${responseTime.toFixed(2)}ms`,
-        'X-Process-Time': `${Date.now() - startTimestamp}ms`,
-        'X-Timestamp': new Date().toISOString(),
-      });
+      try {
+        const endTime = process.hrtime.bigint();
+        const responseTime = Number(endTime - startTime) / 1000000;
 
-      // Log slow requests
-      if (responseTime > 1000) { // Log requests slower than 1 second
-        console.warn(`🐌 Slow request: ${req.method} ${req.originalUrl} (${responseTime.toFixed(2)}ms)`);
+        res.set({
+          'X-Response-Time': `${responseTime.toFixed(2)}ms`,
+          'X-Process-Time': `${Date.now() - startTimestamp}ms`,
+          'X-Timestamp': new Date().toISOString(),
+        });
+
+        if (responseTime > 1000) {
+          console.warn(`🐌 Slow request: ${req.method} ${req.originalUrl} (${responseTime.toFixed(2)}ms)`);
+        }
+      } catch (err) {
+        // Never let timing code prevent the response from being sent
+        console.error('Performance timing error:', err);
       }
 
       return originalSend.call(this, data);

@@ -403,12 +403,21 @@ export const logger = new Logger();
 export { Logger };
 
 // Graceful shutdown handling
+// CRITICAL: Do NOT use logger.info() before winstonLogger.end()
+// The write is async and will throw "write after end" if the stream
+// closes before the write completes — this was causing a fatal crash loop.
+let isShuttingDown = false;
+
 process.on('SIGINT', () => {
-  logger.info('Received SIGINT, shutting down gracefully');
+  if (isShuttingDown) return;
+  isShuttingDown = true;
+  console.log('Received SIGINT, shutting down gracefully');
   winstonLogger.end();
 });
 
 process.on('SIGTERM', () => {
-  logger.info('Received SIGTERM, shutting down gracefully');
+  if (isShuttingDown) return;
+  isShuttingDown = true;
+  console.log('Received SIGTERM, shutting down gracefully');
   winstonLogger.end();
 });

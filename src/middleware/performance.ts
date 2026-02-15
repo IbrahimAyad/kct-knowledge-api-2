@@ -255,27 +255,43 @@ export function performanceLogging() {
 
     const originalSend = res.send;
     res.send = function(data: any) {
-      const endTime = process.hrtime.bigint();
-      const responseTime = Number(endTime - startHrTime) / 1000000;
-      const statusCode = res.statusCode;
-      const contentLength = res.get('Content-Length') || (data ? Buffer.byteLength(data) : 0);
+      try {
+        const endTime = process.hrtime.bigint();
+        const responseTime = Number(endTime - startHrTime) / 1000000;
+        const statusCode = res.statusCode;
 
-      // Determine log level based on response time and status
-      let logSymbol = '✅';
-      if (statusCode >= 400) {
-        logSymbol = '❌';
-      } else if (responseTime > 1000) {
-        logSymbol = '🐌';
-      } else if (responseTime > 500) {
-        logSymbol = '⚠️';
-      }
+        // FIXED: Buffer.byteLength crashes when data is an Object (e.g. from express-rate-limit)
+        let contentLength: number | string = res.get('Content-Length') || 0;
+        if (!contentLength && data) {
+          try {
+            if (typeof data === 'string' || Buffer.isBuffer(data)) {
+              contentLength = Buffer.byteLength(data);
+            } else if (typeof data === 'object') {
+              contentLength = JSON.stringify(data).length;
+            }
+          } catch {
+            contentLength = 0;
+          }
+        }
 
-      // Log response (skip health checks)
-      if (!req.path.includes('/health')) {
-        console.log(
-          `${logSymbol} ${req.method} ${req.originalUrl} ` +
-          `${statusCode} ${responseTime.toFixed(2)}ms ${Math.round(Number(contentLength) / 1024)}KB`
-        );
+        let logSymbol = '✅';
+        if (statusCode >= 400) {
+          logSymbol = '❌';
+        } else if (responseTime > 1000) {
+          logSymbol = '🐌';
+        } else if (responseTime > 500) {
+          logSymbol = '⚠️';
+        }
+
+        if (!req.path.includes('/health')) {
+          console.log(
+            `${logSymbol} ${req.method} ${req.originalUrl} ` +
+            `${statusCode} ${responseTime.toFixed(2)}ms ${Math.round(Number(contentLength) / 1024)}KB`
+          );
+        }
+      } catch (err) {
+        // Never let logging code prevent the response from being sent
+        console.error('Performance logging error:', err);
       }
 
       return originalSend.call(this, data);

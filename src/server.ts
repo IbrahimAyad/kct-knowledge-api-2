@@ -119,7 +119,8 @@ const corsOptions = {
     if (!origin) return callback(null, true);
 
     // Check if origin is in allowed list or is a Lovable preview domain
-    const isLovablePreview = origin.includes('.lovable.app');
+    // FIXED: Lovable uses both .lovable.app AND .lovableproject.com domains
+    const isLovablePreview = origin.includes('.lovable.app') || origin.includes('.lovableproject.com');
     if (allowedOrigins.indexOf(origin) !== -1 || isLovablePreview) {
       console.log(`✅ CORS allowed: ${origin}`);
       callback(null, true);
