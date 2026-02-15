@@ -259,21 +259,30 @@ npm run lint
 3. **Test health endpoint**: `/api/analytics/health`
 4. **Verify environment variables**: Railway → Variables
 
-## 📊 Current Production Stats (as of 2025-01-30)
+## 🏗️ Recent Changes (2025-02-15)
 
-- **Sessions (7d)**: 827
-- **Total Sales (7d)**: $419.47
-- **Orders**: 3
-- **Conversion Rate**: 0.36%
-- **Active Services**: GA4 ✅ | Shopify ✅ | Redis ✅
+Major production hardening session — 11 commits:
+- Node.js 18 → 20 LTS upgrade
+- Memory leak fixes (5 unbounded collections capped)
+- Heap doubled (512MB → 1024MB)
+- Product catalog integration (157 Shopify products, 15 colors)
+- Deterministic scoring (stableScore replaces Math.random)
+- 500MB Docker image reduction (Puppeteer/Chromium removed)
+- 7 unused dependencies removed
+- 25+ archived services moved to `_archived/`
+- Startup logs condensed from 42 lines to 5
+
+## 📊 Active Services
+
+- **GA4** ✅ | **Shopify** ✅ | **Redis** ✅ | **Sentry** ✅ | **Product Catalog** ✅
 
 ---
 
-**Last Updated**: 2025-01-30
-**Version**: 1.0
+**Last Updated**: 2025-02-15
+**Version**: 2.0
 **Maintainer**: Development Team
 
 **Quick Links**:
 - [Architecture Diagram](./ai-context/architecture.md)
 - [Common Errors](./ai-context/common-errors.md)
-- [Environment Variables](./.env.documented)
+- [Environment Variables](../.env.documented)

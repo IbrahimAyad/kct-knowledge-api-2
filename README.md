@@ -1,1 +1,167 @@
-# KCT Knowledge API\n\nA professional Express.js API for KCT Menswear's fashion knowledge system. This API provides intelligent recommendations, style combinations, color harmonies, and fashion rules for menswear.\n\n## 🚀 Features\n\n- **Color Relationships**: Get complementary and conflicting color combinations\n- **Style Combinations**: Retrieve curated outfit combinations for various occasions\n- **Venue Recommendations**: Get appropriate attire suggestions for different venues\n- **Fabric Seasonality**: Access fabric recommendations based on seasons\n- **Style Rules**: Validation rules and guidelines for fashion combinations\n- **Recommendations Engine**: AI-powered outfit recommendations\n- **Trending Analysis**: Current fashion trends and popular combinations\n- **Search Functionality**: Advanced search across the knowledge base\n\n## 🏗️ Architecture\n\n```\nsrc/\n├── config/          # Configuration management\n├── controllers/     # Business logic handlers\n├── middleware/      # Auth, validation, error handling\n├── models/          # Data schemas and validation\n├── routes/          # API route definitions\n├── services/        # Data processing and business logic\n├── types/           # TypeScript type definitions\n├── utils/           # Helper functions\n└── server.ts        # Main server file\n```\n\n## 🛠️ Tech Stack\n\n- **Runtime**: Node.js 18+\n- **Framework**: Express.js with TypeScript\n- **Validation**: express-validator\n- **Security**: Helmet, CORS, Rate limiting\n- **Logging**: Winston\n- **Testing**: Jest + Supertest\n- **Code Quality**: ESLint + TypeScript\n\n## 📦 Installation\n\n```bash\n# Clone the repository\ngit clone https://github.com/IbrahimAyad/kct-knowledge-api.git\ncd kct-knowledge-api\n\n# Install dependencies\nnpm install\n\n# Copy environment variables\ncp .env.example .env\n\n# Edit environment variables\nnano .env\n```\n\n## 🚀 Getting Started\n\n### Development\n\n```bash\n# Start development server with hot reload\nnpm run dev\n\n# The API will be available at http://localhost:3000\n```\n\n### Production\n\n```bash\n# Build the project\nnpm run build\n\n# Start production server\nnpm start\n```\n\n### Testing\n\n```bash\n# Run tests\nnpm test\n\n# Run tests in watch mode\nnpm run test:watch\n\n# Run tests with coverage\nnpm run test -- --coverage\n```\n\n### Code Quality\n\n```bash\n# Lint code\nnpm run lint\n\n# Fix linting issues\nnpm run lint:fix\n```\n\n## 🔧 Configuration\n\n### Environment Variables\n\nRequired environment variables:\n\n- `PORT`: Server port (default: 3000)\n- `NODE_ENV`: Environment (development, production, test)\n- `API_KEY`: Main API key for authentication\n- `ADMIN_API_KEY`: Admin API key for privileged operations\n\nOptional configuration:\n\n- `CORS_ORIGINS`: Comma-separated list of allowed origins\n- `RATE_LIMIT_WINDOW_MS`: Rate limiting window in milliseconds\n- `RATE_LIMIT_MAX_REQUESTS`: Maximum requests per window\n- `JWT_SECRET`: JWT signing secret\n- Database and Redis configuration\n\n## 📚 API Documentation\n\n### Base URL\n\n```\nProduction: https://api.kct-menswear.com\nDevelopment: http://localhost:3000\n```\n\n### Authentication\n\nAll API endpoints require authentication via API key:\n\n```bash\nX-API-Key: your-api-key\n```\n\n### Main Endpoints\n\n#### Health & Status\n- `GET /health` - Health check\n- `GET /status` - Service status\n- `GET /metrics` - System metrics\n\n#### Knowledge Base\n- `GET /api/v1/colors` - Color relationships\n- `GET /api/v1/combinations` - Style combinations\n- `GET /api/v1/venues` - Venue recommendations\n- `GET /api/v1/fabrics` - Fabric seasonality\n- `GET /api/v1/rules` - Style rules\n- `POST /api/v1/validate` - Validate combinations\n\n#### Recommendations\n- `POST /api/v1/recommendations` - Get recommendations\n- `GET /api/v1/trending` - Trending combinations\n- `GET /api/v1/search` - Search knowledge base\n\n### Example Requests\n\n#### Get Color Relationships\n\n```bash\ncurl -X GET 'http://localhost:3000/api/v1/colors?color=navy&season=fall' \\\n  -H 'X-API-Key: your-api-key'\n```\n\n#### Get Recommendations\n\n```bash\ncurl -X POST 'http://localhost:3000/api/v1/recommendations' \\\n  -H 'X-API-Key: your-api-key' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n    \"baseItems\": [\"navy suit\", \"white shirt\"],\n    \"occasion\": \"business\",\n    \"season\": \"fall\"\n  }'\n```\n\n## 🔒 Security Features\n\n- **API Key Authentication**: Secure access control\n- **Rate Limiting**: Prevent abuse with configurable limits\n- **Input Validation**: Comprehensive input sanitization and validation\n- **Security Headers**: Helmet.js for security headers\n- **CORS**: Configurable cross-origin resource sharing\n- **Request Logging**: Comprehensive audit trails\n- **Error Handling**: Secure error responses without information leakage\n\n## 📈 Monitoring & Observability\n\n- **Health Checks**: Built-in health monitoring endpoints\n- **Metrics Collection**: Response times, error rates, request counts\n- **Structured Logging**: Winston-based logging with multiple transports\n- **Error Tracking**: Comprehensive error logging and tracking\n- **Performance Monitoring**: Request timing and system resource usage\n\n## 🚦 Rate Limiting\n\nThe API implements multiple layers of rate limiting:\n\n- **Global**: 100 requests per 15 minutes (configurable)\n- **Endpoint-specific**: Customized limits per endpoint type\n- **Tiered**: Different limits based on API key tier\n- **Burst protection**: Short-term burst limits\n- **Sustained**: Long-term usage limits\n\n## 🧪 Testing\n\nThe API includes comprehensive test coverage:\n\n- **Unit Tests**: Individual component testing\n- **Integration Tests**: API endpoint testing\n- **Performance Tests**: Load and stress testing\n- **Security Tests**: Security vulnerability testing\n\n## 📝 Development Guidelines\n\n### Code Style\n- Use TypeScript for type safety\n- Follow ESLint configuration\n- Write comprehensive tests\n- Document public APIs\n- Use meaningful commit messages\n\n### Contributing\n1. Fork the repository\n2. Create a feature branch\n3. Write tests for new functionality\n4. Ensure all tests pass\n5. Submit a pull request\n\n## 🚀 Deployment\n\n### Docker (Recommended)\n\n```dockerfile\n# Dockerfile example\nFROM node:18-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci --only=production\nCOPY dist/ ./dist/\nEXPOSE 3000\nCMD [\"npm\", \"start\"]\n```\n\n### Manual Deployment\n\n```bash\n# Build the project\nnpm run build\n\n# Set production environment variables\nexport NODE_ENV=production\nexport PORT=3000\nexport API_KEY=prod-api-key\n\n# Start the server\nnpm start\n```\n\n## 📞 Support\n\n- **Documentation**: [https://api-docs.kct-menswear.com](https://api-docs.kct-menswear.com)\n- **Email**: support@kct-menswear.com\n- **Issues**: [GitHub Issues](https://github.com/IbrahimAyad/kct-knowledge-api/issues)\n\n## 📄 License\n\nThis project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.\n\n## 🙏 Acknowledgments\n\n- Express.js community for the excellent framework\n- TypeScript team for type safety\n- All contributors and maintainers\n\n---\n\n**Made with ❤️ by the KCT Team**"
+# KCT Knowledge API
+
+Fashion intelligence and analytics engine for [KCT Menswear](https://kctmenswear.com). Powers AI outfit recommendations, color matching, real-time analytics, and product catalog integration for the headless Shopify storefront.
+
+**Production**: https://kct-knowledge-api-2-production.up.railway.app
+**Docs**: https://kct-knowledge-api-2-production.up.railway.app/docs
+**Health**: https://kct-knowledge-api-2-production.up.railway.app/health
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Runtime | Node.js 20 LTS + TypeScript |
+| Framework | Express.js |
+| Cache | Redis (Railway managed) |
+| Database | PostgreSQL (Supabase) + SQLite |
+| Analytics | Google Analytics 4 Data API |
+| E-commerce | Shopify Admin API (GraphQL) |
+| Monitoring | Sentry, Railway logs |
+| Deployment | Railway (auto-deploy from GitHub `main`) |
+
+## Project Structure
+
+```
+src/
+├── config/          # Database, Redis, Sentry configuration
+├── controllers/     # Request handlers (api.ts, smart-bundle-api.ts)
+├── data/            # JSON knowledge base (colors, styles, products)
+│   ├── core/        # Color relationships, formality, seasonality
+│   ├── intelligence/# Trending, demographics, product catalog
+│   ├── training/    # Style profiles, upsell patterns
+│   ├── validation/  # Combination rules, edge cases
+│   └── visual/      # Color hex mapping, texture compatibility
+├── middleware/       # Auth, cache, compression, rate limiting
+├── routes/          # Route definitions (analytics, v2-compatibility)
+├── services/        # Business logic (50+ services)
+│   └── _archived/   # Disabled services (voice, SEO, chat)
+├── types/           # TypeScript interfaces
+├── utils/           # Data loader, logger, validation schemas
+└── server.ts        # Express app entry point
+```
+
+## Key Endpoints
+
+### Analytics
+```
+GET  /api/analytics/dashboard?days=7   # Unified dashboard (GA4 + Shopify)
+GET  /api/analytics/realtime           # Active visitors (last 30 min)
+GET  /api/analytics/traffic?days=7     # GA4 traffic data
+GET  /api/analytics/sales?days=7       # Shopify sales data
+GET  /api/analytics/health             # Service health check
+POST /api/analytics/track              # Track recommendation events
+```
+
+### Fashion Intelligence
+```
+GET  /api/colors                       # Color catalog
+GET  /api/colors/:color/relationships  # Color pairings and conflicts
+POST /api/recommendations              # AI outfit recommendations (with Shopify product links)
+POST /api/combinations/validate        # Validate outfit combinations
+GET  /api/trending                     # Current fashion trends
+GET  /api/venues/:type/recommendations # Venue-specific attire
+GET  /api/styles/:profile              # Style profile details
+POST /api/rules/check                  # Fashion rules validation
+```
+
+### V2 Compatibility
+```
+POST /api/v2/recommendations                   # V2 format recommendations
+POST /api/v2/products/complete-the-look         # Complete the look with product links
+GET  /api/v2/trending                           # V2 trending data
+GET  /api/v2/colors                             # V2 color data
+POST /api/recommendations/complete-look         # Alias
+POST /api/style/validate-outfit                 # Alias
+```
+
+### System
+```
+GET  /health          # Health check (Railway uses this)
+GET  /docs            # Swagger UI
+GET  /docs/openapi.yaml
+```
+
+## Quick Start
+
+### Local Development
+```bash
+git clone https://github.com/IbrahimAyad/kct-knowledge-api-2.git
+cd kct-knowledge-api-2
+npm install
+cp .env.documented .env   # Edit with real values
+npm run dev               # http://localhost:3000
+```
+
+### Build & Run
+```bash
+npm run build
+npm start
+```
+
+## Environment Variables
+
+See `.env.documented` for the full reference. Key variables:
+
+| Variable | Example | Notes |
+|----------|---------|-------|
+| `GA4_PROPERTY_ID` | `401822822` | Property ID, NOT Stream ID |
+| `GA4_SERVICE_ACCOUNT_JSON` | `{...}` | Single-line JSON |
+| `SHOPIFY_STORE_URL` | `kctmenswear.myshopify.com` | No https:// |
+| `SHOPIFY_ADMIN_ACCESS_TOKEN` | `shpat_xxx` | From Custom App |
+| `REDIS_URL` | Auto-populated | Railway Redis add-on |
+| `SENTRY_DSN` | `https://...ingest.sentry.io/...` | Error monitoring |
+| `API_KEY` | your-key | API authentication |
+
+## Deployment
+
+Deploys automatically when you push to `main`. Railway uses `Dockerfile.railway` with:
+- Node.js 20 Alpine base
+- 1024MB heap allocation (`--max-old-space-size=1024`)
+- Health check on `/health`
+- Auto-restart on failure (max 10 retries)
+
+### Manual deploy
+```bash
+railway up
+```
+
+## Architecture Notes
+
+### Product Catalog Integration
+Recommendations return real Shopify product links. The mapping lives in `src/data/intelligence/product-catalog-mapping.json` (15 colors, 157 products). Service: `src/services/product-catalog-service.ts`.
+
+### Memory Management
+Four automatic cleanup intervals prevent unbounded growth: MetricsCollector (5min), DataLoader (2min), HealthMonitor (on-add), CacheInvalidation (on-invalidate). All collections are capped (alerts: 200, keyMetrics: 500, endpoints: 100).
+
+### Archived Services
+25+ files in `src/services/_archived/` and `src/routes/_archived/` — voice AI, SEO crawler, chat system, conversation tracking. These are disabled but preserved for potential future use.
+
+### Scoring
+All recommendation scores use deterministic `stableScore()` hashing (not `Math.random()`), so identical inputs produce identical outputs.
+
+## Authentication
+
+API key via `X-API-Key` header. Public endpoints (colors, recommendations, trending, analytics) don't require auth. Rate limited at 1000 req/15min per IP.
+
+## Related Systems
+
+| System | Purpose | Connection |
+|--------|---------|------------|
+| [kctmenswear.com](https://kctmenswear.com) | Customer storefront | Calls this API for recommendations, tracks events |
+| Max Out Admin | Internal dashboard | Calls this API for analytics |
+| Shopify | E-commerce backend | Product data, orders, sales |
+| Google Analytics 4 | Traffic analytics | Real-time and historical data |
+
+## Documentation
+
+| Document | Purpose |
+|----------|---------|
+| `docs/QUICK_REFERENCE.md` | Day-to-day operations cheat sheet |
+| `docs/ai-context/architecture.md` | Full system architecture |
+| `docs/ai-context/common-errors.md` | Troubleshooting guide |
+| `.env.documented` | Environment variables reference |
+| `docs/archive/` | Historical implementation docs |
+
+## License
+
+MIT
