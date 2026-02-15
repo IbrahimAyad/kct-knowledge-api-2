@@ -12,6 +12,7 @@ import { trendingAnalysisService } from '../services/trending-analysis-service';
 // Import intelligence services for enhanced recommendations
 import { customerPsychologyService } from '../services/customer-psychology-service';
 import { venueIntelligenceService } from '../services/venue-intelligence-service';
+import { productCatalogService } from '../services/product-catalog-service';
 import { createApiResponse } from '../utils/data-loader';
 import { logger } from '../utils/logger';
 import { ValidationSchemas } from '../utils/validation-schemas';
@@ -250,20 +251,25 @@ export const getRecommendations = async (req: Request, res: Response) => {
       }
     }
 
-    // Enhanced recommendations with AI scoring
+    // Enhanced recommendations with AI scoring + real product links
+    const primaryRaw = recommendations.complete_looks?.slice(0, 3).map((outfit: any, index: number) => ({
+      ...outfit,
+      rank: index + 1,
+      ai_confidence: 0.95 - (index * 0.05),
+      personalization_score: 0.90,
+      trending_factor: 0.85
+    })) || [];
+
+    const alternativeRaw = recommendations.complete_looks?.slice(3, 8).map((combo: any, index: number) => ({
+      ...combo,
+      confidence: 0.80 - (index * 0.03),
+      reasoning: `Alternative based on ${customer_profile || 'style preferences'}`
+    })) || [];
+
+    // Enrich with real Shopify product links
     const enhancedRecommendations = {
-      primary_recommendations: recommendations.complete_looks?.slice(0, 3).map((outfit: any, index: number) => ({
-        ...outfit,
-        rank: index + 1,
-        ai_confidence: 0.95 - (index * 0.05),
-        personalization_score: 0.90,
-        trending_factor: 0.85 // Stable default — real trending integration needed
-      })) || [],
-      alternative_options: recommendations.complete_looks?.slice(3, 8).map((combo: any, index: number) => ({
-        ...combo,
-        confidence: 0.80 - (index * 0.03),
-        reasoning: `Alternative based on ${customer_profile || 'style preferences'}`
-      })) || [],
+      primary_recommendations: productCatalogService.enrichRecommendations(primaryRaw),
+      alternative_options: productCatalogService.enrichRecommendations(alternativeRaw),
       style_insights: {
         detected_profile: customer_profile || 'classic_conservative',
         confidence: 0.88,

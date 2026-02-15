@@ -1,6 +1,6 @@
 {
-  "version": "2.0",
-  "last_updated": "2025-01-30",
+  "version": "3.0",
+  "last_updated": "2026-02-15",
   "description": "Maps KCT product catalog to fashion knowledge base for AI recommendations",
   "color_to_products": {},
   "recommended_combinations": [],
@@ -617,6 +617,374 @@
           "price": 199.99
         }
       ]
+    },
+    "navy": {
+      "suits": [
+        {
+          "title": "Two-Piece Navy Suit",
+          "handle": "two-piece-navy-suit",
+          "price": 169.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Navy Suit with Vest",
+          "handle": "navy-suit-with-vest",
+          "price": 199.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Navy Stretch Suit - Travelers Suit",
+          "handle": "navy-stretch-suit-travelers-suit",
+          "price": 249.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Slim Navy Tuxedo",
+          "handle": "slim-navy-tuxedo",
+          "price": 179.99,
+          "type": "Tuxedo"
+        }
+      ],
+      "ties": [
+        {
+          "title": "Navy Ties & Bowties Collection",
+          "handle": "navy-wedding-bundle",
+          "price": 24.99
+        },
+        {
+          "title": "Navy Solo Ties",
+          "handle": "navy-solo-ties",
+          "price": 24.99
+        },
+        {
+          "title": "Navy Bowtie or Tie",
+          "handle": "navy-bowtie-or-tie",
+          "price": 24.99
+        }
+      ],
+      "accessories": [
+        {
+          "title": "Navy Vest and Tie Set",
+          "handle": "navy-vest-and-tie-set",
+          "price": 49.99
+        }
+      ],
+      "shirts": []
+    },
+    "charcoal": {
+      "suits": [
+        {
+          "title": "Two-Piece Charcoal Suit",
+          "handle": "two-piece-charcoal-suit",
+          "price": 169.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Charcoal Suit with Vest",
+          "handle": "charcoal-suit-with-vest",
+          "price": 199.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Charcoal Stretch Suit - Travelers Suit",
+          "handle": "charcoal-stretch-suit-travelers-suit",
+          "price": 249.99,
+          "type": "Suit"
+        }
+      ],
+      "ties": [
+        {
+          "title": "Charcoal Ties & Bowties Collection",
+          "handle": "charcoal-wedding-bundle",
+          "price": 24.99
+        },
+        {
+          "title": "Charcoal Solo Ties",
+          "handle": "charcoal-solo-ties",
+          "price": 24.99
+        }
+      ],
+      "accessories": [
+        {
+          "title": "Charcoal Vest and Tie Set",
+          "handle": "charcoal-vest-and-tie-set",
+          "price": 49.99
+        }
+      ],
+      "shirts": []
+    },
+    "black": {
+      "suits": [
+        {
+          "title": "Two-Piece Black Suit",
+          "handle": "two-piece-black-suit",
+          "price": 169.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Black Suit with Vest",
+          "handle": "black-suit-with-vest",
+          "price": 199.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Slim Black Tuxedo",
+          "handle": "slim-black-tuxedo",
+          "price": 179.99,
+          "type": "Tuxedo"
+        },
+        {
+          "title": "Shiny Black Suit",
+          "handle": "satin-black-suit",
+          "price": 229.99,
+          "type": "Tuxedo"
+        }
+      ],
+      "ties": [
+        {
+          "title": "Black Ties & Bowties Collection",
+          "handle": "black-wedding-bundle",
+          "price": 24.99
+        },
+        {
+          "title": "Black Solo Ties",
+          "handle": "black-solo-ties",
+          "price": 24.99
+        },
+        {
+          "title": "Black Bowtie or Tie",
+          "handle": "black-bowtie-or-tie",
+          "price": 24.99
+        }
+      ],
+      "accessories": [
+        {
+          "title": "Black Vest and Tie Set",
+          "handle": "black-vest-and-tie-set",
+          "price": 49.99
+        }
+      ],
+      "shirts": [
+        {
+          "title": "Men's Black Satin Dress Shirt",
+          "handle": "mens-black-satin-dress-shirt",
+          "price": 69.99
+        }
+      ]
+    },
+    "light_grey": {
+      "suits": [
+        {
+          "title": "Two-Piece Light Grey Suit",
+          "handle": "two-piece-light-grey-suit",
+          "price": 169.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Light Grey Suit with Vest",
+          "handle": "light-grey-suit-with-vest",
+          "price": 199.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Slim Light Grey Tuxedo",
+          "handle": "slim-light-grey-tuxedo-1",
+          "price": 179.99,
+          "type": "Tuxedo"
+        }
+      ],
+      "ties": [
+        {
+          "title": "Silver Ties & Bowties Collection",
+          "handle": "silver-wedding-bundle",
+          "price": 24.99
+        },
+        {
+          "title": "Silver Solo Ties",
+          "handle": "silver-solo-ties",
+          "price": 24.99
+        }
+      ],
+      "accessories": [
+        {
+          "title": "Silver Vest and Tie Set",
+          "handle": "silver-vest-and-tie-set",
+          "price": 49.99
+        }
+      ],
+      "shirts": []
+    },
+    "tan": {
+      "suits": [
+        {
+          "title": "Two-Piece Tan Suit",
+          "handle": "two-piece-tan-suit",
+          "price": 169.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Tan Suit with Vest",
+          "handle": "tan-suit-with-vest",
+          "price": 199.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Tan Stretch Suit - Travelers Suit",
+          "handle": "tan-stretch-suit-travelers-suit",
+          "price": 249.99,
+          "type": "Suit"
+        }
+      ],
+      "ties": [
+        {
+          "title": "Champagne Ties & Bowties Collection",
+          "handle": "champagne-wedding-bundle",
+          "price": 24.99
+        },
+        {
+          "title": "Champagne Solo Ties",
+          "handle": "champagne-solo-ties",
+          "price": 24.99
+        }
+      ],
+      "accessories": [
+        {
+          "title": "Champagne Vest and Tie Set",
+          "handle": "champagne-vest-and-tie-set",
+          "price": 49.99
+        }
+      ],
+      "shirts": []
+    },
+    "hunter_green": {
+      "suits": [
+        {
+          "title": "Hunter Green Tuxedo Jacket - Sophisticated Forest Elegance",
+          "handle": "hunter-green-tuxedo-jacket-kct-menswears-elegant-forest",
+          "price": 199.99,
+          "type": "Three-Piece Tuxedo"
+        }
+      ],
+      "ties": [
+        {
+          "title": "Dark Green Ties & Bowties Collection",
+          "handle": "dark-green-wedding-bundle",
+          "price": 24.99
+        },
+        {
+          "title": "Hunter Green Solo Ties",
+          "handle": "hunter-green-solo-ties",
+          "price": 24.99
+        }
+      ],
+      "accessories": [
+        {
+          "title": "Dark Green Vest and Tie Set",
+          "handle": "dark-green-vest-and-tie-set",
+          "price": 49.99
+        }
+      ],
+      "shirts": []
+    },
+    "midnight_blue": {
+      "suits": [
+        {
+          "title": "Two-Piece Navy Suit",
+          "handle": "two-piece-navy-suit",
+          "price": 169.99,
+          "type": "Suit"
+        },
+        {
+          "title": "Slim Navy Tuxedo",
+          "handle": "slim-navy-tuxedo",
+          "price": 179.99,
+          "type": "Tuxedo"
+        }
+      ],
+      "ties": [
+        {
+          "title": "Navy Ties & Bowties Collection",
+          "handle": "navy-wedding-bundle",
+          "price": 24.99
+        }
+      ],
+      "accessories": [],
+      "shirts": []
+    },
+    "white": {
+      "suits": [],
+      "ties": [
+        {
+          "title": "White Ties & Bowties Collection",
+          "handle": "white-wedding-bundle",
+          "price": 24.99
+        },
+        {
+          "title": "Ivory Ties & Bowties Collection",
+          "handle": "ivory-wedding-bundle",
+          "price": 24.99
+        }
+      ],
+      "accessories": [],
+      "shirts": [
+        {
+          "title": "Men's Slim Fit White Dress Shirt",
+          "handle": "mens-slim-fit-white-dress-shirt",
+          "price": 49.99
+        },
+        {
+          "title": "Men's Regular Fit White Dress Shirt",
+          "handle": "mens-regular-fit-white-dress-shirt",
+          "price": 49.99
+        }
+      ]
+    },
+    "terracotta": {
+      "suits": [],
+      "ties": [
+        {
+          "title": "Terracotta Ties & Bowties Collection",
+          "handle": "terracotta-wedding-bundle",
+          "price": 24.99
+        },
+        {
+          "title": "Rust Ties & Bowties Collection",
+          "handle": "rust-wedding-bundle",
+          "price": 24.99
+        },
+        {
+          "title": "Burnt Orange Ties & Bowties Collection",
+          "handle": "burnt-orange-wedding-bundle",
+          "price": 24.99
+        }
+      ],
+      "accessories": [
+        {
+          "title": "Rust Vest and Tie Set",
+          "handle": "rust-vest-and-tie-set",
+          "price": 49.99
+        }
+      ],
+      "shirts": []
+    },
+    "powder_blue": {
+      "suits": [
+        {
+          "title": "Elegant Powdered Blue Tuxedo - A Chic Choice for Prom and Wedding Seasons",
+          "handle": "elegant-powdered-blue-tuxedo-a-chic-choice-for-prom-and-wedding-seasons",
+          "price": 249.99,
+          "type": "Three-Piece Tuxedo"
+        }
+      ],
+      "ties": [
+        {
+          "title": "Powder Blue Ties & Bowties Collection",
+          "handle": "powder-blue-wedding-bundle",
+          "price": 24.99
+        }
+      ],
+      "accessories": [],
+      "shirts": []
     }
   },
   "complete_the_look_bundles": [

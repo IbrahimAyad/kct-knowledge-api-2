@@ -10,6 +10,7 @@ import { knowledgeBankService } from '../services/knowledge-bank-service';
 import { trendingAnalysisService } from '../services/trending-analysis-service';
 import { conversionService } from '../services/conversion-service';
 import { smartBundleService } from '../services/smart-bundle-service';
+import { productCatalogService } from '../services/product-catalog-service';
 import { logger } from '../utils/logger';
 import {
   validateBody,
@@ -150,17 +151,30 @@ router.post('/products/complete-the-look', validateBody(completeTheLookSchema), 
 
     const isBundleResponse = recommendations.bundles !== undefined;
 
+    // Enrich with real Shopify product links
+    const suitColor = product?.color || 'navy';
+    const productLinks = productCatalogService.getProductsByColor(suitColor);
+
     res.json({
       success: true,
       data: {
         outfitSuggestions: isBundleResponse ? recommendations.bundles : [],
         complementaryItems: isBundleResponse ? [] : (recommendations.color_recommendations?.complementary || []),
         trendingCombinations: isBundleResponse ? [] : (recommendations.trending || []),
-        conversionScore: isBundleResponse ? 0.75 : (recommendations.conversion_probability || 0.75)
+        conversionScore: isBundleResponse ? 0.75 : (recommendations.conversion_probability || 0.75),
+        // Real purchasable products from kctmenswear.com
+        shopProducts: productLinks ? {
+          suits: productLinks.suits?.slice(0, 3) || [],
+          ties: productLinks.ties?.slice(0, 3) || [],
+          accessories: productLinks.accessories?.slice(0, 3) || [],
+          shirts: productLinks.shirts?.slice(0, 3) || [],
+          shop_all_url: `https://kctmenswear.com/collections/all?q=${encodeURIComponent(suitColor.replace(/_/g, ' '))}`
+        } : null
       },
       metadata: {
         productId: product?.id,
-        generated: new Date().toISOString()
+        generated: new Date().toISOString(),
+        products_mapped: !!productLinks
       }
     });
   } catch (error) {

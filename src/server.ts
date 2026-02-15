@@ -49,6 +49,7 @@ import { healthMonitor } from "./services/health-monitor";
 import { metricsCollector } from "./services/metrics-collector";
 import { enhancedHealthService } from "./services/enhanced-health-service";
 import { knowledgeBankService } from "./services/knowledge-bank-service";
+import { productCatalogService } from "./services/product-catalog-service";
 import { databaseService } from "./config/database";
 import { colorService } from "./services/color-service";
 import { styleProfileService } from "./services/style-profile-service";
@@ -219,6 +220,9 @@ const initializeServices = async () => {
 
     console.log('🔄 Initializing knowledge bank services...');
     await knowledgeBankService.initialize();
+
+    console.log('🔄 Initializing product catalog...');
+    await productCatalogService.initialize();
 
     console.log('🔄 Initializing validation engines...');
     await Promise.allSettled([
