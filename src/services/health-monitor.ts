@@ -75,6 +75,7 @@ export class HealthMonitorService {
   private issues: HealthIssue[] = [];
   private checkInterval: NodeJS.Timeout | null = null;
   private isMonitoring = false;
+  private readonly MAX_ISSUES = 200;
 
   // Memory thresholds in MB
   private readonly memoryThresholds = {
@@ -377,10 +378,26 @@ export class HealthMonitorService {
    * Add a health issue
    */
   addIssue(issue: Omit<HealthIssue, 'timestamp'>): void {
+    // Check for duplicate active issue before adding
+    const isDuplicate = this.issues.some(i =>
+      i.category === issue.category &&
+      i.message === issue.message &&
+      !i.resolved
+    );
+    if (isDuplicate) return;
+
     this.issues.push({
       ...issue,
       timestamp: new Date().toISOString(),
     });
+
+    // Enforce cap — drop oldest resolved issues first
+    if (this.issues.length > this.MAX_ISSUES) {
+      const unresolved = this.issues.filter(i => !i.resolved);
+      const resolved = this.issues.filter(i => i.resolved);
+      const keepResolved = resolved.slice(-Math.max(0, this.MAX_ISSUES - unresolved.length));
+      this.issues = [...keepResolved, ...unresolved].slice(-this.MAX_ISSUES);
+    }
 
     // Log critical issues immediately
     if (issue.severity === 'critical') {

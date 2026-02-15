@@ -93,7 +93,14 @@ export class MetricsCollector {
   private statusCodes: Map<string, number> = new Map();
   private alerts: Alert[] = [];
   private collectionInterval: NodeJS.Timeout | null = null;
+  private cleanupInterval: NodeJS.Timeout | null = null;
   private isCollecting = false;
+
+  // Memory limits — prevent unbounded growth
+  private readonly MAX_ALERTS = 200;
+  private readonly MAX_KEY_METRICS = 500;
+  private readonly MAX_ENDPOINT_METRICS = 100;
+  private readonly MAX_STATUS_CODES = 50;
 
   // Alert thresholds
   private readonly thresholds = {
@@ -109,6 +116,8 @@ export class MetricsCollector {
 
   constructor() {
     this.startCollection();
+    // Periodic cleanup every 5 minutes to enforce memory limits
+    this.cleanupInterval = setInterval(() => this.enforceMemoryLimits(), 5 * 60 * 1000);
   }
 
   /**
@@ -391,6 +400,51 @@ Performance Report (${period}):
     console.log('📊 All metrics reset');
   }
 
+  /**
+   * Enforce memory limits on all tracked collections
+   * Prevents unbounded growth that leads to OOM
+   */
+  private enforceMemoryLimits(): void {
+    // Cap alerts — keep only the most recent
+    if (this.alerts.length > this.MAX_ALERTS) {
+      // Keep unresolved alerts + most recent resolved ones
+      const unresolved = this.alerts.filter(a => !a.resolved);
+      const resolved = this.alerts.filter(a => a.resolved);
+      const keepResolved = resolved.slice(-Math.max(0, this.MAX_ALERTS - unresolved.length));
+      this.alerts = [...keepResolved, ...unresolved].slice(-this.MAX_ALERTS);
+    }
+
+    // Cap keyMetrics — evict least-accessed keys
+    if (this.keyMetrics.size > this.MAX_KEY_METRICS) {
+      const sorted = Array.from(this.keyMetrics.entries())
+        .sort((a, b) => a[1].hits - b[1].hits);
+      const toRemove = sorted.slice(0, sorted.length - this.MAX_KEY_METRICS);
+      for (const [key] of toRemove) {
+        this.keyMetrics.delete(key);
+      }
+    }
+
+    // Cap endpointMetrics — evict least-used endpoints
+    if (this.endpointMetrics.size > this.MAX_ENDPOINT_METRICS) {
+      const sorted = Array.from(this.endpointMetrics.entries())
+        .sort((a, b) => a[1].requests - b[1].requests);
+      const toRemove = sorted.slice(0, sorted.length - this.MAX_ENDPOINT_METRICS);
+      for (const [key] of toRemove) {
+        this.endpointMetrics.delete(key);
+      }
+    }
+
+    // Cap statusCodes
+    if (this.statusCodes.size > this.MAX_STATUS_CODES) {
+      const sorted = Array.from(this.statusCodes.entries())
+        .sort((a, b) => a[1] - b[1]);
+      const toRemove = sorted.slice(0, sorted.length - this.MAX_STATUS_CODES);
+      for (const [key] of toRemove) {
+        this.statusCodes.delete(key);
+      }
+    }
+  }
+
   // Private helper methods
 
   private async collectMetrics(): Promise<void> {
@@ -461,9 +515,9 @@ Performance Report (${period}):
 
   private addAlert(alert: Omit<Alert, 'id' | 'timestamp'>): void {
     // Check if similar alert already exists
-    const existingAlert = this.alerts.find(a => 
-      a.category === alert.category && 
-      a.message === alert.message && 
+    const existingAlert = this.alerts.find(a =>
+      a.category === alert.category &&
+      a.message === alert.message &&
       !a.resolved
     );
 
@@ -473,9 +527,14 @@ Performance Report (${period}):
         id: `${alert.category}-${Date.now()}`,
         timestamp: new Date().toISOString(),
       };
-      
+
       this.alerts.push(newAlert);
-      
+
+      // Enforce cap inline to prevent growth between cleanup cycles
+      if (this.alerts.length > this.MAX_ALERTS * 1.5) {
+        this.alerts = this.alerts.slice(-this.MAX_ALERTS);
+      }
+
       if (alert.severity === 'critical') {
         console.error(`🚨 ${newAlert.message}`);
       } else if (alert.severity === 'warning') {

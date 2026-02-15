@@ -76,6 +76,7 @@ export class CacheInvalidationService {
 
   private currentVersion: string = '1.0.0';
   private versionHistory: CacheVersion[] = [];
+  private readonly MAX_VERSION_HISTORY = 50;
 
   /**
    * Invalidate cache based on trigger event
@@ -129,12 +130,15 @@ export class CacheInvalidationService {
   async invalidateByVersion(newVersion: string, description: string = ''): Promise<void> {
     console.log(`📦 Version-based cache invalidation: ${this.currentVersion} -> ${newVersion}`);
     
-    // Store version history
+    // Store version history (capped to prevent unbounded growth)
     this.versionHistory.push({
       version: this.currentVersion,
       timestamp: Date.now(),
       description: `Invalidated for version ${newVersion}`,
     });
+    if (this.versionHistory.length > this.MAX_VERSION_HISTORY) {
+      this.versionHistory = this.versionHistory.slice(-this.MAX_VERSION_HISTORY);
+    }
 
     // Update current version
     const oldVersion = this.currentVersion;

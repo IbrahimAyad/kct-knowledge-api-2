@@ -19,9 +19,35 @@ class DataLoader {
   private cache: Map<string, any> = new Map();
   private cacheExpiry: Map<string, number> = new Map();
   private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  private readonly MAX_CACHE_ENTRIES = 30; // Cap in-memory cache size
 
   constructor() {
     this.dataPath = path.join(__dirname, '../data');
+    // Proactively clean expired entries every 2 minutes
+    setInterval(() => this.evictExpiredEntries(), 2 * 60 * 1000);
+  }
+
+  /**
+   * Remove expired cache entries to free memory
+   */
+  private evictExpiredEntries(): void {
+    const now = Date.now();
+    for (const [key, expiry] of this.cacheExpiry.entries()) {
+      if (expiry <= now) {
+        this.cache.delete(key);
+        this.cacheExpiry.delete(key);
+      }
+    }
+    // If still over limit, evict oldest entries
+    if (this.cache.size > this.MAX_CACHE_ENTRIES) {
+      const sorted = Array.from(this.cacheExpiry.entries())
+        .sort((a, b) => a[1] - b[1]);
+      const toRemove = sorted.slice(0, sorted.length - this.MAX_CACHE_ENTRIES);
+      for (const [key] of toRemove) {
+        this.cache.delete(key);
+        this.cacheExpiry.delete(key);
+      }
+    }
   }
 
   /**
