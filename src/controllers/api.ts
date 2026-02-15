@@ -7,7 +7,6 @@ import { Request, Response } from 'express';
 import { knowledgeBankService } from '../services/knowledge-bank-service';
 import { colorService } from '../services/color-service';
 import { styleProfileService } from '../services/style-profile-service';
-import { conversionService } from '../services/conversion-service';
 import { trendingAnalysisService } from '../services/trending-analysis-service';
 // Import intelligence services for enhanced recommendations
 import { customerPsychologyService } from '../services/customer-psychology-service';
@@ -15,7 +14,6 @@ import { venueIntelligenceService } from '../services/venue-intelligence-service
 import { productCatalogService } from '../services/product-catalog-service';
 import { createApiResponse } from '../utils/data-loader';
 import { logger } from '../utils/logger';
-import { ValidationSchemas } from '../utils/validation-schemas';
 import {
   ColorRecommendationRequest,
   StyleProfileRequest,

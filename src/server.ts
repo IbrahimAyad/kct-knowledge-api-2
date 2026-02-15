@@ -160,9 +160,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Handle preflight requests
-app.options('*', cors(corsOptions));
-
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -956,47 +953,10 @@ app.use("*", (req, res) => {
 // Initialize and start server
 app.listen(PORT, async () => {
   console.log(`🚀 KCT Knowledge API v2.0.0 running on port ${PORT}`);
-  console.log(`📋 Health check: http://localhost:${PORT}/health`);
-  console.log(`📚 Interactive API Documentation: http://localhost:${PORT}/docs`);
-  console.log(`📄 OpenAPI Specification: http://localhost:${PORT}/docs/openapi.yaml`);
-  console.log(`📋 Postman Collection: http://localhost:${PORT}/docs/postman`);
-  console.log(`🔐 Authentication: API Key required (X-API-Key header)`);
-  console.log(`💎 Knowledge Bank: Advanced Fashion Intelligence Platform`);
-  console.log(`\n🎯 NEW PRIORITY ENDPOINTS:`);
-  console.log(`  - Colors catalog: GET /api/colors`);
-  console.log(`  - Color relationships: GET /api/colors/:color/relationships`);
-  console.log(`  - Validate combinations: POST /api/combinations/validate`);
-  console.log(`  - AI recommendations: POST /api/recommendations`);
-  console.log(`  - Trending analysis: GET /api/trending`);
-  console.log(`  - Venue recommendations: GET /api/venues/:type/recommendations`);
-  console.log(`  - Style profiles: GET /api/styles/:profile`);
-  console.log(`  - Fashion rules check: POST /api/rules/check`);
-  console.log(`\n📍 LEGACY V1 ENDPOINTS:`);
-  console.log(`  - V1 API base: http://localhost:${PORT}/api/v1`);
-  console.log(`  - Color recommendations: POST /api/v1/colors/recommendations`);
-  console.log(`  - Style profiles: POST /api/v1/profiles/identify`);
-  console.log(`  - Conversion optimization: POST /api/v1/conversion/optimize`);
-  console.log(`  - Outfit validation: POST /api/v1/validation/outfit`);
-  console.log(`  - Personalization: POST /api/v1/personalization`);
-  console.log(`  - Fashion intelligence: GET /api/v1/intelligence`);
-  console.log(`\n🔧 VALIDATION ENGINES:`);
-  console.log(`  - Advanced Fashion Rules Engine`);
-  console.log(`  - Color Harmony & Contrast Analysis`);
-  console.log(`  - Formality & Occasion Matching`);
-  console.log(`  - Seasonal Appropriateness`);
-  console.log(`  - Style Profile Consistency`);
-  console.log(`  - Venue Requirements`);
-  console.log(`  - Pattern Mixing Guidelines`);
-  console.log(`\n🔗 V2 COMPATIBILITY + ALIAS ENDPOINTS:`);
-  console.log(`  - Complete the look: POST /api/recommendations/complete-look`);
-  console.log(`  - Validate outfit: POST /api/style/validate-outfit`);
-  console.log(`  - V2 recommendations: POST /api/v2/recommendations`);
-  console.log(`  - V2 complete-the-look: POST /api/v2/products/complete-the-look`);
-  console.log(`  - V2 trending: GET /api/v2/trending`);
-  console.log(`  - V2 colors: GET /api/v2/colors`);
-  console.log(`\n⚡ Rate Limiting: 1000 requests/15min per IP`);
-  console.log(`🛡️ Security: Helmet, CORS, API Key Authentication`);
-  console.log(`🎨 AI-Powered: Confidence scoring, alternative suggestions, trend analysis`);
+  console.log(`📚 Docs: http://localhost:${PORT}/docs | Health: http://localhost:${PORT}/health`);
+  console.log(`🔐 Auth: API Key (X-API-Key) | ⚡ Rate limit: 1000 req/15min`);
+  console.log(`🎯 Endpoints: /api/colors, /api/recommendations, /api/trending, /api/v2/*`);
+  console.log(`🛡️ Security: Helmet, CORS, Sentry | Node ${process.version}`);
   
   // Initialize services and cache in background
   initializeServices().then(async () => {

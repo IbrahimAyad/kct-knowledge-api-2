@@ -1,5 +1,4 @@
 # Nixpacks configuration for Railway
-# Required for Puppeteer to work properly
 
 [phases.setup]
 nixPkgs = ["nodejs-20_x", "python3", "gcc", "gnumake"]
@@ -13,29 +12,6 @@ cmds = ["npm run build"]
 [start]
 cmd = "npm start"
 
-# Puppeteer environment variables
-[env]
-PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "false"
-PUPPETEER_EXECUTABLE_PATH = "/usr/bin/chromium-browser"
-
-# Additional packages needed for Puppeteer/Chromium
-[[phases.setup.nixPkgsArchive]]
-archive = "chromium"
-
-[[phases.setup.nixPkgsArchive]]
-archive = "nss"
-
-[[phases.setup.nixPkgsArchive]]
-archive = "freetype"
-
-[[phases.setup.nixPkgsArchive]]
-archive = "harfbuzz"
-
+# Essential system packages
 [[phases.setup.nixPkgsArchive]]
 archive = "ca-certificates"
-
-[[phases.setup.nixPkgsArchive]]
-archive = "fontconfig"
-
-[[phases.setup.nixPkgsArchive]]
-archive = "liberation_ttf"

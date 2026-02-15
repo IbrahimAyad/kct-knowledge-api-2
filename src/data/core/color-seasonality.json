@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "description": "Seasonal color palettes with psychological and cultural context for menswear recommendations",
+  "spring": {
+    "primary": ["light_blue", "sage_green", "cream", "light_grey", "powder_blue"],
+    "accent": ["coral", "pink", "light_yellow", "mint_green", "lavender"],
+    "neutral": ["white", "light_grey", "cream", "beige"],
+    "trending": ["sage_green", "powder_blue", "coral"],
+    "psychology": "renewal, freshness, optimism",
+    "avoid": ["heavy_dark_colors", "deep_winter_tones"]
+  },
+  "summer": {
+    "primary": ["white", "light_blue", "tan", "khaki", "sage_green"],
+    "accent": ["coral", "turquoise", "lemon", "mint", "peach"],
+    "neutral": ["white", "cream", "light_tan", "stone_grey"],
+    "trending": ["white", "sage_green", "coral"],
+    "psychology": "energy, vitality, adventure",
+    "avoid": ["dark_heavy_colors", "black_suits", "deep_burgundy"]
+  },
+  "fall": {
+    "primary": ["burgundy", "brown", "hunter_green", "navy", "charcoal"],
+    "accent": ["rust", "gold", "burnt_orange", "deep_red", "forest_green"],
+    "neutral": ["charcoal", "brown", "grey", "cream"],
+    "trending": ["burgundy", "hunter_green", "rust"],
+    "psychology": "sophistication, warmth, tradition",
+    "avoid": ["bright_summer_colors", "pastels", "white_suits"]
+  },
+  "winter": {
+    "primary": ["black", "charcoal", "navy", "burgundy", "midnight_blue"],
+    "accent": ["silver", "deep_red", "royal_blue", "emerald", "gold"],
+    "neutral": ["black", "charcoal", "grey", "white"],
+    "trending": ["midnight_blue", "burgundy", "emerald"],
+    "psychology": "elegance, power, formality",
+    "avoid": ["light_pastels", "bright_summer_colors", "tan_suits"]
+  }
+}
