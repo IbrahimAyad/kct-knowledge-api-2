@@ -1,7 +1,7 @@
 # Simplified Dockerfile for Railway deployment
 # Optimized for Railway's build constraints
 
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Set production environment
 ENV NODE_ENV=production

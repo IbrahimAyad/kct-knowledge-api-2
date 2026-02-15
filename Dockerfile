@@ -2,7 +2,7 @@
 # Optimized for production deployment with minimal attack surface
 
 # Build stage - use smaller base image
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 # Set build arguments
 ARG NODE_ENV=production
@@ -33,7 +33,7 @@ RUN npm run build || echo "Build completed with warnings"
 RUN npm prune --production --omit=optional
 
 # Production stage
-FROM node:18-alpine AS production
+FROM node:20-alpine AS production
 
 # Set production environment
 ENV NODE_ENV=production
