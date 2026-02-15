@@ -60,7 +60,9 @@ import { analyticsSummaryService } from "./services/analytics-summary-service";
 import analyticsRouter from "./routes/analytics";
 // SEO routes temporarily disabled - Puppeteer requires Chrome which isn't in Alpine Docker
 // import seoRouter from "./routes/seo-routes";
-import voiceRouter from "./routes/voice-routes";
+// Voice routes disabled - not used by kctmenswear.com frontend
+// import voiceRouter from "./routes/voice-routes";
+import v2Router from "./routes/v2-compatibility";
 import {
   ColorRecommendationRequest,
   StyleProfileRequest,
@@ -868,8 +870,55 @@ app.use("/api/analytics", analyticsRouter);
 // SEO Crawler routes - temporarily disabled (Puppeteer needs Chrome)
 // app.use("/api/seo", seoRouter);
 
-// Voice AI routes
-app.use("/api/v3/voice", voiceRouter);
+// Voice AI routes - disabled (not used by kctmenswear.com frontend)
+// app.use("/api/v3/voice", voiceRouter);
+
+// V2 Compatibility routes (complete-the-look, recommendations, outfit analysis)
+app.use("/api/v2", v2Router);
+
+// Alias routes for frontend compatibility
+// Lovable calls /api/recommendations/complete-look but v2 router has /products/complete-the-look
+app.post("/api/recommendations/complete-look", async (req, res) => {
+  await initializeServices();
+  // Forward to v2 complete-the-look handler
+  req.url = '/products/complete-the-look';
+  v2Router.handle(req, res, () => {
+    res.status(404).json({ success: false, error: 'Route not found' });
+  });
+});
+
+// Lovable calls /api/style/validate-outfit but server only has /api/v1/validation/outfit
+app.post("/api/style/validate-outfit",
+  ValidationSchemas.validateOutfitValidationRequest,
+  async (req, res) => {
+    try {
+      await initializeServices();
+      const { suit_color, shirt_color, tie_color, occasion, customer_profile } = req.body;
+
+      if (!suit_color || !shirt_color || !tie_color) {
+        return res.status(400).json(createApiResponse(
+          false,
+          undefined,
+          'suit_color, shirt_color, and tie_color are required'
+        ));
+      }
+
+      const validation = await knowledgeBankService.validateAndOptimizeOutfit({
+        suit_color,
+        shirt_color,
+        tie_color,
+        occasion,
+        customer_profile
+      });
+      res.json(createApiResponse(true, validation));
+    } catch (error) {
+      res.status(500).json(createApiResponse(
+        false,
+        undefined,
+        error instanceof Error ? error.message : 'Failed to validate outfit'
+      ));
+    }
+  });
 
 // Sentry error handler (must be before other error handlers)
 sentryErrorHandler(app);
@@ -928,12 +977,13 @@ app.listen(PORT, async () => {
   console.log(`  - Style Profile Consistency`);
   console.log(`  - Venue Requirements`);
   console.log(`  - Pattern Mixing Guidelines`);
-  console.log(`\n🎤 VOICE AI ENDPOINTS:`);
-  console.log(`  - Transcribe audio: POST /api/v3/voice/transcribe`);
-  console.log(`  - Text to speech: POST /api/v3/voice/synthesize`);
-  console.log(`  - Voice chat: POST /api/v3/voice/chat`);
-  console.log(`  - Voice streaming: GET /api/v3/voice/stream/:sessionId`);
-  console.log(`  - Supported languages: GET /api/v3/voice/languages`);
+  console.log(`\n🔗 V2 COMPATIBILITY + ALIAS ENDPOINTS:`);
+  console.log(`  - Complete the look: POST /api/recommendations/complete-look`);
+  console.log(`  - Validate outfit: POST /api/style/validate-outfit`);
+  console.log(`  - V2 recommendations: POST /api/v2/recommendations`);
+  console.log(`  - V2 complete-the-look: POST /api/v2/products/complete-the-look`);
+  console.log(`  - V2 trending: GET /api/v2/trending`);
+  console.log(`  - V2 colors: GET /api/v2/colors`);
   console.log(`\n⚡ Rate Limiting: 1000 requests/15min per IP`);
   console.log(`🛡️ Security: Helmet, CORS, API Key Authentication`);
   console.log(`🎨 AI-Powered: Confidence scoring, alternative suggestions, trend analysis`);

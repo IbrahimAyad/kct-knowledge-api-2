@@ -170,10 +170,15 @@ class SeasonalRulesEngine {
   async initialize(): Promise<void> {
     try {
       this.fabricSeasonality = await loadDataFile('core/fabric-seasonality.json');
+    } catch (error) {
+      console.warn('fabric-seasonality.json not found, using built-in SEASONAL_FABRICS data');
+      this.fabricSeasonality = this.SEASONAL_FABRICS;
+    }
+    try {
       this.colorSeasonality = await loadDataFile('core/color-seasonality.json');
     } catch (error) {
-      console.error('Failed to initialize seasonal rules engine:', error);
-      throw new Error('Seasonal rules engine initialization failed');
+      console.warn('color-seasonality.json not found, using built-in SEASONAL_COLOR_PALETTES data');
+      this.colorSeasonality = this.SEASONAL_COLOR_PALETTES;
     }
   }
 
