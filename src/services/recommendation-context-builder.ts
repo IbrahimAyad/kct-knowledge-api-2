@@ -178,21 +178,13 @@ class RecommendationContextBuilder {
     // Get venue intelligence
     if (request.venue_type) {
       try {
-        const venueData = await venueIntelligenceService.analyzeVenue(request.venue_type);
+        const venueData = await venueIntelligenceService.getVenueIntelligence(request.venue_type);
 
-        if (venueData.formality_level) {
-          // Venue formality is typically a string like "formal" or a number
-          // Map it to our 1-10 scale
-          if (typeof venueData.formality_level === 'number') {
-            minFormality = Math.max(minFormality, venueData.formality_level - 1);
-            maxFormality = Math.min(10, venueData.formality_level + 1);
-          } else if (venueData.formality_level === 'very_formal') {
-            minFormality = 8;
-            maxFormality = 10;
-          } else if (venueData.formality_level === 'formal') {
-            minFormality = 6;
-            maxFormality = 9;
-          }
+        if (venueData.dress_code_strictness) {
+          // Venue dress_code_strictness is a 1-10 number
+          const strictness = venueData.dress_code_strictness;
+          minFormality = Math.max(minFormality, strictness - 1);
+          maxFormality = Math.min(10, strictness + 1);
 
           reasoning.push(`${this.capitalizeVenue(request.venue_type)} setting requires formality level ${minFormality}-${maxFormality}`);
           signalsUsed.push('venue_intelligence');
@@ -214,24 +206,14 @@ class RecommendationContextBuilder {
       }
     }
 
-    // Adjust for career level
+    // Adjust for career level (TODO: Wire in Section 1.4)
     if (request.role_level || request.occupation) {
-      try {
-        const careerData = await careerIntelligenceService.analyzeCareerStage({
-          age: request.age,
-          role_level: request.role_level,
-          occupation: request.occupation,
-        });
-
-        // Higher career stages may require higher formality
-        if (careerData.formality_expectations) {
-          const careerFormality = careerData.formality_expectations;
-          minFormality = Math.max(minFormality, careerFormality - 1);
-          reasoning.push(`Your career stage suggests a formality level of at least ${careerFormality}`);
-          signalsUsed.push('career_intelligence');
-        }
-      } catch (error) {
-        logger.warn('Career intelligence unavailable');
+      // Temporary simple mapping until Section 1.4 wires career intelligence
+      const careerFormality = this.getCareerFormality(request.occupation, request.role_level);
+      if (careerFormality > 0) {
+        minFormality = Math.max(minFormality, careerFormality - 1);
+        reasoning.push(`${request.occupation || 'Professional'} role suggests formality level ${careerFormality}/10`);
+        signalsUsed.push('career_heuristic');
       }
     }
 
@@ -251,24 +233,32 @@ class RecommendationContextBuilder {
     const avoid: string[] = [];
     const photographWell: string[] = [];
 
-    // Apply cultural filters
+    // Apply cultural filters (TODO: Wire in Section 1.5)
     if (request.cultural_region || request.religious_context) {
       try {
-        const culturalData = await culturalAdaptationService.getRegionalInsights(
-          request.cultural_region || 'general',
-          request.religious_context
+        const culturalData = await culturalAdaptationService.getCulturalNuances(
+          request.cultural_region || 'general'
         );
 
-        // Add cultural color taboos to avoid list
-        if (culturalData.color_taboos && culturalData.color_taboos.length > 0) {
-          avoid.push(...culturalData.color_taboos);
-          reasoning.push(`Cultural context: avoiding ${culturalData.color_taboos.join(', ')}`);
-          signalsUsed.push('cultural_adaptation');
-        }
+        // Extract color preferences from cultural data
+        if (culturalData.color_preferences && culturalData.color_preferences.length > 0) {
+          // Colors with low appropriateness are taboo
+          const taboos = culturalData.color_preferences
+            .filter(cp => cp.appropriateness_level < 4)
+            .map(cp => cp.color);
+          if (taboos.length > 0) {
+            avoid.push(...taboos);
+            reasoning.push(`Cultural context: avoiding ${taboos.join(', ')}`);
+            signalsUsed.push('cultural_adaptation');
+          }
 
-        // Add culturally preferred colors
-        if (culturalData.preferred_colors && culturalData.preferred_colors.length > 0) {
-          preferred.push(...culturalData.preferred_colors);
+          // Colors with high appropriateness are preferred
+          const culturallyPreferred = culturalData.color_preferences
+            .filter(cp => cp.appropriateness_level > 7)
+            .map(cp => cp.color);
+          if (culturallyPreferred.length > 0) {
+            preferred.push(...culturallyPreferred);
+          }
         }
       } catch (error) {
         logger.warn('Cultural adaptation service unavailable');
@@ -278,10 +268,10 @@ class RecommendationContextBuilder {
     // Apply venue lighting considerations
     if (request.venue_type) {
       try {
-        const venueData = await venueIntelligenceService.analyzeVenue(request.venue_type);
+        const venueData = await venueIntelligenceService.getVenueIntelligence(request.venue_type);
 
-        if (venueData.lighting_type) {
-          const lightingColors = this.getColorsByLighting(venueData.lighting_type);
+        if (venueData.lighting_conditions?.primary_lighting) {
+          const lightingColors = this.getColorsByLighting(venueData.lighting_conditions.primary_lighting);
           photographWell.push(...lightingColors.photographWell);
 
           if (lightingColors.reasoning) {
@@ -374,35 +364,17 @@ class RecommendationContextBuilder {
     let maxInvestment = 400;
     let qualityLevel = 'professional';
 
-    // Get career-based pricing
+    // Get career-based pricing (TODO: Wire in Section 1.4)
     if (request.age || request.role_level || request.occupation) {
-      try {
-        const careerData = await careerIntelligenceService.analyzeCareerStage({
-          age: request.age,
-          role_level: request.role_level,
-          occupation: request.occupation,
-        });
-
-        if (careerData.investment_range) {
-          const [min, max] = careerData.investment_range;
-          minInvestment = min;
-          maxInvestment = max;
-
-          // Determine range category
-          if (max >= 800) range = 'luxury';
-          else if (max >= 500) range = 'high';
-          else if (max >= 300) range = 'mid';
-          else range = 'entry';
-
-          reasoning.push(`At your career stage, we recommend investing $${min}-$${max} for lasting quality`);
-          signalsUsed.push('career_investment_guidance');
-        }
-
-        if (careerData.quality_tier) {
-          qualityLevel = careerData.quality_tier;
-        }
-      } catch (error) {
-        logger.warn('Career pricing guidance unavailable, using defaults');
+      // Temporary simple mapping until Section 1.4
+      const careerTier = this.getCareerPricingTier(request.occupation, request.role_level, request.age);
+      if (careerTier) {
+        minInvestment = careerTier.min;
+        maxInvestment = careerTier.max;
+        range = careerTier.range;
+        qualityLevel = careerTier.quality;
+        reasoning.push(`Professional level suggests ${range} tier: $${minInvestment}-$${maxInvestment}`);
+        signalsUsed.push('career_heuristic');
       }
     }
 
@@ -748,6 +720,92 @@ class RecommendationContextBuilder {
         details: ['Classic fit', 'Traditional styling'],
       };
     }
+  }
+
+  /**
+   * Simple career formality heuristic (until Section 1.4 wires full career intelligence)
+   */
+  private getCareerFormality(occupation?: string, role_level?: string): number {
+    if (!occupation && !role_level) return 0;
+
+    // Role level mapping
+    if (role_level) {
+      const level = role_level.toLowerCase();
+      if (level.includes('c-level') || level.includes('executive')) return 9;
+      if (level.includes('director') || level.includes('vp')) return 8;
+      if (level.includes('manager') || level.includes('senior')) return 7;
+      if (level.includes('associate') || level.includes('mid')) return 6;
+      if (level.includes('entry') || level.includes('junior')) return 5;
+    }
+
+    // Occupation mapping
+    if (occupation) {
+      const occ = occupation.toLowerCase();
+      if (occ.includes('lawyer') || occ.includes('banker') || occ.includes('consultant')) return 8;
+      if (occ.includes('accountant') || occ.includes('finance')) return 7;
+      if (occ.includes('teacher') || occ.includes('engineer')) return 6;
+      if (occ.includes('creative') || occ.includes('designer')) return 5;
+    }
+
+    return 6; // Default professional level
+  }
+
+  /**
+   * Simple career pricing heuristic (until Section 1.4 wires full career intelligence)
+   */
+  private getCareerPricingTier(occupation?: string, role_level?: string, age?: number): {
+    min: number;
+    max: number;
+    range: string;
+    quality: string;
+  } | null {
+    if (!occupation && !role_level && !age) return null;
+
+    // Default professional tier
+    let min = 200;
+    let max = 400;
+    let range = 'mid';
+    let quality = 'professional';
+
+    // Adjust by role level
+    if (role_level) {
+      const level = role_level.toLowerCase();
+      if (level.includes('c-level') || level.includes('executive')) {
+        min = 600;
+        max = 1200;
+        range = 'luxury';
+        quality = 'executive';
+      } else if (level.includes('director') || level.includes('vp')) {
+        min = 400;
+        max = 800;
+        range = 'high';
+        quality = 'senior_professional';
+      } else if (level.includes('manager') || level.includes('senior')) {
+        min = 300;
+        max = 600;
+        range = 'mid';
+        quality = 'professional';
+      }
+    }
+
+    // Adjust by occupation
+    if (occupation) {
+      const occ = occupation.toLowerCase();
+      if (occ.includes('lawyer') || occ.includes('banker') || occ.includes('consultant')) {
+        min = Math.max(min, 400);
+        max = Math.max(max, 800);
+        range = max >= 800 ? 'luxury' : 'high';
+        quality = 'senior_professional';
+      }
+    }
+
+    // Adjust by age (older professionals typically invest more)
+    if (age && age > 40) {
+      min = Math.max(min, 300);
+      max = Math.max(max, 600);
+    }
+
+    return { min, max, range, quality };
   }
 }
 
