@@ -27,6 +27,11 @@ export class CulturalAdaptationService {
   private colorSignificanceDatabase: Map<string, CulturalColorPreference[]> = new Map();
   private businessCultureCache: Map<string, BusinessCulture> = new Map();
 
+  // Section 1.5: Indexes for cultural_regional_nuances.json
+  private religiousIndex: Map<string, any> = new Map();
+  private detroitRegionsIndex: Map<string, any> = new Map();
+  private colorTaboosIndex: Map<string, any> = new Map();
+
   /**
    * Initialize the service with cultural data
    */
@@ -47,11 +52,111 @@ export class CulturalAdaptationService {
       await this.buildRegionalPreferencesCache();
       await this.buildColorSignificanceDatabase();
       await this.buildBusinessCultureCache();
+
+      // Section 1.5: Build indexes from cultural_regional_nuances.json
+      await this.buildCulturalNuancesIndexes();
     } catch (error) {
       console.warn('Failed to initialize CulturalAdaptationService:', error);
       // Initialize with default cultural data to prevent service failure
       this.culturalData = this.createDefaultCulturalData();
     }
+  }
+
+  /**
+   * Section 1.5: Build indexes from cultural_regional_nuances.json
+   */
+  private async buildCulturalNuancesIndexes(): Promise<void> {
+    if (!this.culturalData) return;
+
+    // Build religious dress code index
+    if (this.culturalData.religious_dress_codes) {
+      Object.entries(this.culturalData.religious_dress_codes).forEach(([religion, data]) => {
+        // Normalize religion names
+        const normalized = this.normalizeReligiousContext(religion);
+        this.religiousIndex.set(normalized, data);
+        // Also store with underscores and original
+        this.religiousIndex.set(religion.toLowerCase(), data);
+        this.religiousIndex.set(religion, data);
+      });
+    }
+
+    // Build Detroit regional styles index
+    if (this.culturalData.detroit_regional_styles) {
+      Object.entries(this.culturalData.detroit_regional_styles).forEach(([area, data]) => {
+        // Normalize area names: "Detroit", "detroit", "Downtown Detroit" → downtown_detroit
+        const variants = this.getDetroitAreaVariants(area);
+        variants.forEach(variant => {
+          this.detroitRegionsIndex.set(variant, data);
+        });
+      });
+    }
+
+    // Build color taboos index
+    if (this.culturalData.cultural_color_taboos) {
+      Object.entries(this.culturalData.cultural_color_taboos).forEach(([color, data]) => {
+        this.colorTaboosIndex.set(color.toLowerCase(), data);
+      });
+    }
+  }
+
+  /**
+   * Normalize religious context input
+   */
+  private normalizeReligiousContext(input: string): string {
+    const normalized = input.toLowerCase().replace(/[_\s-]/g, '');
+
+    // Map common variations
+    const mapping: { [key: string]: string } = {
+      'catholic': 'catholicchurch',
+      'catholicchurch': 'catholicchurch',
+      'orthodox': 'orthodoxchurch',
+      'orthodoxchurch': 'orthodoxchurch',
+      'jewish': 'jewishsynagogue',
+      'jewishsynagogue': 'jewishsynagogue',
+      'synagogue': 'jewishsynagogue',
+      'islam': 'islamicmosque',
+      'islamic': 'islamicmosque',
+      'islamicmosque': 'islamicmosque',
+      'mosque': 'islamicmosque',
+      'muslim': 'islamicmosque',
+      'hindu': 'hindutemple',
+      'hindutemple': 'hindutemple',
+      'buddhist': 'buddhisttemple',
+      'buddhisttemple': 'buddhisttemple'
+    };
+
+    return mapping[normalized] || normalized;
+  }
+
+  /**
+   * Get all variants of Detroit area names for indexing
+   */
+  private getDetroitAreaVariants(area: string): string[] {
+    const variants: string[] = [];
+    const normalized = area.toLowerCase().replace(/[_\s-]/g, '');
+
+    // Add original and normalized
+    variants.push(area);
+    variants.push(area.toLowerCase());
+    variants.push(normalized);
+
+    // Add specific mappings
+    const mappings: { [key: string]: string[] } = {
+      'Downtown_Detroit': ['downtown', 'detroit', 'downtown detroit', 'downtowndetroit'],
+      'Royal_Oak': ['royal oak', 'royaloak', 'ro'],
+      'Midtown_Detroit': ['midtown', 'midtowndetroit', 'midtown detroit'],
+      'Suburbs_General': ['suburbs', 'suburban', 'novi', 'rochester', 'sterling heights'],
+      'Ferndale': ['ferndale'],
+      'Ann_Arbor': ['ann arbor', 'annarbor', 'a2'],
+      'Hamtramck': ['hamtramck'],
+      'Dearborn': ['dearborn']
+    };
+
+    if (mappings[area]) {
+      variants.push(...mappings[area]);
+    }
+
+    return variants;
   }
 
   /**
@@ -114,11 +219,17 @@ export class CulturalAdaptationService {
    */
   async getCulturalNuances(region: string): Promise<CulturalNuances> {
     const cacheKey = `cultural:nuances:${region}`;
-    
+
     return await cacheService.getOrSet(
       cacheKey,
       async () => {
-        // Check regional preferences cache first
+        // Section 1.5: Check Detroit regional styles first
+        const detroitStyle = this.getDetroitRegionalStyle(region);
+        if (detroitStyle) {
+          return this.createCulturalNuancesFromDetroitStyle(region, detroitStyle);
+        }
+
+        // Check regional preferences cache
         const cachedNuances = this.regionalPreferences.get(region.toLowerCase());
         if (cachedNuances) {
           return cachedNuances;
@@ -138,6 +249,104 @@ export class CulturalAdaptationService {
         tags: ['cultural', 'nuances'],
       }
     );
+  }
+
+  /**
+   * Section 1.5: Get religious dress code requirements
+   */
+  async getReligiousDressCode(religiousContext: string): Promise<{
+    general_principles: string;
+    men_preferred: string[];
+    men_avoid: string[];
+    men_colors: string[];
+    unspoken_rules: string[];
+  } | null> {
+    if (!this.culturalData) await this.initialize();
+
+    const normalized = this.normalizeReligiousContext(religiousContext);
+    const dressCode = this.religiousIndex.get(normalized);
+
+    if (!dressCode) return null;
+
+    return {
+      general_principles: dressCode.general_principles || '',
+      men_preferred: dressCode.men?.preferred || [],
+      men_avoid: dressCode.men?.avoid || [],
+      men_colors: dressCode.men?.colors || [],
+      unspoken_rules: dressCode.unspoken_rules || []
+    };
+  }
+
+  /**
+   * Section 1.5: Get Detroit regional style data
+   */
+  private getDetroitRegionalStyle(region: string): any | null {
+    const normalized = region.toLowerCase().replace(/[_\s-]/g, '');
+
+    // Try direct lookup
+    if (this.detroitRegionsIndex.has(normalized)) {
+      return this.detroitRegionsIndex.get(normalized);
+    }
+
+    // Try each variant
+    for (const [key, value] of this.detroitRegionsIndex.entries()) {
+      if (key.includes(normalized) || normalized.includes(key)) {
+        return value;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Section 1.5: Create cultural nuances from Detroit style data
+   */
+  private createCulturalNuancesFromDetroitStyle(region: string, styleData: any): CulturalNuances {
+    return {
+      region: region,
+      cultural_context: {
+        cultural_values: ['local pride', 'community', 'authenticity'],
+        communication_style: styleData.dress_code || 'mixed',
+        hierarchy_importance: 5,
+        tradition_vs_modernity: 5,
+        social_proof_importance: 6
+      },
+      color_preferences: this.getColorSignificanceForRegion(region),
+      style_variations: [{
+        variation_type: 'fit',
+        local_preference: styleData.style_profile || 'Local preference',
+        reasoning: styleData.characteristics?.join(', ') || 'Regional style influence',
+        adoption_level: 7
+      }],
+      formality_expectations: [],
+      seasonal_adaptations: [],
+      religious_considerations: [],
+      business_culture: this.getDefaultBusinessCulture(region)
+    };
+  }
+
+  /**
+   * Section 1.5: Get color taboos and cultural significance
+   */
+  async getColorCulturalTaboos(color: string): Promise<{
+    positive_meanings: string[];
+    negative_meanings: string[];
+    taboos: string[];
+    religious_significance: string[];
+  } | null> {
+    if (!this.culturalData) await this.initialize();
+
+    const normalized = color.toLowerCase();
+    const tabooData = this.colorTaboosIndex.get(normalized);
+
+    if (!tabooData) return null;
+
+    return {
+      positive_meanings: tabooData.positive_meanings || [],
+      negative_meanings: tabooData.negative_meanings || [],
+      taboos: tabooData.taboos || [],
+      religious_significance: tabooData.religious_significance || []
+    };
   }
 
   /**
@@ -450,7 +659,17 @@ export class CulturalAdaptationService {
   }
 
   private findCulturalNuancesByRegion(region: string): CulturalNuances | null {
-    // In a real implementation, this would search through the cultural data
+    // Section 1.5: Search Detroit regional styles
+    const detroitStyle = this.getDetroitRegionalStyle(region);
+    if (detroitStyle) {
+      return this.createCulturalNuancesFromDetroitStyle(region, detroitStyle);
+    }
+
+    // Try broader region search in cultural data
+    if (this.culturalData?.regions && this.culturalData.regions[region]) {
+      return this.culturalData.regions[region];
+    }
+
     return null;
   }
 
@@ -495,34 +714,40 @@ export class CulturalAdaptationService {
   }
 
   private getColorSignificanceForRegion(region: string): CulturalColorPreference[] {
-    const baseColors: CulturalColorPreference[] = [
-      {
-        color: 'Navy',
-        cultural_significance: 'Professional authority and trustworthiness',
-        appropriateness_level: 9,
-        context_limitations: [],
-        positive_associations: ['Professional', 'Trustworthy', 'Authoritative'],
-        negative_associations: []
-      },
-      {
-        color: 'Charcoal',
-        cultural_significance: 'Professional sophistication',
-        appropriateness_level: 9,
-        context_limitations: [],
-        positive_associations: ['Sophisticated', 'Professional', 'Versatile'],
-        negative_associations: []
-      },
-      {
-        color: 'Black',
-        cultural_significance: 'Formal authority',
-        appropriateness_level: 8,
-        context_limitations: ['May be too formal for some business contexts'],
-        positive_associations: ['Formal', 'Authoritative', 'Elegant'],
-        negative_associations: ['Can appear severe in casual contexts']
-      }
-    ];
+    const baseColors: CulturalColorPreference[] = [];
 
-    // Region-specific adjustments could be added here
+    // Section 1.5: Build color preferences from color taboos data
+    const commonColors = ['black', 'white', 'red', 'navy', 'charcoal', 'grey'];
+
+    commonColors.forEach(color => {
+      const tabooData = this.colorTaboosIndex.get(color);
+
+      if (tabooData) {
+        // Calculate appropriateness based on taboos
+        const hasTaboos = tabooData.taboos && tabooData.taboos.length > 0;
+        const appropriateness = hasTaboos ? 6 : 9;
+
+        baseColors.push({
+          color: color.charAt(0).toUpperCase() + color.slice(1),
+          cultural_significance: tabooData.positive_meanings?.[0] || 'Professional color',
+          appropriateness_level: appropriateness,
+          context_limitations: tabooData.taboos || [],
+          positive_associations: tabooData.positive_meanings || [],
+          negative_associations: tabooData.negative_meanings || []
+        });
+      } else {
+        // Fallback for colors not in taboo database
+        baseColors.push({
+          color: color.charAt(0).toUpperCase() + color.slice(1),
+          cultural_significance: 'Professional color',
+          appropriateness_level: 9,
+          context_limitations: [],
+          positive_associations: ['Professional', 'Versatile'],
+          negative_associations: []
+        });
+      }
+    });
+
     return baseColors;
   }
 

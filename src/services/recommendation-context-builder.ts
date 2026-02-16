@@ -234,9 +234,28 @@ class RecommendationContextBuilder {
     const avoid: string[] = [];
     const photographWell: string[] = [];
 
-    // Apply cultural filters (TODO: Wire in Section 1.5)
+    // Apply cultural filters (Section 1.5: now uses real cultural data)
     if (request.cultural_region || request.religious_context) {
       try {
+        // Handle religious dress codes
+        if (request.religious_context) {
+          const religiousDressCode = await culturalAdaptationService.getReligiousDressCode(request.religious_context);
+          if (religiousDressCode) {
+            // Extract preferred colors
+            if (religiousDressCode.men_colors && religiousDressCode.men_colors.length > 0) {
+              preferred.push(...religiousDressCode.men_colors.map(c => c.toLowerCase()));
+              reasoning.push(`${request.religious_context} dress code: ${religiousDressCode.men_colors.join(', ')}`);
+              signalsUsed.push('religious_dress_code');
+            }
+
+            // Note conservative requirements
+            if (religiousDressCode.general_principles) {
+              reasoning.push(religiousDressCode.general_principles);
+            }
+          }
+        }
+
+        // Handle regional cultural preferences
         const culturalData = await culturalAdaptationService.getCulturalNuances(
           request.cultural_region || 'general'
         );
@@ -246,17 +265,17 @@ class RecommendationContextBuilder {
           // Colors with low appropriateness are taboo
           const taboos = culturalData.color_preferences
             .filter(cp => cp.appropriateness_level < 4)
-            .map(cp => cp.color);
+            .map(cp => cp.color.toLowerCase());
           if (taboos.length > 0) {
             avoid.push(...taboos);
             reasoning.push(`Cultural context: avoiding ${taboos.join(', ')}`);
-            signalsUsed.push('cultural_adaptation');
+            signalsUsed.push('cultural_color_taboos');
           }
 
           // Colors with high appropriateness are preferred
           const culturallyPreferred = culturalData.color_preferences
             .filter(cp => cp.appropriateness_level > 7)
-            .map(cp => cp.color);
+            .map(cp => cp.color.toLowerCase());
           if (culturallyPreferred.length > 0) {
             preferred.push(...culturallyPreferred);
           }
