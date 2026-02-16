@@ -11,6 +11,7 @@ import { trendingAnalysisService } from '../services/trending-analysis-service';
 import { conversionService } from '../services/conversion-service';
 import { smartBundleService } from '../services/smart-bundle-service';
 import { productCatalogService } from '../services/product-catalog-service';
+import { recommendationContextBuilder } from '../services/recommendation-context-builder';
 import { logger } from '../utils/logger';
 import {
   validateBody,
@@ -115,13 +116,29 @@ router.post('/recommendations', validateBody(v2RecommendationsSchema), async (re
 router.post('/products/complete-the-look', validateBody(completeTheLookSchema), async (req: Request, res: Response) => {
   try {
     await ensureServicesInitialized();
-    
-    const { 
+
+    const {
       product,
       currentOutfit = [],
       preferences = {},
       occasion = 'business'
     } = req.body;
+
+    // Section 4.1: Build intelligence context
+    let intelligenceContext = null;
+    try {
+      intelligenceContext = await recommendationContextBuilder.buildContext({
+        occasion: occasion || 'business',
+        suit_color: product?.color,
+        season: preferences?.season,
+        venue_type: preferences?.venue_type,
+        age: preferences?.age ? parseInt(preferences.age) : undefined,
+        occupation: preferences?.occupation,
+        use_case: preferences?.style,
+      });
+    } catch (error) {
+      logger.warn('Intelligence context unavailable for complete-the-look', { error: error instanceof Error ? error.message : String(error) });
+    }
 
     // Use smart bundle service if available
     let recommendations: any;
@@ -130,12 +147,19 @@ router.post('/products/complete-the-look', validateBody(completeTheLookSchema), 
         generation_type: 'complete_outfit',
         base_requirements: {
           occasion: occasion || 'business',
-          formality_level: 'business_casual',
-          season: 'fall',
+          formality_level: intelligenceContext?.formality_range ?
+            (intelligenceContext.formality_range[0] >= 7 ? 'formal' :
+             intelligenceContext.formality_range[0] >= 5 ? 'business_casual' : 'casual') :
+            'business_casual',
+          season: intelligenceContext?.fabric_preferences ?
+            (preferences?.season || 'fall') : 'fall',
           target_demographics: {
-            age_range: '25-45',
-            style_preference: 'modern',
-            budget_range: { min: 200, max: 1000 },
+            age_range: preferences?.age || '25-45',
+            style_preference: preferences?.style || 'modern',
+            budget_range: intelligenceContext?.price_tier ? {
+              min: intelligenceContext.price_tier.min_investment,
+              max: intelligenceContext.price_tier.max_investment
+            } : { min: 200, max: 1000 },
             body_types: []
           }
         }
@@ -169,7 +193,17 @@ router.post('/products/complete-the-look', validateBody(completeTheLookSchema), 
           accessories: productLinks.accessories?.slice(0, 3) || [],
           shirts: productLinks.shirts?.slice(0, 3) || [],
           shop_all_url: `https://kctmenswear.com/collections/all?q=${encodeURIComponent(suitColor.replace(/_/g, ' '))}`
-        } : null
+        } : null,
+        // Section 4.1: Add intelligence context and shop links
+        intelligence: intelligenceContext ? {
+          signals_used: intelligenceContext.signals_used,
+          confidence: intelligenceContext.confidence,
+          color_guidance: intelligenceContext.color_filters,
+          fabric_guidance: intelligenceContext.fabric_preferences,
+          price_tier: intelligenceContext.price_tier,
+          reasoning: intelligenceContext.reasoning,
+          shop_links: productCatalogService.enrichRecommendationWithLinks(occasion, product?.category)
+        } : null,
       },
       metadata: {
         productId: product?.id,
