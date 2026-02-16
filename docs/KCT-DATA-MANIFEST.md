@@ -350,14 +350,14 @@ The `KCT Knowledge API Enhancement -Update-Info/` directory contains 20 research
 | Research Area | Status |
 |---------------|--------|
 | Body Language & Fit Preferences | ✅ Loaded (JSON + CSV) |
-| Cultural & Regional Nuances | ✅ Loaded (JSON) |
-| Venue Microdata & Lighting | ✅ Loaded (JSON) |
-| Career Trajectory Patterns | ✅ Loading (Section 1.4 in progress) |
+| Cultural & Regional Nuances | ✅ Wired (Section 1.5) |
+| Venue Microdata & Lighting | ✅ Wired (Section 1.1) |
+| Career Trajectory Patterns | ✅ Wired (Section 1.4) |
 | Customer Psychology & Behavior | ✅ Loaded (CSV) |
 | Color Science Gaps | ✅ Loaded (CSV) |
-| Fabric Performance | 🎯 Next (Section 1.3) |
+| Fabric Performance | ✅ Wired (Section 1.3) |
 | Competitor Blind Spots | ✅ Loaded (CSV) |
-| Seasonal Micro-Patterns | ✅ Loaded (CSV) |
+| Seasonal Micro-Patterns | ✅ Wired (Section 1.2) |
 | AI Training Gaps | ✅ Loaded (CSV) |
 | Price Sensitivity Mapping | 📋 Available, not wired |
 | Emotional Triggers | 📋 Available, not wired |
@@ -365,19 +365,56 @@ The `KCT Knowledge API Enhancement -Update-Info/` directory contains 20 research
 | Return Psychology | 📋 Available, not wired |
 | Social Proof Dynamics | 📋 Available, not wired |
 
-### 6.4 Gap: Content NOT in This Repo
+### 6.4 Content Library — NOW IN REPO
 
-These files are referenced by the Lovable dev but need to be located and added:
+> **Updated Feb 16, 2026**: All content files extracted from `kct-knowledge-base.zip` and added to `docs/content-library/`
 
-- [ ] 12 monthly blog calendars (`blog-calendar/2026/jan.md` through `dec.md`)
-- [ ] `wedding-2024-2025-trends.md`
-- [ ] `wedding-2026-forecast.md`
-- [ ] `prom-2026-trends.md`
-- [ ] `prom-aura-product-tagging.md`
-- [ ] `Style-Guides2024-2025.md`
-- [ ] `menswear-formalwear-how-to-guides-2024-2025.md`
-- [ ] `kct-local-seo-wedding.md`
-- [ ] `kct-local-seo-prom-season.md`
-- [ ] `KCT-SITE-LINKS-REFERENCE.md`
+**28 files across 6 categories:**
 
-**Action**: Abe to locate these files and add to repo under `docs/content-library/` or provide file paths so they can be ingested.
+- [x] 12 monthly blog calendars (`docs/content-library/blog-calendar/2026/january.md` through `december.md`)
+- [x] `docs/content-library/wedding/wedding-2024-2025-trends.md`
+- [x] `docs/content-library/wedding/wedding-2026-forecast.md`
+- [x] `docs/content-library/prom/prom-2026-trends.md`
+- [x] `docs/content-library/prom/prom-aura-product-tagging.md`
+- [x] `docs/content-library/prom/prom-2024-2025-trends.md`
+- [x] `docs/content-library/prom/prom-new-arrivals.md`
+- [x] `docs/content-library/prom/prom-strategy-2026.md`
+- [x] `docs/content-library/style-guides/Style-Guides2024-2025.md`
+- [x] `docs/content-library/style-guides/menswear-formalwear-how-to-guides-2024-2025.md`
+- [x] `docs/content-library/style-guides/how-to-2026-menswear-trends-seo.md`
+- [x] `docs/content-library/local-seo/kct-local-seo-wedding.md`
+- [x] `docs/content-library/local-seo/kct-local-seo-prom-season.md`
+- [x] `docs/content-library/local-seo/kct-local-seo-clothing-store.md`
+- [x] `docs/content-library/local-seo/kct-local-seo-alterations.md`
+- [x] `docs/content-library/local-seo/michigan-marketing-setup.md`
+- [x] `docs/content-library/integrations/KCT-SITE-LINKS-REFERENCE.md`
+
+### 6.5 Key Intelligence Extracted from Content Library
+
+**Prom Aura System** (`prom-aura-product-tagging.md`):
+5 aura types with tag-to-product mappings ready for the KB:
+- Main Character: bold, patterned, metallic, shiny, statement
+- Villain Era: black, slim-fit, tuxedo, formal, dark
+- Royal: classic, navy, gold, traditional, elegant
+- Soft Boy: pastel, soft, light, romantic, gentle
+- Drip: sequin, metallic, shiny, statement, unique
+
+**2026 Wedding Color Forecast** (`wedding-2026-forecast.md`):
+Top 10 predicted wedding colors with styling formulas, bride-pairing guides, and market share predictions:
+1. Pale Blue / "Bridgerton Blue" (20-25% of grooms)
+2. Chocolate Brown / Mocha (18-22%)
+3. Deep Emerald / Forest Green
+4. Soft pastels (lavender, blush, sage)
+5. Burgundy/Wine (continued strength)
+
+**Monthly Content Calendar** (12 files):
+Each month has detailed color palettes, fabric recommendations, buyer mindset analysis, and weekly content themes. Example from February: romantic pastels (blush, mauve, dusty rose) + winter fabric appropriateness + Valentine's Saturday alignment.
+
+**Local Business Context** (`kct-local-seo-wedding.md`):
+- Two store locations: Downtown Kalamazoo (213 S Kalamazoo Mall) + Portage (Crossroads Mall)
+- Store hours, phone numbers, email
+- Local venue names and proximity data
+- Southwest Michigan geographic coverage
+
+**Site Link Reference** (`KCT-SITE-LINKS-REFERENCE.md`):
+70+ internal URLs by category (collections, occasions, bundles, style guides) — ready to be loaded so the KB can include "shop this look" links in API responses.

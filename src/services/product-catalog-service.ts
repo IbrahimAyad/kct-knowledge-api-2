@@ -89,6 +89,58 @@ class ProductCatalogService {
   }
 
   /**
+   * Section 2.0: Get all available colors with their inventory tiers
+   */
+  getAvailableColors(): Array<{
+    color: string;
+    product_count: number;
+    tier: 'core' | 'strong' | 'available' | 'limited' | 'rare';
+    categories: string[];
+  }> {
+    if (!this.catalog?.color_to_products) return [];
+
+    return Object.entries(this.catalog.color_to_products).map(([color, data]: [string, any]) => ({
+      color,
+      product_count: data.product_count,
+      tier: data.tier,
+      categories: data.categories
+    }));
+  }
+
+  /**
+   * Section 2.0: Get colors by inventory tier
+   */
+  getColorsByTier(tier: 'core' | 'strong' | 'available' | 'limited' | 'rare'): string[] {
+    if (!this.catalog?.color_to_products) return [];
+
+    return Object.entries(this.catalog.color_to_products)
+      .filter(([_, data]: [string, any]) => data.tier === tier)
+      .map(([color, _]) => color);
+  }
+
+  /**
+   * Section 2.0: Check if a color is in core or strong tier (default recommendations)
+   */
+  isDefaultRecommendationColor(color: string): boolean {
+    if (!this.catalog?.color_to_products) return false;
+
+    const normalized = color.toLowerCase().replace(/[\s-]+/g, '_');
+    const colorData = this.catalog.color_to_products[normalized];
+    return colorData && (colorData.tier === 'core' || colorData.tier === 'strong');
+  }
+
+  /**
+   * Section 2.0: Get inventory tier for a color
+   */
+  getColorTier(color: string): 'core' | 'strong' | 'available' | 'limited' | 'rare' | null {
+    if (!this.catalog?.color_to_products) return null;
+
+    const normalized = color.toLowerCase().replace(/[\s-]+/g, '_');
+    const colorData = this.catalog.color_to_products[normalized];
+    return colorData?.tier || null;
+  }
+
+  /**
    * Look up products matching a color. Returns null if no products found.
    */
   getProductsByColor(color: string): ProductMatch | null {
