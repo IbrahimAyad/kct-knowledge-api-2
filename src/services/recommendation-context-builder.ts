@@ -15,6 +15,8 @@ import { culturalAdaptationService } from './cultural-adaptation-service';
 import { customerPsychologyService } from './customer-psychology-service';
 import { seasonalRulesEngine } from './seasonal-rules-engine';
 import { fabricPerformanceService } from './fabric-performance-service';
+import * as fs from 'fs';
+import * as path from 'path';
 
 /**
  * Unified recommendation context - everything needed to make smart recommendations
@@ -99,6 +101,27 @@ export interface RecommendationRequest {
  * Recommendation Context Builder Service
  */
 class RecommendationContextBuilder {
+  private kctPriceTiers: any = null;
+
+  constructor() {
+    this.loadKctPriceTiers();
+  }
+
+  /**
+   * Section 2.2: Load KCT actual price tiers from JSON
+   */
+  private loadKctPriceTiers(): void {
+    try {
+      const tiersPath = path.join(__dirname, '../data/intelligence/kct-price-tiers.json');
+      const raw = fs.readFileSync(tiersPath, 'utf8');
+      this.kctPriceTiers = JSON.parse(raw);
+      logger.info('📊 KCT price tiers loaded successfully');
+    } catch (error) {
+      logger.warn('KCT price tiers not loaded, using career-based fallbacks', {
+        error: error instanceof Error ? error.message : String(error)
+      });
+    }
+  }
 
   /**
    * Build unified recommendation context from all available signals
@@ -394,6 +417,7 @@ class RecommendationContextBuilder {
 
   /**
    * Calculate price tier from career stage + occasion
+   * Section 2.2: Now uses KCT actual price tiers instead of career-based guesses
    */
   private async calculatePriceTier(
     request: RecommendationRequest,
@@ -406,26 +430,72 @@ class RecommendationContextBuilder {
     let maxInvestment = 400;
     let qualityLevel = 'professional';
 
-    // Get career-based pricing (Section 1.4: now uses real career intelligence)
-    if (request.age || request.role_level || request.occupation) {
-      const careerTier = await this.getCareerPricingTier(request.occupation, request.role_level, request.age);
-      if (careerTier) {
-        minInvestment = careerTier.min;
-        maxInvestment = careerTier.max;
-        range = careerTier.range;
-        qualityLevel = careerTier.quality;
-        reasoning.push(`Professional level suggests ${range} tier: $${minInvestment}-$${maxInvestment}`);
-        signalsUsed.push('career_intelligence');
-      }
-    }
+    // Section 2.2: Use KCT actual price tiers if available
+    if (this.kctPriceTiers?.price_tiers) {
+      // Step 1: Determine which KCT tier to recommend (entry/mid/premium/luxury)
+      let kctTierName = 'mid'; // Default to mid tier
 
-    // Adjust for occasion importance
-    if (request.occasion) {
-      const occasionMultiplier = this.getOccasionImportanceMultiplier(request.occasion);
-      if (occasionMultiplier > 1) {
-        minInvestment = Math.floor(minInvestment * occasionMultiplier);
-        maxInvestment = Math.floor(maxInvestment * occasionMultiplier);
-        reasoning.push(`${this.capitalizeOccasion(request.occasion)} is a significant occasion — worth investing in quality`);
+      // Get career-based tier suggestion
+      if (request.age || request.role_level || request.occupation) {
+        const careerTier = await this.getCareerPricingTier(request.occupation, request.role_level, request.age);
+        if (careerTier) {
+          // Map career tier (entry/mid/high/luxury) to KCT tier (entry/mid/premium/luxury)
+          kctTierName = careerTier.range === 'high' ? 'premium' : careerTier.range;
+          qualityLevel = careerTier.quality;
+          signalsUsed.push('career_intelligence');
+        }
+      }
+
+      // Adjust tier for occasion importance (move up tiers for important events)
+      if (request.occasion) {
+        const occasionMultiplier = this.getOccasionImportanceMultiplier(request.occasion);
+        if (occasionMultiplier >= 1.5) {
+          // Major occasion (wedding, gala): move up one tier
+          if (kctTierName === 'entry') kctTierName = 'mid';
+          else if (kctTierName === 'mid') kctTierName = 'premium';
+          else if (kctTierName === 'premium') kctTierName = 'luxury';
+
+          reasoning.push(`${this.capitalizeOccasion(request.occasion)} is a significant occasion — recommending ${kctTierName} tier`);
+        }
+      }
+
+      // Step 2: Get KCT actual price ranges for this tier
+      const kctTier = this.kctPriceTiers.price_tiers[kctTierName];
+      if (kctTier) {
+        range = kctTierName;
+        minInvestment = kctTier.suit_range[0];
+        maxInvestment = kctTier.suit_range[1];
+
+        reasoning.push(`KCT ${kctTierName} tier: suits $${minInvestment}-$${maxInvestment}, shirts $${kctTier.shirt_range[0]}-$${kctTier.shirt_range[1]}, ties $${kctTier.tie_range[0]}-$${kctTier.tie_range[1]}`);
+
+        // Add accessory rule note
+        const maxAccessoryCost = Math.floor(maxInvestment * kctTier.max_accessory_pct);
+        reasoning.push(`Accessory limit: $${maxAccessoryCost} (${Math.floor(kctTier.max_accessory_pct * 100)}% of suit cost)`);
+
+        signalsUsed.push('kct_price_tiers');
+      }
+    } else {
+      // Fallback to career-based pricing if KCT tiers not loaded
+      if (request.age || request.role_level || request.occupation) {
+        const careerTier = await this.getCareerPricingTier(request.occupation, request.role_level, request.age);
+        if (careerTier) {
+          minInvestment = careerTier.min;
+          maxInvestment = careerTier.max;
+          range = careerTier.range;
+          qualityLevel = careerTier.quality;
+          reasoning.push(`Professional level suggests ${range} tier: $${minInvestment}-$${maxInvestment}`);
+          signalsUsed.push('career_intelligence');
+        }
+      }
+
+      // Adjust for occasion importance (legacy behavior)
+      if (request.occasion) {
+        const occasionMultiplier = this.getOccasionImportanceMultiplier(request.occasion);
+        if (occasionMultiplier > 1) {
+          minInvestment = Math.floor(minInvestment * occasionMultiplier);
+          maxInvestment = Math.floor(maxInvestment * occasionMultiplier);
+          reasoning.push(`${this.capitalizeOccasion(request.occasion)} is a significant occasion — worth investing in quality`);
+        }
       }
     }
 

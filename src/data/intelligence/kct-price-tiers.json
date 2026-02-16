@@ -1,0 +1,56 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "description": "KCT Menswear actual price tiers from production Supabase data",
+    "source": "KCT-DATA-MANIFEST.md Part 3.5 - Real pricing from 1,361 products",
+    "last_updated": "2026-02-16"
+  },
+  "price_tiers": {
+    "entry": {
+      "suit_range": [119, 179],
+      "shirt_range": [19, 34],
+      "tie_range": [24.99, 24.99],
+      "shoes_range": [49, 79],
+      "max_accessory_pct": 0.25,
+      "description": "Budget-friendly basics for students, first-time buyers, or value shoppers",
+      "typical_customer": "High school prom, college formal, budget-conscious"
+    },
+    "mid": {
+      "suit_range": [179, 259],
+      "shirt_range": [34, 49],
+      "tie_range": [24.99, 44.99],
+      "shoes_range": [79, 109],
+      "max_accessory_pct": 0.25,
+      "description": "Quality construction with modern features - KCT's sweet spot",
+      "typical_customer": "Wedding guest, groomsmen, young professional"
+    },
+    "premium": {
+      "suit_range": [259, 400],
+      "shirt_range": [49, 69],
+      "tie_range": [39.99, 49.99],
+      "shoes_range": [109, 129],
+      "max_accessory_pct": 0.25,
+      "description": "Luxury fabrics (velvet, sequin, jacquard) and standout styling",
+      "typical_customer": "Groom, formal gala, fashion-forward prom"
+    },
+    "luxury": {
+      "suit_range": [400, 999],
+      "shirt_range": [69, 150],
+      "tie_range": [44.99, 99.99],
+      "shoes_range": [129, 250],
+      "max_accessory_pct": 0.25,
+      "description": "Designer-level pieces, European imports, statement tuxedos",
+      "typical_customer": "Black tie event, high-end wedding, executive"
+    }
+  },
+  "accessory_rule": {
+    "max_percentage": 0.25,
+    "explanation": "Never recommend a $129 shoe with a $119 suit - keep accessories under 25% of suit cost",
+    "examples": [
+      { "suit_price": 119, "max_shoe_price": 29.75, "recommended_shoe_tier": "entry" },
+      { "suit_price": 179, "max_shoe_price": 44.75, "recommended_shoe_tier": "entry" },
+      { "suit_price": 259, "max_shoe_price": 64.75, "recommended_shoe_tier": "mid" },
+      { "suit_price": 400, "max_shoe_price": 100, "recommended_shoe_tier": "mid" }
+    ]
+  }
+}
