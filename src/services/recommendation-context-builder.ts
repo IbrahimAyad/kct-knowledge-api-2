@@ -17,6 +17,7 @@ import { seasonalRulesEngine } from './seasonal-rules-engine';
 import { fabricPerformanceService } from './fabric-performance-service';
 import { productTagService } from './product-tag-service';
 import { promAuraService } from './prom-aura-service';
+import { weddingForecastService } from './wedding-forecast-service';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -354,6 +355,30 @@ class RecommendationContextBuilder {
 
       reasoning.push(`${this.capitalizeSeason(request.season)} season favors ${seasonalColors.preferred.slice(0, 3).join(', ')}`);
       signalsUsed.push('seasonal_analysis');
+    }
+
+    // Section 3.1: Apply wedding 2026 color forecast (only for wedding occasions)
+    if (request.occasion?.toLowerCase() === 'wedding') {
+      const topWeddingColors = weddingForecastService.getTopWeddingColors(5);
+      if (topWeddingColors.length > 0) {
+        // Add KCT suit colors from top wedding trends
+        for (const weddingColor of topWeddingColors) {
+          preferred.push(...weddingColor.kct_suit_colors);
+
+          // Add reasoning for top 3
+          if (weddingColor.rank <= 3) {
+            const marketShare = weddingColor.market_share_pct.split('-')[0]; // Get lower bound
+            reasoning.push(`2026 wedding trend: ${weddingColor.color.replace(/_/g, ' ')} (${marketShare}% of weddings) — ${weddingColor.trend_driver}`);
+          }
+        }
+
+        signalsUsed.push('wedding_2026_forecast');
+
+        logger.info('💍 Wedding 2026 forecast applied', {
+          colors_added: topWeddingColors.length,
+          top_color: topWeddingColors[0].color
+        });
+      }
     }
 
     return {
