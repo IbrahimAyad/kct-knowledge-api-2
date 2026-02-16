@@ -6,6 +6,7 @@
 
 import { logger } from '../utils/logger';
 import { cacheService } from './cache-service';
+import { siteLinksService } from './site-links-service';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -393,6 +394,21 @@ class ProductCatalogService {
   } | null {
     if (!this.categoryCatalog?.pricing_insights) return null;
     return this.categoryCatalog.pricing_insights;
+  }
+
+  /**
+   * Section 3.2: Enrich recommendation with site links
+   * Returns relevant shop/guide URLs based on occasion and category
+   */
+  enrichRecommendationWithLinks(occasion?: string, category?: string): {
+    shop_url?: string;
+    guide_url?: string;
+    occasion_url?: string;
+  } {
+    return siteLinksService.enrichResponseWithLinks({
+      occasion,
+      category
+    });
   }
 }
 
