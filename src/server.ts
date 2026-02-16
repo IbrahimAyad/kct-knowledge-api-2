@@ -852,6 +852,39 @@ app.get("/api/intelligence/status", async (_req, res) => {
   res.json({ success: true, data: status });
 });
 
+// Section 4.3: Intelligence Test Endpoint
+app.post("/api/intelligence/test", async (req, res) => {
+  await initializeServices();
+
+  try {
+    const context = await recommendationContextBuilder.buildContext(req.body);
+
+    res.json({
+      success: true,
+      data: {
+        context,
+        summary: {
+          signals_used: context.signals_used.length,
+          reasoning_points: context.reasoning.length,
+          confidence: context.confidence,
+          formality: context.formality_range ?
+            `${context.formality_range[0]}-${context.formality_range[1]}` : null,
+          preferred_colors: context.color_filters?.preferred?.slice(0, 5),
+          recommended_fabrics: context.fabric_preferences?.recommended?.slice(0, 3),
+          price_range: context.price_tier ?
+            `$${context.price_tier.min_investment}-$${context.price_tier.max_investment}` : null,
+          max_recommendations: context.max_recommendations,
+        }
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Context builder failed'
+    });
+  }
+});
+
 // ===== ANALYTICS ENDPOINTS =====
 
 // Comprehensive analytics summary
