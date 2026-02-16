@@ -1,0 +1,284 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-02-16",
+  "source": "docs/content-library/blog-calendar/2026/",
+  "description": "Month-by-month intelligence for KCT recommendations — colors, fabrics, events, buyer mindset",
+
+  "months": {
+    "january": {
+      "season": "winter",
+      "temp_range_f": "15-55",
+      "indoor_venue_pct": 95,
+      "wedding_share_pct": "4-5",
+      "primary_events": ["winter_wedding", "new_years"],
+      "secondary_events": [],
+      "kb_focus": "Deep jewel tones, heavy fabrics, intimate winter weddings",
+      "colors": {
+        "primary": ["burgundy", "emerald_green", "sapphire", "royal_blue", "forest_green"],
+        "secondary": ["charcoal", "black", "deep_plum", "eggplant"]
+      },
+      "fabrics": {
+        "recommended": ["heavy_wool_11_14oz", "flannel", "tweed", "velvet", "wool_cashmere_blend"],
+        "avoid": ["linen", "cotton", "lightweight_wool"]
+      },
+      "buyer_mindset": {
+        "budget_conscious": 40,
+        "intimate_celebration": 35,
+        "new_year_symbolism": 15,
+        "other": 10
+      }
+    },
+
+    "february": {
+      "season": "winter_to_spring_transition",
+      "temp_range_f": "25-55",
+      "indoor_venue_pct": 90,
+      "wedding_share_pct": "5-6",
+      "primary_events": ["valentines_day", "prom_prep_begins"],
+      "secondary_events": ["winter_wedding"],
+      "kb_focus": "Romantic pastels meet winter depth — Valentine's Saturday (Feb 14) is peak",
+      "colors": {
+        "primary": ["burgundy", "wine", "blush", "dusty_rose", "mauve"],
+        "secondary": ["emerald", "sapphire", "champagne", "taupe", "light_blue", "sage_green", "lavender"],
+        "valentine_specific": ["pink", "blush", "dusty_rose", "rose_gold"]
+      },
+      "fabrics": {
+        "recommended": ["heavy_wool_9_13oz", "lightweight_wool_8_10oz", "flannel", "velvet"],
+        "transitioning_to": ["lighter_weights"]
+      },
+      "buyer_mindset": {
+        "valentines_couples": 50,
+        "post_valentines_planners": 25,
+        "winter_to_spring_transitioners": 15,
+        "budget_conscious_romantics": 10
+      }
+    },
+
+    "march": {
+      "season": "early_spring",
+      "temp_range_f": "40-65",
+      "wedding_share_pct": "6-7",
+      "primary_events": ["peak_prom_prep", "spring_wedding_prep"],
+      "secondary_events": ["national_prom_day_mar_31"],
+      "kb_focus": "Prom tuxedo finalizations + spring wedding suit shopping begins",
+      "colors": {
+        "primary": ["emerald_green", "burgundy", "royal_blue", "black"],
+        "secondary": ["sage_green", "dusty_blue", "light_gray"],
+        "prom_trending": ["emerald_green", "burgundy", "royal_blue", "bold_patterns"]
+      },
+      "fabrics": {
+        "recommended": ["transitional_wool_blends", "breathable_materials"],
+        "note": "Layering options important — weather varies widely"
+      },
+      "buyer_mindset": {
+        "transactional_ready": 59,
+        "research_phase": 41
+      }
+    },
+
+    "april": {
+      "season": "spring",
+      "temp_range_f": "60-75",
+      "outdoor_venue_pct": 68,
+      "primary_events": ["peak_prom", "easter_apr_5"],
+      "secondary_events": ["college_graduation", "memorial_day_wedding_bookings"],
+      "kb_focus": "Peak prom weeks (Apr 10-May 10) + last-minute purchases",
+      "colors": {
+        "primary": ["dusty_blue", "sage_green", "lavender", "blush"],
+        "secondary": ["emerald", "burgundy", "royal_blue"]
+      },
+      "fabrics": {
+        "recommended": ["tropical_wool_7_9oz", "linen_blends", "cotton", "breathable_weaves"],
+        "avoid": ["heavy_wool", "flannel", "tweed"]
+      },
+      "buyer_mindset": {
+        "commercial_investigation": 55,
+        "transactional_ready": 45
+      }
+    },
+
+    "may": {
+      "season": "late_spring",
+      "temp_range_f": "75-85",
+      "outdoor_venue_pct": 68,
+      "wedding_share_pct": "10",
+      "primary_events": ["peak_wedding_season_starts", "college_graduations"],
+      "secondary_events": ["mothers_day_may_10", "memorial_day_weekend_may_23_25", "high_school_graduations"],
+      "kb_focus": "Wedding packages, groomsmen deals, graduation suits that transition to interviews",
+      "colors": {
+        "primary": ["navy", "gray", "charcoal"],
+        "secondary": ["pastels", "light_neutrals"]
+      },
+      "fabrics": {
+        "recommended": ["lightweight_materials"],
+        "note": "Lightweight non-negotiable"
+      },
+      "buyer_mindset": {
+        "wedding_parties_final_fittings": 60,
+        "graduates_investment_mindset": 40
+      }
+    },
+
+    "june": {
+      "season": "summer",
+      "temp_range_f": "75-90",
+      "outdoor_venue_pct": 68,
+      "primary_events": ["peak_wedding_month", "fathers_day_jun_21"],
+      "secondary_events": ["summer_solstice_jun_20", "july_4_prep"],
+      "kb_focus": "Lightest fabrics, beach/garden/vineyard weddings, Father's Day gifting",
+      "colors": {
+        "primary": ["light_blue", "tan", "sage_green", "sand"],
+        "secondary": ["beige", "dusty_blue", "light_gray", "bold_pastels"]
+      },
+      "fabrics": {
+        "recommended": ["linen", "tropical_wool_under_7oz", "cotton", "seersucker"],
+        "avoid": ["heavy_wool", "velvet", "flannel"]
+      },
+      "buyer_mindset": {
+        "wedding_parties": 70,
+        "fathers_day_gift_buyers": 30
+      }
+    },
+
+    "july": {
+      "season": "peak_summer",
+      "temp_range_f": "80-95",
+      "primary_events": ["july_4_weddings", "destination_weddings"],
+      "secondary_events": ["aug_sept_wedding_bookings"],
+      "kb_focus": "Heat survival — breathability, unlined construction, light colors",
+      "colors": {
+        "primary": ["light_colors"],
+        "note": "Light colors practical for heat reflection"
+      },
+      "fabrics": {
+        "recommended": ["summer_weight", "unlined_or_half_lined", "breathable"],
+        "note": "Sweat management is primary concern"
+      },
+      "buyer_mindset": {
+        "destination_wedding_travelers": 40,
+        "aug_sept_advance_buyers": 60
+      }
+    },
+
+    "august": {
+      "season": "summer_to_fall_transition",
+      "temp_range_f": "75-95",
+      "primary_events": ["late_summer_weddings", "fall_wedding_prep"],
+      "secondary_events": ["labor_day_weekend_aug_29", "first_professional_wardrobe"],
+      "kb_focus": "Paradox month — summer heat early, fall transition late",
+      "colors": {
+        "early_august": ["summer_weight_colors"],
+        "late_august": ["burgundy", "olive", "deeper_navies"]
+      },
+      "fabrics": {
+        "early_august": ["summer_weight"],
+        "late_august": ["slight_weight_flexibility_for_fall"]
+      },
+      "buyer_mindset": {
+        "late_summer_wedding_urgency": 35,
+        "fall_transition_planners": 40,
+        "young_professional_wardrobe": 25
+      }
+    },
+
+    "september": {
+      "season": "early_fall",
+      "temp_range_f": "60-85",
+      "wedding_share_pct": "12",
+      "primary_events": ["fall_wedding_season", "homecoming"],
+      "secondary_events": ["labor_day_weekend", "autumnal_equinox_sep_22"],
+      "kb_focus": "Rich fall tones emerge — burgundy, forest green, homecoming prep",
+      "colors": {
+        "early_sept": ["light_blue", "sage_green", "tan"],
+        "late_sept": ["burgundy", "olive", "rust", "chocolate_brown"]
+      },
+      "fabrics": {
+        "early_sept": ["tropical_wool", "linen_blends", "cotton"],
+        "late_sept": ["medium_weight_wool_9_11oz"]
+      },
+      "buyer_mindset": {
+        "labor_day_parties": 30,
+        "early_fall_transition": 45,
+        "october_wedding_planners": 25
+      }
+    },
+
+    "october": {
+      "season": "peak_fall",
+      "temp_range_f": "55-70",
+      "wedding_share_pct": "17",
+      "primary_events": ["peak_wedding_month", "peak_foliage"],
+      "secondary_events": ["halloween_oct_31"],
+      "kb_focus": "THE biggest wedding month — jewel tones, texture, three-piece suits",
+      "colors": {
+        "primary": ["burgundy", "olive", "deep_jewel_tones", "earth_tones"],
+        "note": "Rich hues harmonizing with autumn leaves"
+      },
+      "fabrics": {
+        "recommended": ["flannel", "tweed", "corduroy", "velvet", "heavy_medium_wool"],
+        "note": "Texture emphasis — cooler weather permits textured fabrics"
+      },
+      "buyer_mindset": {
+        "october_wedding_parties": 45,
+        "nov_dec_planners": 30,
+        "halloween_wedding_niche": 15,
+        "foliage_focused": 10
+      }
+    },
+
+    "november": {
+      "season": "late_fall",
+      "temp_range_f": "40-60",
+      "indoor_venue_pct": 70,
+      "wedding_share_pct": "12",
+      "primary_events": ["fall_weddings", "holiday_party_prep"],
+      "secondary_events": ["veterans_day_nov_11", "thanksgiving_nov_26"],
+      "kb_focus": "Jewel tones, harvest colors, layering — holiday party prep begins",
+      "colors": {
+        "primary": ["burgundy", "forest_green", "deep_plum"],
+        "secondary": ["burnt_orange", "rust", "chocolate_brown"]
+      },
+      "fabrics": {
+        "recommended": ["wool", "flannel", "tweed", "velvet", "corduroy", "textured_wools"],
+        "note": "Three-piece suits and vests for layering"
+      },
+      "buyer_mindset": {
+        "november_wedding_parties": 40,
+        "dec_jan_planners": 35,
+        "holiday_party_professionals": 25
+      }
+    },
+
+    "december": {
+      "season": "winter",
+      "temp_range_f": "25-45",
+      "indoor_venue_pct": 95,
+      "primary_events": ["corporate_holiday_parties", "winter_weddings", "new_years_eve"],
+      "secondary_events": ["holiday_gifting"],
+      "kb_focus": "Velvet dominates, emerald + burgundy lead, gift bundles",
+      "colors": {
+        "primary": ["emerald_green", "burgundy"],
+        "secondary": ["red_accents", "jewel_tones", "bold_colors"],
+        "note": "Bolder colors permitted due to holiday spirit"
+      },
+      "fabrics": {
+        "recommended": ["velvet", "wool", "flannel", "tweed", "textured_fabrics"],
+        "note": "Velvet = THE fabric of the season"
+      },
+      "buyer_mindset": {
+        "holiday_party_professionals": 40,
+        "winter_wedding_parties": 35,
+        "new_years_eve_celebrants": 25
+      }
+    }
+  },
+
+  "kct_event_calendar": {
+    "jan_feb": { "primary": "prom_prep_begins", "secondary": ["valentines", "winter_wedding"], "push": ["early_bird_bundles", "prom_previews", "romantic_colors"] },
+    "mar_apr": { "primary": "peak_prom", "secondary": ["spring_weddings", "easter"], "push": ["prom_bundles", "bold_colors", "accessories", "aura_quiz"] },
+    "may_jun": { "primary": "peak_wedding", "secondary": ["graduation", "galas", "fathers_day"], "push": ["wedding_packages", "groomsmen_deals", "gift_bundles"] },
+    "jul_aug": { "primary": "summer_events", "secondary": ["beach_weddings", "destination"], "push": ["lightweight_fabrics", "lighter_colors", "travel_suits"] },
+    "sep_oct": { "primary": "fall_weddings", "secondary": ["homecoming", "galas"], "push": ["rich_tones", "textured_fabrics", "three_piece_suits"] },
+    "nov_dec": { "primary": "holiday_events", "secondary": ["winter_weddings", "new_years"], "push": ["velvet", "darker_tones", "gift_bundles", "holiday_party_looks"] }
+  }
+}

@@ -43,8 +43,18 @@ export interface RecommendationWithProducts {
 class ProductCatalogService {
   private catalog: any = null;
   private colorMap: Map<string, ProductMatch> = new Map();
+  private tieColorInventory: any = null;
 
   async initialize(): Promise<void> {
+    // Load tie color inventory
+    try {
+      const tieInventoryPath = path.join(__dirname, '../data/intelligence/tie-color-inventory.json');
+      const tieRaw = fs.readFileSync(tieInventoryPath, 'utf8');
+      this.tieColorInventory = JSON.parse(tieRaw);
+    } catch (error) {
+      logger.warn('Tie color inventory not loaded', { error: error instanceof Error ? error.message : String(error) });
+    }
+
     try {
       const catalogPath = path.join(__dirname, '../data/intelligence/product-catalog-mapping.json');
       const raw = fs.readFileSync(catalogPath, 'utf8');
@@ -141,6 +151,46 @@ class ProductCatalogService {
   }
 
   /**
+   * Section 2.1: Check if a tie color has a matching suspender+bowtie set
+   */
+  upsellSuspenderSet(tieColor: string): {
+    hasSet: boolean;
+    upsellMessage?: string;
+    category?: string;
+  } | null {
+    if (!this.tieColorInventory?.tie_colors) return null;
+
+    const normalized = tieColor.toLowerCase().replace(/[\s-]+/g, '_');
+    const colorData = this.tieColorInventory.tie_colors[normalized];
+
+    if (!colorData) return null;
+
+    if (colorData.has_suspender_set) {
+      return {
+        hasSet: true,
+        upsellMessage: `Complete your look with our ${tieColor} suspender & bowtie set — perfect match for your tie!`,
+        category: colorData.category
+      };
+    }
+
+    return {
+      hasSet: false,
+      category: colorData.category
+    };
+  }
+
+  /**
+   * Section 2.1: Get all tie colors with suspender sets
+   */
+  getTieColorsWithSuspenderSets(): string[] {
+    if (!this.tieColorInventory?.tie_colors) return [];
+
+    return Object.entries(this.tieColorInventory.tie_colors)
+      .filter(([_, data]: [string, any]) => data.has_suspender_set)
+      .map(([color, _]) => color);
+  }
+
+  /**
    * Look up products matching a color. Returns null if no products found.
    */
   getProductsByColor(color: string): ProductMatch | null {
@@ -199,23 +249,42 @@ class ProductCatalogService {
    * Common color aliases so "navy" matches "navy_blue", etc.
    */
   private getColorAliases(color: string): string[] {
+    // Section 2.1: Expanded to cover 69 tie colors (from 16 families)
     const aliasMap: { [key: string]: string[] } = {
-      'burgundy': ['wine', 'dark_red', 'maroon', 'burgundy_wine'],
-      'sage_green': ['sage', 'dusty_sage', 'muted_green'],
-      'chocolate_brown': ['brown', 'dark_brown', 'cocoa'],
-      'emerald_green': ['emerald', 'deep_green'],
-      'light_blue': ['dusty_blue', 'sky_blue', 'baby_blue', 'slate_blue', 'ocean_blue'],
-      'powder_blue': ['powdered_blue'],
-      'royal_blue': ['bright_blue', 'cobalt_blue'],
-      'navy': ['navy_blue', 'dark_navy', 'midnight_blue'],
-      'charcoal': ['dark_grey', 'charcoal_grey'],
-      'light_grey': ['silver', 'light_gray', 'pale_grey'],
+      // Original 16 families
+      'burgundy': ['wine', 'dark_red', 'maroon', 'burgundy_wine', 'chianti', 'chianti_red', 'dark_wine', 'wine_red', 'dark_burgundy'],
+      'sage_green': ['sage', 'dusty_sage', 'muted_green', 'muted_sage'],
+      'chocolate_brown': ['chocolate', 'dark_chocolate', 'cinnamon', 'cinnamon_brown', 'warm_brown', 'nutmeg', 'spice_brown', 'warm_spice'],
+      'emerald_green': ['emerald'],
+      'light_blue': ['dusty_blue', 'sky_blue', 'baby_blue', 'slate_blue', 'ocean_blue', 'light_baby_blue', 'carolina_blue', 'carolina', 'tar_heel_blue', 'french_blue', 'french', 'parisian_blue', 'tiffany_blue', 'tiffany', 'robin_egg_blue', 'aqua', 'aqua_blue'],
+      'powder_blue': ['powdered_blue', 'ice_blue'],
+      'royal_blue': ['bright_blue', 'sapphire_blue', 'sapphire', 'deep_blue'],
+      'navy': ['navy_blue', 'dark_navy', 'midnight_blue', 'denim_blue', 'denim', 'jean_blue'],
+      'charcoal': ['dark_grey', 'charcoal_grey', 'dark_silver', 'gunmetal', 'dark_grey_silver'],
+      'light_grey': ['silver', 'light_gray', 'pale_grey', 'taupe', 'grey_brown', 'warm_grey'],
       'black': ['jet_black'],
-      'tan': ['khaki', 'beige', 'sand'],
-      'hunter_green': ['forest_green', 'dark_green'],
-      'midnight_blue': ['dark_blue'],
-      'white': ['ivory', 'cream', 'off_white'],
-      'terracotta': ['rust', 'burnt_orange', 'terra_cotta'],
+      'tan': ['khaki', 'beige', 'sand', 'champagne', 'champagne_gold', 'medium_brown', 'mid_brown', 'camel'],
+      'hunter_green': ['forest_green', 'dark_green', 'forest', 'deep_green', 'dark_olive', 'olive_dark'],
+      'midnight_blue': ['dark_blue', 'cobalt', 'cobalt_blue'],
+      'white': ['ivory', 'cream', 'off_white', 'off_white_tie'],
+      'terracotta': ['rust', 'burnt_orange', 'terra_cotta', 'burnt', 'rust_orange', 'medium_orange', 'mid_orange'],
+
+      // Section 2.1: NEW tie color families (53 additional colors)
+      'apple_red': ['apple', 'bright_red', 'true_red', 'classic_red', 'fire_red'],
+      'banana_yellow': ['yellow', 'bright_yellow', 'canary', 'canary_yellow'],
+      'blush': ['blush_pink', 'light_blush', 'dusty_pink', 'mauve_pink', 'muted_pink'],
+      'coral': ['coral_pink', 'salmon_pink', 'peach', 'peach_pink', 'apricot', 'salmon', 'salmon_orange', 'coral_salmon'],
+      'dusty_rose': ['dusty', 'antique_rose', 'french_rose', 'french_pink', 'rose_gold', 'rose', 'pink_gold'],
+      'fuchsia': ['hot_pink', 'magenta_pink', 'magenta', 'bright_magenta'],
+      'gold': ['gold_tie', 'metallic_gold'],
+      'lavender': ['light_purple', 'lavender_purple', 'light_lilac', 'pale_lilac', 'lilac', 'lilac_purple', 'pastel_purple', 'soft_purple', 'wisteria'],
+      'lettuce_green': ['lettuce', 'bright_green', 'lime', 'lime_green', 'neon_green'],
+      'light_pink': ['pastel_pink', 'soft_pink'],
+      'mauve': ['dusty_mauve', 'medium_purple', 'mid_purple', 'plum', 'plum_purple', 'dark_plum', 'deep_purple', 'deep_violet', 'eggplant'],
+      'mermaid_green': ['mermaid', 'sea_green', 'teal_green', 'teal', 'teal_blue', 'dark_teal', 'turquoise', 'turquoise_blue', 'aqua_green'],
+      'mint_green': ['mint', 'pastel_green', 'soft_green'],
+      'olive_green': ['olive', 'military_green'],
+      'orange': ['bright_orange']
     };
 
     return aliasMap[color] || [];

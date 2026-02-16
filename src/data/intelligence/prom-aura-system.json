@@ -1,0 +1,91 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-02-16",
+  "source": "docs/content-library/prom/prom-aura-product-tagging.md",
+  "description": "KCT Prom Aura quiz system — maps personality auras to product tags, colors, and styling",
+
+  "auras": {
+    "main_character": {
+      "display_name": "Main Character",
+      "emoji": "🔥",
+      "route": "/prom/collection/main-character",
+      "vibe": "Bold, statement-making, Y2K energy",
+      "product_tags": ["statement", "bold", "patterned", "metallic", "shiny"],
+      "recommended_colors": ["red", "gold", "royal_blue", "orange", "silver"],
+      "best_for": "Bright colors, loud patterns, sequins, unique cuts",
+      "styling_notes": "Go big or go home — this aura wants the loudest suit in the room"
+    },
+    "villain_era": {
+      "display_name": "Villain Era",
+      "emoji": "🖤",
+      "route": "/prom/collection/villain-era",
+      "vibe": "Dark, mysterious, powerful",
+      "product_tags": ["black", "slim-fit", "tuxedo", "formal", "dark"],
+      "recommended_colors": ["black", "burgundy", "navy", "charcoal", "wine"],
+      "best_for": "All-black looks, sleek tuxedos, dark burgundy, midnight navy",
+      "styling_notes": "Sharp, slim silhouettes — the power move. Think dark monochrome"
+    },
+    "royal": {
+      "display_name": "Royal",
+      "emoji": "👑",
+      "route": "/prom/collection/royal",
+      "vibe": "Old money, elegant, timeless",
+      "product_tags": ["classic", "navy", "gold", "traditional", "elegant"],
+      "recommended_colors": ["navy", "royal_blue", "gold", "charcoal", "emerald"],
+      "best_for": "Navy suits, classic fits, gold accessories, sophisticated looks",
+      "styling_notes": "Classic three-piece, gold accents, peak lapels — timeless authority"
+    },
+    "soft_boy": {
+      "display_name": "Soft Boy",
+      "emoji": "✨",
+      "route": "/prom/collection/soft-boy",
+      "vibe": "Romantic, gentle, artistic",
+      "product_tags": ["pastel", "soft", "light", "romantic", "gentle"],
+      "recommended_colors": ["pink", "blush", "ivory", "champagne", "teal"],
+      "best_for": "Blush pink, lavender, sage green, cream, relaxed fits",
+      "styling_notes": "Soft pastels, relaxed fits — pair with a date's dress color for coordination",
+      "tie_color_matches": ["dusty_rose", "lavender", "light_pink", "dusty_sage", "light_blue", "blush", "champagne"]
+    },
+    "drip": {
+      "display_name": "Drip",
+      "emoji": "🌊",
+      "route": "/prom/collection/drip",
+      "vibe": "Avant-garde, liquid luxury, fashion-forward",
+      "product_tags": ["sequin", "metallic", "shiny", "statement", "unique"],
+      "recommended_colors": ["silver", "gold", "royal_blue", "purple", "red"],
+      "best_for": "Liquid fabrics, holographic, metallics, bold fashion statements",
+      "styling_notes": "Full sequin jacket or metallic suit — this is the showstopper"
+    }
+  },
+
+  "tag_examples": {
+    "tuxedos": {
+      "black_tuxedo": ["black", "tuxedo", "formal", "dark"],
+      "navy_tuxedo": ["navy", "classic", "elegant", "tuxedo"],
+      "sequin_tuxedo": ["sequin", "statement", "shiny", "metallic"]
+    },
+    "suits": {
+      "burgundy_slim": ["dark", "slim-fit", "statement"],
+      "light_grey_classic": ["classic", "elegant", "traditional", "light"],
+      "bold_patterned": ["patterned", "bold", "statement"]
+    },
+    "accessories": {
+      "gold_bow_tie": ["gold", "elegant", "statement"],
+      "black_pocket_square": ["black", "formal", "classic"],
+      "metallic_tie": ["metallic", "shiny", "statement"]
+    }
+  },
+
+  "matching_logic": [
+    "Check product tags (Shopify tags)",
+    "Check product type",
+    "Check product title",
+    "If ANY aura tag matches ANY of the above, product appears in that aura's collection"
+  ],
+
+  "rules": {
+    "multi_aura": "Products can belong to multiple auras if tags overlap",
+    "tags_per_product": "2-3 aura tags recommended per product",
+    "tag_format": "lowercase only"
+  }
+}

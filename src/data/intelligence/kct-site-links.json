@@ -1,0 +1,128 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-02-16",
+  "source": "docs/content-library/integrations/KCT-SITE-LINKS-REFERENCE.md",
+  "base_url": "https://kctmenswear.com",
+  "description": "All KCT internal URLs mapped by category — enables 'shop this look' links in API responses",
+
+  "collections": {
+    "suits": "/suits",
+    "blazers": "/blazers",
+    "tuxedos": "/tuxedos",
+    "vests": "/vests",
+    "ties": "/ties",
+    "bow_ties": "/bow-ties",
+    "accessories": "/accessories",
+    "dress_shoes": "/dress-shoes",
+    "dress_shirts": "/dress-shirts",
+    "velvet_collection": "/velvet-collection",
+    "two_piece_suits": "/two-piece-suits",
+    "three_piece_suits": "/three-piece-suits",
+    "double_breasted": "/double-breasted-suits",
+    "stretch_suits": "/stretch-suits",
+    "classic_fit": "/classic-fit",
+    "big_and_tall": "/big-tall",
+    "bestsellers": "/bestsellers"
+  },
+
+  "occasions": {
+    "all_occasions": "/occasions",
+    "black_tie": "/black-tie",
+    "graduations": "/graduations",
+    "job_interview": "/interview-attire",
+    "business_meetings": "/business-meetings",
+    "corporate_events": "/corporate-events",
+    "presentations": "/presentations",
+    "quinceaneras": "/quinceaneras",
+    "date_night": "/date-night",
+    "dinner_parties": "/dinner-parties",
+    "family_events": "/family-events",
+    "holiday_attire": "/holiday-attire"
+  },
+
+  "wedding": {
+    "hub": "/wedding",
+    "services": "/wedding-services",
+    "collections": "/weddings/collections",
+    "color_matching": "/weddings/color-matching",
+    "video_lookbook": "/weddings/video-lookbook",
+    "seasonal": "/weddings/seasonal",
+    "local_weddings": "/local-weddings",
+    "groom_collection": "/groom-collection",
+    "styles": {
+      "rustic": "/wedding-style-rustic",
+      "modern": "/wedding-style-modern",
+      "summer": "/wedding-style-summer",
+      "fall": "/wedding-style-fall",
+      "classic": "/wedding-style-classic",
+      "beach": "/wedding-style-beach"
+    }
+  },
+
+  "prom": {
+    "hub": "/prom",
+    "aura_quiz": "/prom/aura-quiz",
+    "aura_builder": "/prom/aura-builder",
+    "collections": {
+      "main_character": "/prom/collection/main-character",
+      "villain_era": "/prom/collection/villain-era",
+      "royal": "/prom/collection/royal",
+      "soft_boy": "/prom/collection/soft-boy",
+      "drip": "/prom/collection/drip"
+    }
+  },
+
+  "resources": {
+    "size_guide": "/size-guide",
+    "ai_size_bot": "/size-bot",
+    "care_guide": "/care-guide",
+    "fashion_trends": "/trends",
+    "tailoring": "/tailoring",
+    "tailoring_services": "/tailoring-services",
+    "alterations": "/alterations",
+    "rush_alterations": "/rush-alterations",
+    "blog": "/blog"
+  },
+
+  "interactive_tools": {
+    "style_swipe": "/style-swipe",
+    "virtual_try_on": "/virtual-try-on",
+    "custom_bundle": "/custom-bundle",
+    "comparison": "/comparison",
+    "wishlist": "/wishlist"
+  },
+
+  "store_info": {
+    "locations": "/locations",
+    "contact": "/contact",
+    "shipping": "/shipping",
+    "returns": "/returns"
+  },
+
+  "seasonal_priority": {
+    "jan_feb": ["/date-night", "/black-tie", "/velvet-collection"],
+    "mar_may": ["/prom", "/graduations", "/wedding"],
+    "jun_aug": ["/wedding-style-summer", "/wedding-style-beach", "/stretch-suits"],
+    "sep_nov": ["/wedding-style-fall", "/corporate-events", "/holiday-attire"],
+    "dec": ["/holiday-attire", "/black-tie", "/velvet-collection"]
+  },
+
+  "occasion_to_collection_map": {
+    "wedding": "/wedding",
+    "wedding_rustic": "/wedding-style-rustic",
+    "wedding_beach": "/wedding-style-beach",
+    "wedding_summer": "/wedding-style-summer",
+    "wedding_fall": "/wedding-style-fall",
+    "wedding_classic": "/wedding-style-classic",
+    "wedding_modern": "/wedding-style-modern",
+    "prom": "/prom",
+    "graduation": "/graduations",
+    "interview": "/interview-attire",
+    "black_tie": "/black-tie",
+    "business": "/business-meetings",
+    "corporate": "/corporate-events",
+    "date_night": "/date-night",
+    "quinceanera": "/quinceaneras",
+    "holiday": "/holiday-attire"
+  }
+}

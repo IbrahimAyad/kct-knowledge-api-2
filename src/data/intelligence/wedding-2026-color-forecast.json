@@ -1,0 +1,201 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-02-16",
+  "source": "docs/content-library/wedding/wedding-2026-forecast.md",
+  "forecast_confidence": "80-85%",
+  "description": "2026 wedding color predictions with market share, styling formulas, and bride-pairing guides",
+
+  "market_context": {
+    "estimated_weddings_us": "2.3-2.5 million",
+    "primary_demographic": "Millennials (29-41) + Gen Z (24-28)",
+    "average_groom_spend": "$350-$750",
+    "custom_vs_off_rack": "70% custom/made-to-measure",
+    "paradigm": "Groom as co-star with equal style spotlight"
+  },
+
+  "top_colors": [
+    {
+      "rank": 1,
+      "color": "pale_blue",
+      "aliases": ["ice_blue", "powder_blue", "sky_blue", "bridgerton_blue"],
+      "market_share_pct": "20-25",
+      "trend_driver": "Bridgerton Season 4 + pastel shift",
+      "kct_suit_colors": ["blue", "royal_blue"],
+      "kct_tie_matches": ["light_blue", "baby_blue", "powder_blue", "carolina_blue", "french_blue"],
+      "formality": "semi-formal to formal",
+      "best_seasons": ["spring", "summer"],
+      "best_venues": ["garden", "outdoor", "bridgerton_theme"],
+      "styling_formula": {
+        "suit": "Pale blue three-piece",
+        "shirt": "White or ivory",
+        "tie": "Silver, champagne, or burgundy",
+        "shoes": "Cognac brown or black",
+        "accessories": "Pocket watch chain, silver cufflinks"
+      },
+      "pairs_with_bride": ["white", "blush_pink", "lavender", "champagne", "light_yellow"]
+    },
+    {
+      "rank": 2,
+      "color": "chocolate_brown",
+      "aliases": ["mocha", "tan", "sand", "earth_tones"],
+      "market_share_pct": "18-22",
+      "trend_driver": "Mocha Mousse Pantone 2025 carryover + rustic wedding boom",
+      "kct_suit_colors": ["brown", "tan"],
+      "kct_tie_matches": ["chocolate_brown", "medium_brown", "cinnamon", "nutmeg", "beige", "taupe"],
+      "formality": "formal to casual (varies by shade)",
+      "best_seasons": ["fall", "winter", "spring"],
+      "best_venues": ["rustic", "barn", "vineyard", "outdoor"],
+      "styling_formula": {
+        "suit": "Chocolate three-piece",
+        "shirt": "Ivory or cream",
+        "tie": "Gold or sage green",
+        "shoes": "Brown leather"
+      },
+      "pairs_with_bride": ["champagne", "ivory", "burgundy", "sage_green", "dusty_rose"]
+    },
+    {
+      "rank": 3,
+      "color": "deep_emerald",
+      "aliases": ["forest_green", "olive_green"],
+      "market_share_pct": "15-18",
+      "trend_driver": "Bridgerton jewel tones + outdoor wedding trend",
+      "kct_suit_colors": ["green", "emerald", "teal"],
+      "kct_tie_matches": ["emerald_green", "forest_green", "dark_olive", "olive_green", "mermaid_green"],
+      "formality": "formal to casual (varies by shade)",
+      "best_seasons": ["fall", "winter", "spring"],
+      "best_venues": ["evening", "luxury", "bridgerton_theme", "outdoor", "rustic"],
+      "styling_formula": {
+        "suit": "Emerald velvet tuxedo",
+        "shirt": "White",
+        "tie": "Gold bow tie",
+        "shoes": "Black patent"
+      },
+      "pairs_with_bride": ["gold", "ivory", "champagne", "burgundy", "dusty_rose"]
+    },
+    {
+      "rank": 4,
+      "color": "oxblood",
+      "aliases": ["deep_wine", "burgundy", "eggplant_purple"],
+      "market_share_pct": "12-15",
+      "trend_driver": "Bridgerton jewel tones + romantic symbolism",
+      "kct_suit_colors": ["burgundy", "wine", "purple"],
+      "kct_tie_matches": ["burgundy", "wine", "deep_purple", "plum", "chianti", "dark_red"],
+      "formality": "formal to semi-formal",
+      "best_seasons": ["fall", "winter"],
+      "best_venues": ["evening", "bridgerton_theme", "luxury", "romantic"],
+      "styling_formula": {
+        "suit": "Oxblood velvet suit",
+        "shirt": "Ivory",
+        "tie": "Gold bow tie",
+        "shoes": "Black"
+      },
+      "pairs_with_bride": ["gold", "champagne", "ivory", "silver"]
+    },
+    {
+      "rank": 5,
+      "color": "stone",
+      "aliases": ["sand", "champagne", "soft_neutrals"],
+      "market_share_pct": "15-18",
+      "trend_driver": "Old Money aesthetic + destination wedding boom",
+      "kct_suit_colors": ["tan", "ivory", "champagne", "cream"],
+      "kct_tie_matches": ["champagne", "ivory", "beige", "taupe", "gold"],
+      "formality": "semi-formal to formal",
+      "best_seasons": ["spring", "summer"],
+      "best_venues": ["beach", "destination", "outdoor", "modern", "bridgerton_theme"],
+      "styling_formula": {
+        "suit": "Stone or champagne suit",
+        "shirt": "White or ivory",
+        "tie": "Sage green or dusty blue",
+        "shoes": "Brown"
+      },
+      "pairs_with_bride": ["white", "sage", "blush", "dusty_blue"]
+    },
+    {
+      "rank": 6,
+      "color": "monochrome_brights",
+      "aliases": ["fire_red", "bright_mint", "cobalt_blue"],
+      "market_share_pct": "5-8",
+      "trend_driver": "SS26 runway trend + Gen Z self-expression",
+      "kct_suit_colors": ["red", "green", "blue", "royal_blue"],
+      "kct_tie_matches": ["true_red", "apple_red", "mint_green", "cobalt", "sapphire_blue"],
+      "formality": "semi-formal to casual",
+      "best_seasons": ["spring", "summer"],
+      "best_venues": ["modern", "destination", "urban"],
+      "styling_formula": {
+        "suit": "Bold single-color suit",
+        "shirt": "White",
+        "tie": "Minimal or none",
+        "shoes": "Black"
+      },
+      "pairs_with_bride": ["white", "monochrome_match"]
+    },
+    {
+      "rank": 7,
+      "color": "all_white",
+      "aliases": ["ivory_suit", "cream_suit"],
+      "market_share_pct": "6-8",
+      "trend_driver": "SS26 runway + destination weddings + Bridgerton aristocratic",
+      "kct_suit_colors": ["white", "ivory", "cream"],
+      "kct_tie_matches": ["white", "ivory", "champagne", "gold", "silver"],
+      "formality": "semi-formal to formal",
+      "best_seasons": ["spring", "summer"],
+      "best_venues": ["beach", "destination", "luxury", "bridgerton_theme"]
+    },
+    {
+      "rank": 8,
+      "color": "navy",
+      "aliases": ["navy_blue", "dark_navy"],
+      "market_share_pct": "25-28",
+      "trend_driver": "Timeless reliable — declining share but still #1 by volume",
+      "kct_suit_colors": ["navy"],
+      "kct_tie_matches": ["navy_blue", "dark_navy"],
+      "formality": "formal to semi-formal",
+      "best_seasons": ["year_round"],
+      "best_venues": ["all"],
+      "note": "Declining from 30-35% in 2024-2025 as bolder colors grow"
+    },
+    {
+      "rank": 9,
+      "color": "charcoal",
+      "aliases": ["dark_grey", "black"],
+      "market_share_pct": "12-15 (charcoal) + 8-10 (black)",
+      "trend_driver": "Formal standard — both declining as color becomes default",
+      "kct_suit_colors": ["charcoal", "black", "gray"],
+      "kct_tie_matches": ["charcoal", "dark_grey", "black", "silver"]
+    },
+    {
+      "rank": 10,
+      "color": "lavender",
+      "aliases": ["soft_purple", "lilac"],
+      "market_share_pct": "4-6",
+      "trend_driver": "Bridgerton pastel palette + coquette aesthetic",
+      "kct_suit_colors": ["purple"],
+      "kct_tie_matches": ["lavender", "lilac", "light_lilac", "pastel_purple", "medium_purple"],
+      "formality": "semi-formal",
+      "best_seasons": ["spring"],
+      "best_venues": ["garden", "outdoor", "romantic", "bridgerton_theme"],
+      "pairs_with_bride": ["white", "lavender", "blush", "sage"]
+    }
+  ],
+
+  "fabric_trends": {
+    "velvet": {
+      "market_share_fall_winter": "30-35%",
+      "best_colors": ["emerald", "sapphire", "burgundy", "oxblood", "deep_purple", "black"],
+      "applications": ["full_suit", "tuxedo_jacket", "dinner_jacket"],
+      "trend_driver": "Bridgerton essential + texture trend"
+    },
+    "linen": {
+      "destination_wedding_pct": "30-35%",
+      "best_colors": ["ivory", "sand", "stone", "sage", "light_blue"],
+      "trend_driver": "Destination boom + relaxed refinement"
+    }
+  },
+
+  "key_theme": {
+    "name": "Bridgerton Regency Romance",
+    "growth": "191% YoY",
+    "predicted_share": "25-30% of 2026 weddings will incorporate Bridgerton-inspired elements",
+    "hallmarks": ["velvet", "three_piece_suits", "peak_lapels", "pocket_watches", "jewel_tones", "pastels"]
+  }
+}
