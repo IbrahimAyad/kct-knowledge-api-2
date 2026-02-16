@@ -110,8 +110,8 @@ export class MetricsCollector {
     responseTimeCritical: 3000, // 3s
     errorRateWarning: 0.05, // 5%
     errorRateCritical: 0.1, // 10%
-    memoryUsageWarning: 0.95, // 95% (adjusted for 32GB RAM allocation)
-    memoryUsageCritical: 0.98, // 98%
+    memoryUsageWarning: 0.98, // 98% (V8 heapUsed/heapTotal ratio is normally 90%+ for healthy Node apps)
+    memoryUsageCritical: 0.99, // 99%
   };
 
   constructor() {

@@ -13,6 +13,7 @@ import { venueIntelligenceService } from './venue-intelligence-service';
 import { careerIntelligenceService } from './career-intelligence-service';
 import { culturalAdaptationService } from './cultural-adaptation-service';
 import { customerPsychologyService } from './customer-psychology-service';
+import { seasonalRulesEngine } from './seasonal-rules-engine';
 
 /**
  * Unified recommendation context - everything needed to make smart recommendations
@@ -577,17 +578,45 @@ class RecommendationContextBuilder {
   }
 
   private getSeasonalColors(season: string): { preferred: string[] } {
+    // Try to get from seasonal rules engine (uses real data from color-seasonality.json)
+    try {
+      const seasonData = (seasonalRulesEngine as any).colorSeasonality?.[season.toLowerCase()];
+      if (seasonData?.primary) {
+        // Combine primary + accent for comprehensive preferences
+        const preferred = [...(seasonData.primary || []), ...(seasonData.accent || [])];
+        return { preferred };
+      }
+    } catch (error) {
+      logger.warn('Failed to load seasonal colors from engine, using fallback');
+    }
+
+    // Fallback to inline map (only if engine data unavailable)
     const seasonalMap: Record<string, { preferred: string[] }> = {
       spring: { preferred: ['light_blue', 'sage_green', 'tan', 'light_grey'] },
       summer: { preferred: ['light_blue', 'white', 'tan', 'sage_green'] },
-      fall: { preferred: ['burgundy', 'brown', 'hunter_green', 'charcoal'] },
-      winter: { preferred: ['navy', 'charcoal', 'black', 'burgundy'] },
+      fall: { preferred: ['burgundy', 'chocolate_brown', 'hunter_green', 'charcoal', 'terracotta'] },
+      winter: { preferred: ['navy', 'charcoal', 'black', 'burgundy', 'emerald_green'] },
     };
 
     return seasonalMap[season.toLowerCase()] || { preferred: ['navy', 'charcoal'] };
   }
 
   private getSeasonalFabrics(season: string): { recommended: string[]; avoid: string[]; priorities: string[] } {
+    // Try to get from seasonal rules engine (uses real data from fabric-seasonality.json)
+    try {
+      const fabricData = (seasonalRulesEngine as any).fabricSeasonality?.[season.toLowerCase()];
+      if (fabricData?.excellent) {
+        return {
+          recommended: [...(fabricData.excellent || []), ...(fabricData.good || [])],
+          avoid: fabricData.avoid || [],
+          priorities: fabricData.characteristics || [],
+        };
+      }
+    } catch (error) {
+      logger.warn('Failed to load seasonal fabrics from engine, using fallback');
+    }
+
+    // Fallback to inline map (only if engine data unavailable)
     const seasonalMap: Record<string, { recommended: string[]; avoid: string[]; priorities: string[] }> = {
       spring: {
         recommended: ['lightweight_wool', 'cotton_blend', 'linen_blend'],
@@ -605,7 +634,7 @@ class RecommendationContextBuilder {
         priorities: ['warmth', 'durability'],
       },
       winter: {
-        recommended: ['heavy_wool', 'flannel', 'cashmere_blend'],
+        recommended: ['heavy_wool', 'flannel', 'cashmere_blend', 'velvet'],
         avoid: ['linen', 'lightweight_wool'],
         priorities: ['warmth', 'insulation'],
       },
