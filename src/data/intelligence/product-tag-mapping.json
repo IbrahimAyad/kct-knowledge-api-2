@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "description": "KCT product tags mapped to signal types for occasion/venue/season filtering",
+    "source": "KCT-DATA-MANIFEST.md Part 3.6 - Product tags from 1,361 Shopify products",
+    "total_tags": 52,
+    "last_updated": "2026-02-16"
+  },
+  "tag_mappings": {
+    "occasion_tags": {
+      "wedding": {
+        "primary_tags": ["wedding", "groom", "groomsmen"],
+        "seasonal_tags": ["spring-wedding", "summer-wedding", "fall-wedding", "winter-wedding"],
+        "venue_tags": ["outdoor-wedding", "garden-wedding", "beach-wedding", "church-wedding", "ballroom-wedding"],
+        "product_count": 288
+      },
+      "prom": {
+        "primary_tags": ["prom", "prom-tux", "prom-suit"],
+        "style_tags": ["bold-prom", "classic-prom", "modern-prom"],
+        "product_count": 496
+      },
+      "quinceanera": {
+        "primary_tags": ["quinceanera", "quince"],
+        "style_tags": ["formal-quince", "traditional-quince"],
+        "product_count": 244
+      },
+      "formal": {
+        "primary_tags": ["formal", "black-tie", "white-tie"],
+        "product_count": 407
+      },
+      "business": {
+        "primary_tags": ["business-casual", "business-formal", "office"],
+        "product_count": 59
+      },
+      "gala": {
+        "primary_tags": ["gala", "charity-event", "formal-event"],
+        "product_count": 45
+      }
+    },
+    "venue_tags": {
+      "outdoor": ["outdoor-wedding", "garden-wedding", "vineyard-wedding", "barn-wedding"],
+      "beach": ["beach-wedding", "destination-wedding"],
+      "church": ["church-wedding", "cathedral-wedding"],
+      "ballroom": ["ballroom-wedding", "hotel-wedding"],
+      "rustic": ["barn-wedding", "rustic-wedding", "farm-wedding"]
+    },
+    "season_tags": {
+      "spring": {
+        "tags": ["spring-wedding", "spring-event", "spring-prom"],
+        "colors": ["light-blue", "blush", "mint-green", "lavender"],
+        "fabrics": ["lightweight", "breathable"]
+      },
+      "summer": {
+        "tags": ["summer-wedding", "beach-wedding", "outdoor-wedding"],
+        "colors": ["tan", "light-grey", "powder-blue", "coral"],
+        "fabrics": ["linen", "lightweight", "breathable"]
+      },
+      "fall": {
+        "tags": ["fall-wedding", "autumn-wedding"],
+        "colors": ["burgundy", "forest-green", "chocolate-brown", "terracotta"],
+        "fabrics": ["tweed", "wool"]
+      },
+      "winter": {
+        "tags": ["winter-wedding", "holiday-event"],
+        "colors": ["navy", "charcoal", "burgundy", "hunter-green"],
+        "fabrics": ["velvet", "wool", "heavyweight"]
+      }
+    },
+    "style_tags": {
+      "bold": ["shiny", "sequin", "satin", "metallic", "statement"],
+      "classic": ["traditional", "timeless", "conservative", "elegant"],
+      "modern": ["contemporary", "trendy", "fashion-forward", "slim-fit"],
+      "luxury": ["premium", "designer", "high-end", "velvet", "jacquard"]
+    },
+    "fit_tags": {
+      "slim-fit": {
+        "tags": ["slim-fit", "modern-fit", "tailored"],
+        "product_count": 330
+      },
+      "classic-fit": {
+        "tags": ["classic-fit", "regular-fit", "traditional-fit"],
+        "product_count": 150
+      },
+      "relaxed-fit": {
+        "tags": ["relaxed-fit", "comfort-fit"],
+        "product_count": 45
+      }
+    },
+    "fabric_tags": {
+      "satin": {
+        "tags": ["satin", "shiny-satin", "matte-satin"],
+        "occasions": ["prom", "formal", "gala"],
+        "product_count": 220
+      },
+      "velvet": {
+        "tags": ["velvet", "crushed-velvet"],
+        "seasons": ["fall", "winter"],
+        "occasions": ["formal", "gala", "holiday"],
+        "product_count": 59
+      },
+      "wool": {
+        "tags": ["wool", "wool-blend", "worsted-wool"],
+        "seasons": ["fall", "winter"],
+        "product_count": 120
+      },
+      "linen": {
+        "tags": ["linen", "linen-blend"],
+        "seasons": ["spring", "summer"],
+        "venues": ["outdoor", "beach"],
+        "product_count": 35
+      }
+    },
+    "color_family_tags": {
+      "neutrals": ["black", "charcoal", "navy", "grey", "white", "ivory"],
+      "earth_tones": ["tan", "brown", "chocolate", "taupe", "beige"],
+      "jewel_tones": ["burgundy", "emerald", "sapphire", "royal-blue"],
+      "pastels": ["blush", "powder-blue", "mint-green", "lavender", "light-pink"],
+      "bold": ["red", "fuchsia", "gold", "orange", "turquoise"]
+    }
+  },
+  "tag_priority_rules": {
+    "exact_match_boost": 2.0,
+    "seasonal_match_boost": 1.5,
+    "venue_match_boost": 1.3,
+    "style_match_boost": 1.2
+  }
+}

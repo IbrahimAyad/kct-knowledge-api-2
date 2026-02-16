@@ -15,6 +15,7 @@ import { culturalAdaptationService } from './cultural-adaptation-service';
 import { customerPsychologyService } from './customer-psychology-service';
 import { seasonalRulesEngine } from './seasonal-rules-engine';
 import { fabricPerformanceService } from './fabric-performance-service';
+import { productTagService } from './product-tag-service';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -52,6 +53,15 @@ export interface RecommendationContext {
     style: string;                           // "modern", "classic", "slim", "relaxed"
     details: string[];                       // Specific fit recommendations
     industry_standard?: string;              // What this industry typically wears
+  };
+
+  // Section 2.3: Product tag filtering (from occasion + venue + season)
+  product_tags: {
+    all_tags: string[];                      // All relevant product tags
+    prioritized_tags: Array<{                // Tags with priority boost
+      tag: string;
+      boost: number;
+    }>;
   };
 
   // Decision fatigue logic (from research data)
@@ -153,7 +163,10 @@ class RecommendationContextBuilder {
       // Step 5: Build fit guidance (occupation + age)
       const fitGuidance = await this.buildFitGuidance(request, reasoning, signalsUsed);
 
-      // Step 6: Calculate max recommendations (decision fatigue logic)
+      // Step 6: Build product tag filters (Section 2.3: occasion + venue + season)
+      const productTags = this.buildProductTagFilters(request, reasoning, signalsUsed);
+
+      // Step 7: Calculate max recommendations (decision fatigue logic)
       const maxRecommendations = this.calculateMaxRecommendations(request, reasoning);
 
       // Calculate overall confidence
@@ -165,6 +178,7 @@ class RecommendationContextBuilder {
         fabric_preferences: fabricPreferences,
         price_tier: priceTier,
         fit_guidance: fitGuidance,
+        product_tags: productTags,
         max_recommendations: maxRecommendations,
         reasoning,
         confidence,
@@ -552,6 +566,51 @@ class RecommendationContextBuilder {
   }
 
   /**
+   * Section 2.3: Build product tag filters from occasion + venue + season + style
+   */
+  private buildProductTagFilters(
+    request: RecommendationRequest,
+    reasoning: string[],
+    signalsUsed: string[]
+  ): RecommendationContext['product_tags'] {
+
+    // Determine style preference from fit guidance or occasion
+    let style: string | undefined;
+    if (request.occasion) {
+      // Map occasions to likely styles
+      const occasionToStyle: { [key: string]: string } = {
+        'prom': 'bold',
+        'gala': 'luxury',
+        'wedding': 'classic',
+        'formal': 'classic',
+        'interview': 'classic',
+        'business': 'modern'
+      };
+      const normalizedOccasion = request.occasion.toLowerCase();
+      style = occasionToStyle[normalizedOccasion];
+    }
+
+    // Use productTagService to combine all tag sources
+    const tagFilters = productTagService.combineTagFilters(
+      request.occasion,
+      request.venue_type,
+      request.season,
+      style
+    );
+
+    // Add reasoning from tag service
+    if (tagFilters.reasoning.length > 0) {
+      reasoning.push(...tagFilters.reasoning);
+      signalsUsed.push('product_tag_filtering');
+    }
+
+    return {
+      all_tags: tagFilters.all_tags,
+      prioritized_tags: tagFilters.prioritized_tags
+    };
+  }
+
+  /**
    * Calculate maximum recommendations based on decision fatigue research
    *
    * From research data (menswear_decision_fatigue_summary.csv):
@@ -626,6 +685,10 @@ class RecommendationContextBuilder {
       fit_guidance: {
         style: 'classic',
         details: ['Regular fit', 'Notch lapel'],
+      },
+      product_tags: {
+        all_tags: [],
+        prioritized_tags: [],
       },
       max_recommendations: 10,
       reasoning,
