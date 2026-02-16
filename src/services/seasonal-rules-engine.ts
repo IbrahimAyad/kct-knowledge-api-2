@@ -14,6 +14,9 @@
 import { FormalityIndex } from '../types/knowledge-bank';
 import { loadDataFile } from '../utils/data-loader';
 import { OutfitCombination, ValidationContext, ValidationResult } from './validation-engine';
+import * as fs from 'fs';
+import * as path from 'path';
+import csv from 'csv-parser';
 
 export interface SeasonalAnalysis {
   fabric_appropriateness: {
@@ -70,6 +73,8 @@ export interface WeatherAppropriatenessResult {
 class SeasonalRulesEngine {
   private fabricSeasonality: any = null;
   private colorSeasonality: any = null;
+  private graduationTiming: any[] = [];
+  private monthlyPatterns: any[] = [];
 
   // Comprehensive seasonal fabric guidelines
   private readonly SEASONAL_FABRICS = {
@@ -180,6 +185,41 @@ class SeasonalRulesEngine {
       console.warn('color-seasonality.json not found, using built-in SEASONAL_COLOR_PALETTES data');
       this.colorSeasonality = this.SEASONAL_COLOR_PALETTES;
     }
+
+    // Load graduation timing CSV
+    try {
+      this.graduationTiming = await this.loadCSV('research/seasonal/graduation_season_timing.csv');
+    } catch (error) {
+      console.warn('graduation_season_timing.csv not found, seasonal graduation insights unavailable');
+    }
+
+    // Load monthly seasonal patterns CSV
+    try {
+      this.monthlyPatterns = await this.loadCSV('research/seasonal/monthly_seasonal_patterns.csv');
+    } catch (error) {
+      console.warn('monthly_seasonal_patterns.csv not found, monthly pattern insights unavailable');
+    }
+  }
+
+  /**
+   * Load CSV file and return parsed data
+   */
+  private async loadCSV(relativePath: string): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const results: any[] = [];
+      const filePath = path.join(__dirname, '../data', relativePath);
+
+      if (!fs.existsSync(filePath)) {
+        reject(new Error(`CSV file not found: ${filePath}`));
+        return;
+      }
+
+      fs.createReadStream(filePath)
+        .pipe(csv())
+        .on('data', (data: any) => results.push(data))
+        .on('end', () => resolve(results))
+        .on('error', (error: Error) => reject(error));
+    });
   }
 
   /**
@@ -676,6 +716,123 @@ class SeasonalRulesEngine {
   }
   private getLocalSeasonalPreferences(climateZone: string, season: string): string[] { return []; }
   private getCulturalSeasonalNorms(climateZone: string, season: string): string[] { return []; }
+
+  /**
+   * Get graduation timing data for a specific month (Section 1.2)
+   */
+  async getGraduationTiming(month: string): Promise<{
+    volume_percentage: number;
+    peak_window_days: number;
+    avg_spend: number;
+    size_demand: string;
+    color_preferences: string[];
+    is_peak: boolean;
+  } | null> {
+    if (!this.graduationTiming || this.graduationTiming.length === 0) {
+      await this.initialize();
+    }
+
+    const data = this.graduationTiming.find(
+      row => row.Month?.toLowerCase() === month.toLowerCase()
+    );
+
+    if (!data) return null;
+
+    return {
+      volume_percentage: parseFloat(data.Graduation_Volume_Percentage) || 0,
+      peak_window_days: parseInt(data.Peak_Purchase_Window_Days) || 0,
+      avg_spend: parseFloat(data.Average_Spend_Per_Customer) || 0,
+      size_demand: data.Size_Range_Demand || 'Unknown',
+      color_preferences: (data.Color_Preference_Trend || '').split(',').map((c: string) => c.trim()),
+      is_peak: parseFloat(data.Graduation_Volume_Percentage) >= 15
+    };
+  }
+
+  /**
+   * Get monthly seasonal pattern for a specific month (Section 1.2)
+   */
+  async getMonthlyPattern(month: string): Promise<{
+    primary_events: string[];
+    weather_sensitivity: number;
+    inventory_priority: string[];
+    purchase_urgency: number;
+  } | null> {
+    if (!this.monthlyPatterns || this.monthlyPatterns.length === 0) {
+      await this.initialize();
+    }
+
+    const data = this.monthlyPatterns.find(
+      row => row.Month?.toLowerCase() === month.toLowerCase()
+    );
+
+    if (!data) return null;
+
+    return {
+      primary_events: (data.Primary_Events || '').split(',').map((e: string) => e.trim()),
+      weather_sensitivity: parseInt(data.Weather_Sensitivity) || 5,
+      inventory_priority: (data.Inventory_Priority || '').split(',').map((p: string) => p.trim()),
+      purchase_urgency: parseInt(data.Purchase_Urgency_Score) || 5
+    };
+  }
+
+  /**
+   * Check if current month is peak graduation season (Section 1.2)
+   */
+  async isGraduationSeason(month: string): Promise<boolean> {
+    const timing = await this.getGraduationTiming(month);
+    return timing?.is_peak || false;
+  }
+
+  /**
+   * Get seasonal inventory recommendations for a month (Section 1.2)
+   */
+  async getSeasonalInventoryPriority(month: string): Promise<string[]> {
+    const pattern = await this.getMonthlyPattern(month);
+    return pattern?.inventory_priority || [];
+  }
+
+  /**
+   * Get graduation color preferences by month (Section 1.2)
+   */
+  async getGraduationColorPreferences(month: string): Promise<string[]> {
+    const timing = await this.getGraduationTiming(month);
+    return timing?.color_preferences || [];
+  }
+
+  /**
+   * Get comprehensive seasonal context for a given month (Section 1.2)
+   * This is what the recommendation context builder will call
+   */
+  async getSeasonalContext(month: string, includeGraduation: boolean = true): Promise<{
+    monthly_pattern: any;
+    graduation_timing: any;
+    seasonal_insights: string[];
+  }> {
+    const monthlyPattern = await this.getMonthlyPattern(month);
+    const graduationTiming = includeGraduation ? await this.getGraduationTiming(month) : null;
+
+    const insights: string[] = [];
+
+    if (monthlyPattern) {
+      if (monthlyPattern.purchase_urgency >= 8) {
+        insights.push(`High demand month - ${monthlyPattern.primary_events.join(', ')}`);
+      }
+      if (monthlyPattern.inventory_priority.length > 0) {
+        insights.push(`Inventory focus: ${monthlyPattern.inventory_priority.join(', ')}`);
+      }
+    }
+
+    if (graduationTiming && graduationTiming.is_peak) {
+      insights.push(`Peak graduation season (${graduationTiming.volume_percentage}% of annual volume)`);
+      insights.push(`Typical spend: $${graduationTiming.avg_spend}`);
+    }
+
+    return {
+      monthly_pattern: monthlyPattern,
+      graduation_timing: graduationTiming,
+      seasonal_insights: insights
+    };
+  }
 }
 
 // Export singleton instance
