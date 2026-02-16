@@ -76,6 +76,7 @@ class SeasonalRulesEngine {
   private graduationTiming: any[] = [];
   private monthlyPatterns: any[] = [];
   private eventCalendar: any = null; // Section 2.4: KCT event calendar
+  private monthlyCalendar: any = null; // Section 3.3: KCT monthly intelligence calendar
 
   // Comprehensive seasonal fabric guidelines
   private readonly SEASONAL_FABRICS = {
@@ -209,6 +210,16 @@ class SeasonalRulesEngine {
       console.log('📅 KCT event calendar loaded successfully');
     } catch (error) {
       console.warn('kct-event-calendar.json not found, event calendar features unavailable');
+    }
+
+    // Section 3.3: Load KCT monthly intelligence calendar
+    try {
+      const monthlyPath = path.join(__dirname, '../data/intelligence/kct-monthly-calendar.json');
+      const monthlyRaw = fs.readFileSync(monthlyPath, 'utf8');
+      this.monthlyCalendar = JSON.parse(monthlyRaw);
+      console.log('🗓️  KCT monthly intelligence calendar loaded successfully');
+    } catch (error) {
+      console.warn('kct-monthly-calendar.json not found, monthly intelligence features unavailable');
     }
   }
 
@@ -962,6 +973,104 @@ class SeasonalRulesEngine {
     const monthKey = monthNames[currentMonth - 1];
 
     return !!this.eventCalendar.peak_season_flags[monthKey];
+  }
+
+  /**
+   * Section 3.3.1: Get monthly intelligence for a given month
+   * Returns full month data: season, temp, venues, events, colors, fabrics, buyer mindset
+   */
+  getMonthlyIntelligence(month?: number): {
+    season: string;
+    temp_range_f: string;
+    indoor_venue_pct?: number;
+    wedding_share_pct: string;
+    primary_events: string[];
+    secondary_events: string[];
+    kb_focus: string;
+    colors: {
+      primary: string[];
+      secondary: string[];
+      [key: string]: string[]; // For special keys like valentine_specific, prom_trending
+    };
+    fabrics: {
+      recommended: string[];
+      avoid?: string[];
+      [key: string]: any;
+    };
+    buyer_mindset: any;
+  } | null {
+    if (!this.monthlyCalendar?.months) return null;
+
+    const currentMonth = month !== undefined ? month : new Date().getMonth() + 1;
+    const monthNames = [
+      'january', 'february', 'march', 'april', 'may', 'june',
+      'july', 'august', 'september', 'october', 'november', 'december'
+    ];
+    const monthKey = monthNames[currentMonth - 1];
+
+    return this.monthlyCalendar.months[monthKey] || null;
+  }
+
+  /**
+   * Section 3.3.2: Get buyer mindset/psychology for a given month
+   */
+  getBuyerMindset(month?: number): string | null {
+    const monthData = this.getMonthlyIntelligence(month);
+    if (!monthData?.buyer_mindset) return null;
+
+    // Return the mindset data as a formatted string
+    const mindsets = Object.entries(monthData.buyer_mindset)
+      .map(([key, value]) => `${key.replace(/_/g, ' ')}: ${value}%`)
+      .join(', ');
+
+    return mindsets;
+  }
+
+  /**
+   * Section 3.3.3: Get recommended color palette for a given month
+   */
+  getMonthlyColorPalette(month?: number): string[] {
+    const monthData = this.getMonthlyIntelligence(month);
+    if (!monthData?.colors) return [];
+
+    // Combine primary and secondary colors
+    const allColors = [
+      ...(monthData.colors.primary || []),
+      ...(monthData.colors.secondary || [])
+    ];
+
+    return [...new Set(allColors)]; // Deduplicate
+  }
+
+  /**
+   * Section 3.3.4: Get recommended fabrics for a given month
+   */
+  getMonthlyFabrics(month?: number): string[] {
+    const monthData = this.getMonthlyIntelligence(month);
+    if (!monthData?.fabrics?.recommended) return [];
+
+    return monthData.fabrics.recommended;
+  }
+
+  /**
+   * Section 3.3.5: Get venue distribution for a given month
+   */
+  getVenueDistribution(month?: number): {
+    indoor_pct?: number;
+    outdoor_pct?: number;
+  } | null {
+    const monthData = this.getMonthlyIntelligence(month);
+    if (!monthData) return null;
+
+    const indoorPct = monthData.indoor_venue_pct;
+    if (indoorPct !== undefined) {
+      return {
+        indoor_pct: indoorPct,
+        outdoor_pct: 100 - indoorPct
+      };
+    }
+
+    return null;
   }
 }
 

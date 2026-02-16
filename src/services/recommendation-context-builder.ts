@@ -357,6 +357,19 @@ class RecommendationContextBuilder {
       signalsUsed.push('seasonal_analysis');
     }
 
+    // Section 3.3: Apply monthly color palette
+    const monthlyColors = seasonalRulesEngine.getMonthlyColorPalette();
+    if (monthlyColors.length > 0) {
+      preferred.push(...monthlyColors);
+      signalsUsed.push('monthly_calendar_intelligence');
+
+      // Add buyer mindset reasoning
+      const buyerMindset = seasonalRulesEngine.getBuyerMindset();
+      if (buyerMindset) {
+        reasoning.push(`Current buyer mindset: ${buyerMindset}`);
+      }
+    }
+
     // Section 3.1: Apply wedding 2026 color forecast (only for wedding occasions)
     if (request.occasion?.toLowerCase() === 'wedding') {
       const topWeddingColors = weddingForecastService.getTopWeddingColors(5);
@@ -451,6 +464,13 @@ class RecommendationContextBuilder {
       }
     } catch (error) {
       logger.warn('Fabric performance service unavailable, using defaults');
+    }
+
+    // Section 3.3: Add monthly fabric recommendations
+    const monthlyFabrics = seasonalRulesEngine.getMonthlyFabrics();
+    if (monthlyFabrics.length > 0) {
+      recommended.push(...monthlyFabrics);
+      // Signal already added in buildColorFilters() to avoid duplication
     }
 
     return {
