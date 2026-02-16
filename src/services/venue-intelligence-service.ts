@@ -19,6 +19,8 @@ import {
 
 export class VenueIntelligenceService {
   private venueData: any | null = null;
+  private venueMicrodata: any | null = null;
+  private venueIndex: Map<string, any> = new Map();
   private lightingDatabase: Map<string, LightingConditions> = new Map();
   private venueRulesCache: Map<string, UnspokenRule[]> = new Map();
 
@@ -38,7 +40,25 @@ export class VenueIntelligenceService {
         }
       );
 
+      // Load venue microdata analysis
+      this.venueMicrodata = await cacheService.getOrSet(
+        'venue:microdata_analysis',
+        async () => {
+          const fs = require('fs').promises;
+          const path = require('path');
+          const filePath = path.join(__dirname, '../data/intelligence/venue_microdata_analysis.json');
+          const data = await fs.readFile(filePath, 'utf-8');
+          return JSON.parse(data);
+        },
+        {
+          ttl: 6 * 60 * 60, // 6 hours
+          tags: ['venue', 'microdata'],
+          compress: true
+        }
+      );
+
       // Build specialized caches
+      await this.buildVenueIndex();
       await this.buildLightingDatabase();
       await this.buildVenueRulesCache();
     } catch (error) {
@@ -304,10 +324,69 @@ export class VenueIntelligenceService {
   /**
    * Private helper methods
    */
+  private async buildVenueIndex(): Promise<void> {
+    if (!this.venueMicrodata) return;
+
+    // Index indoor venues
+    const indoorVenues = this.venueMicrodata.venue_lighting_analysis?.indoor_venues || {};
+    Object.entries(indoorVenues).forEach(([venueType, data]) => {
+      this.venueIndex.set(venueType, { type: 'indoor', category: venueType, data });
+
+      // Add normalized variants
+      const normalized = this.getNormalizedVenueTypes(venueType);
+      normalized.forEach(variant => {
+        if (!this.venueIndex.has(variant)) {
+          this.venueIndex.set(variant, { type: 'indoor', category: venueType, data });
+        }
+      });
+    });
+
+    // Index outdoor venues
+    const outdoorVenues = this.venueMicrodata.venue_lighting_analysis?.outdoor_venues || {};
+    Object.entries(outdoorVenues).forEach(([venueType, data]) => {
+      this.venueIndex.set(venueType, { type: 'outdoor', category: venueType, data });
+
+      // Add normalized variants
+      const normalized = this.getNormalizedVenueTypes(venueType);
+      normalized.forEach(variant => {
+        if (!this.venueIndex.has(variant)) {
+          this.venueIndex.set(variant, { type: 'outdoor', category: venueType, data });
+        }
+      });
+    });
+  }
+
+  private getNormalizedVenueTypes(venueType: string): string[] {
+    const variants: string[] = [];
+
+    // Handle plural/singular variations
+    if (venueType.endsWith('s')) {
+      variants.push(venueType.slice(0, -1)); // singular
+    } else {
+      variants.push(venueType + 's'); // plural
+    }
+
+    // Handle special cases
+    const normalizations: { [key: string]: string[] } = {
+      'churches_cathedrals': ['church', 'cathedral', 'religious', 'worship'],
+      'ballrooms': ['ballroom', 'grand_ballroom', 'formal_ballroom'],
+      'historic_venues': ['historic', 'historical', 'mansion', 'estate'],
+      'gardens': ['garden', 'outdoor_garden', 'botanical_garden'],
+      'beaches': ['beach', 'oceanfront', 'seaside', 'waterfront'],
+      'vineyards': ['vineyard', 'winery', 'wine_country']
+    };
+
+    if (normalizations[venueType]) {
+      variants.push(...normalizations[venueType]);
+    }
+
+    return variants;
+  }
+
   private async buildLightingDatabase(): Promise<void> {
     // Build database of common lighting conditions
     const lightingTypes = ['natural', 'fluorescent', 'incandescent', 'led', 'mixed'];
-    
+
     lightingTypes.forEach(type => {
       this.lightingDatabase.set(type, this.createLightingConditions(type));
     });
@@ -402,8 +481,33 @@ export class VenueIntelligenceService {
   }
 
   private findVenueByType(venueType: string): any {
-    // In a real implementation, this would search through the venue data
-    // For now, return null to trigger default creation
+    if (!this.venueMicrodata || this.venueIndex.size === 0) {
+      return null;
+    }
+
+    // Normalize the venue type for search
+    const normalizedType = venueType.toLowerCase().replace(/[-_\s]/g, '_');
+
+    // Try direct match first
+    if (this.venueIndex.has(normalizedType)) {
+      return this.venueIndex.get(normalizedType);
+    }
+
+    // Try without underscores
+    const withoutUnderscores = normalizedType.replace(/_/g, '');
+    for (const [key, value] of Array.from(this.venueIndex.entries())) {
+      if (key.replace(/_/g, '') === withoutUnderscores) {
+        return value;
+      }
+    }
+
+    // Try partial match
+    for (const [key, value] of Array.from(this.venueIndex.entries())) {
+      if (normalizedType.includes(key) || key.includes(normalizedType)) {
+        return value;
+      }
+    }
+
     return null;
   }
 
@@ -432,15 +536,325 @@ export class VenueIntelligenceService {
   }
 
   private transformToVenueIntelligence(venueInfo: any, venueType: string): VenueIntelligence {
+    const { type, category, data } = venueInfo;
+
+    // Extract lighting conditions from venue data
+    const lightingConditions = this.extractLightingConditions(data);
+
+    // Extract color recommendations from venue data
+    const colorRecommendations = this.extractColorRecommendations(data, category);
+
+    // Extract fabric recommendations from venue data
+    const fabricRecommendations = this.extractFabricRecommendations(data, type);
+
+    // Get unspoken rules (from elite club data if applicable)
+    const unspokenRules = this.extractUnspokenRules(venueType, category);
+
+    // Determine dress code strictness based on venue type and club status
+    const dressCodeStrictness = this.determineDressCodeStrictness(venueType, category);
+
     return {
       venue_type: venueType,
-      lighting_conditions: this.lightingDatabase.get(venueInfo.lighting) || this.createLightingConditions('mixed'),
-      dress_code_strictness: venueInfo.formality || 5,
-      color_recommendations: this.getDefaultColorRecommendations(venueType),
-      fabric_recommendations: this.getDefaultFabricRecommendations(venueType),
-      unspoken_rules: this.venueRulesCache.get(venueType) || [],
-      seasonal_variations: this.getDefaultSeasonalVariations(venueType),
-      photography_considerations: this.getDefaultPhotographyConsiderations(venueType)
+      lighting_conditions: lightingConditions,
+      dress_code_strictness: dressCodeStrictness,
+      color_recommendations: colorRecommendations,
+      fabric_recommendations: fabricRecommendations,
+      unspoken_rules: unspokenRules,
+      seasonal_variations: this.extractSeasonalVariations(data, category),
+      photography_considerations: this.extractPhotographyConsiderations(data, lightingConditions)
+    };
+  }
+
+  private extractLightingConditions(venueData: any): LightingConditions {
+    const lightingChars = venueData.lighting_characteristics || [];
+
+    // Determine primary lighting type from characteristics
+    let primaryLighting: 'natural' | 'fluorescent' | 'incandescent' | 'led' | 'mixed' = 'mixed';
+    let colorTemp: 'warm' | 'neutral' | 'cool' = 'neutral';
+    let intensity: 'low' | 'medium' | 'high' | 'variable' = 'medium';
+    let colorAccuracy = 7;
+
+    const lightingText = lightingChars.join(' ').toLowerCase();
+
+    if (lightingText.includes('natural') || lightingText.includes('daylight')) {
+      primaryLighting = 'natural';
+      colorTemp = 'neutral';
+      intensity = 'high';
+      colorAccuracy = 10;
+    } else if (lightingText.includes('tungsten') || lightingText.includes('warm')) {
+      primaryLighting = 'incandescent';
+      colorTemp = 'warm';
+      colorAccuracy = 7;
+    } else if (lightingText.includes('led')) {
+      primaryLighting = 'led';
+      colorTemp = 'neutral';
+      colorAccuracy = 9;
+    } else if (lightingText.includes('fluorescent')) {
+      primaryLighting = 'fluorescent';
+      colorTemp = 'cool';
+      colorAccuracy = 6;
+    }
+
+    return {
+      primary_lighting: primaryLighting,
+      intensity,
+      color_temperature: colorTemp,
+      color_accuracy_impact: colorAccuracy,
+      recommendations: lightingChars.slice(0, 3)
+    };
+  }
+
+  private extractColorRecommendations(venueData: any, category: string): EnhancedColorRecommendations {
+    const colorConsiderations = venueData.color_considerations || [];
+    const outfitImplications = venueData.outfit_implications || [];
+
+    // Extract colors from considerations
+    const optimal: string[] = [];
+    const avoid: string[] = [];
+    const undertone: string[] = [];
+
+    colorConsiderations.forEach((consideration: string) => {
+      const lower = consideration.toLowerCase();
+      if (lower.includes('jewel tones') || lower.includes('deep')) {
+        optimal.push('Navy', 'Burgundy', 'Forest Green');
+      } else if (lower.includes('black') || lower.includes('navy')) {
+        optimal.push('Black', 'Navy', 'Charcoal');
+      } else if (lower.includes('light')) {
+        optimal.push('Light Gray', 'Cream', 'Powder Blue');
+      }
+
+      if (lower.includes('avoid') || lower.includes('wash out')) {
+        const match = lower.match(/avoid ([a-z\s]+)/);
+        if (match) {
+          avoid.push(match[1]);
+        }
+      }
+
+      undertone.push(consideration);
+    });
+
+    // Get lighting-specific adaptations from microdata
+    const lightingAdaptations = this.extractLightingAdaptations();
+
+    return {
+      optimal_colors: optimal.length > 0 ? optimal : ['Navy', 'Charcoal', 'Gray'],
+      avoid_colors: avoid.length > 0 ? avoid : [],
+      undertone_considerations: undertone.slice(0, 3),
+      lighting_adaptations: lightingAdaptations
+    };
+  }
+
+  private extractLightingAdaptations(): { [key: string]: string[] } {
+    if (!this.venueMicrodata?.venue_outfit_impact?.lighting_impact_on_colors) {
+      return { 'mixed': ['Neutral colors recommended'] };
+    }
+
+    const lightingImpact = this.venueMicrodata.venue_outfit_impact.lighting_impact_on_colors;
+    const adaptations: { [key: string]: string[] } = {};
+
+    if (lightingImpact.tungsten_lighting) {
+      const tungsten = lightingImpact.tungsten_lighting;
+      adaptations['tungsten'] = [
+        `Enhances: ${tungsten.enhances?.join(', ') || 'warm colors'}`,
+        `Dulls: ${tungsten.dulls?.join(', ') || 'cool colors'}`
+      ];
+    }
+
+    if (lightingImpact.led_lighting) {
+      const led = lightingImpact.led_lighting;
+      adaptations['led'] = led.enhances || ['True color representation'];
+    }
+
+    if (lightingImpact.natural_light) {
+      adaptations['natural'] = ['Optimal for all colors', 'True color representation'];
+    }
+
+    return adaptations;
+  }
+
+  private extractFabricRecommendations(venueData: any, venueType: string): EnhancedFabricRecommendations {
+    const outfitImplications = venueData.outfit_implications || [];
+
+    const optimal: string[] = [];
+    const avoid: string[] = [];
+    let sheenLevel: 'matte' | 'subtle' | 'high' = 'subtle';
+    let wrinkleResistance = 7;
+
+    // Get fabric performance data from microdata
+    if (this.venueMicrodata?.venue_outfit_impact?.fabric_performance_by_venue) {
+      const fabricPerf = this.venueMicrodata.venue_outfit_impact.fabric_performance_by_venue;
+
+      if (venueType === 'indoor') {
+        optimal.push(...(fabricPerf.indoor_controlled?.ideal_fabrics || []));
+        avoid.push(...(fabricPerf.indoor_controlled?.avoid || []));
+        sheenLevel = 'high';
+      } else if (venueType === 'outdoor') {
+        optimal.push(...(fabricPerf.outdoor_variable?.ideal_fabrics || []));
+        avoid.push(...(fabricPerf.outdoor_variable?.avoid || []));
+        wrinkleResistance = 9; // More important for outdoor
+      }
+    }
+
+    // Parse outfit implications for fabric clues
+    outfitImplications.forEach((implication: string) => {
+      const lower = implication.toLowerCase();
+      if (lower.includes('luxurious') || lower.includes('formal')) {
+        if (!optimal.includes('Wool')) optimal.push('Wool', 'Silk');
+        sheenLevel = 'high';
+      } else if (lower.includes('lighter') || lower.includes('breathable')) {
+        if (!optimal.includes('Cotton')) optimal.push('Cotton', 'Linen');
+        wrinkleResistance = 6;
+      }
+    });
+
+    return {
+      optimal_textures: optimal.length > 0 ? optimal : ['Wool', 'Cotton'],
+      avoid_textures: avoid,
+      sheen_level: sheenLevel,
+      wrinkle_resistance_importance: wrinkleResistance
+    };
+  }
+
+  private extractUnspokenRules(venueType: string, category: string): UnspokenRule[] {
+    const rules: UnspokenRule[] = [];
+
+    if (!this.venueMicrodata?.elite_club_dress_codes) {
+      return this.venueRulesCache.get(venueType) || [];
+    }
+
+    const clubCodes = this.venueMicrodata.elite_club_dress_codes;
+
+    // Check if venue matches elite club patterns
+    const venueTypeLower = venueType.toLowerCase();
+
+    if (venueTypeLower.includes('club') || venueTypeLower.includes('elite')) {
+      // Ultra elite clubs
+      if (clubCodes.ultra_elite_clubs?.unwritten_rules?.men) {
+        clubCodes.ultra_elite_clubs.unwritten_rules.men.forEach((rule: string) => {
+          rules.push({
+            rule,
+            importance: 9,
+            violation_consequences: 'Membership privileges questioned',
+            regional_variations: clubCodes.ultra_elite_clubs.unwritten_rules.universal_principles || []
+          });
+        });
+      }
+
+      // Prestigious clubs
+      if (clubCodes.prestigious_clubs?.harvard_club_standards?.prohibited_items) {
+        const prohibited = clubCodes.prestigious_clubs.harvard_club_standards.prohibited_items;
+        rules.push({
+          rule: `Prohibited items: ${prohibited.join(', ')}`,
+          importance: 8,
+          violation_consequences: 'Dress code violation',
+          regional_variations: ['Strictly enforced']
+        });
+      }
+    }
+
+    // Country clubs for golf/sporting venues
+    if (venueTypeLower.includes('golf') || venueTypeLower.includes('country')) {
+      if (clubCodes.country_clubs_general?.golf_requirements?.men) {
+        clubCodes.country_clubs_general.golf_requirements.men.forEach((rule: string) => {
+          rules.push({
+            rule,
+            importance: 8,
+            violation_consequences: 'May be asked to change or leave',
+            regional_variations: ['Standard across most clubs']
+          });
+        });
+      }
+    }
+
+    // Return cached rules if no specific club rules found
+    return rules.length > 0 ? rules : (this.venueRulesCache.get(venueType) || []);
+  }
+
+  private determineDressCodeStrictness(venueType: string, category: string): number {
+    const venueTypeLower = venueType.toLowerCase();
+
+    // Elite club venues
+    if (venueTypeLower.includes('elite') || venueTypeLower.includes('ultra')) {
+      return 10;
+    }
+    if (venueTypeLower.includes('harvard') || venueTypeLower.includes('university')) {
+      return 9;
+    }
+    if (venueTypeLower.includes('country_club') || venueTypeLower.includes('golf')) {
+      return 8;
+    }
+
+    // Venue category-based strictness
+    if (category === 'ballrooms') return 9;
+    if (category === 'churches_cathedrals') return 8;
+    if (category === 'historic_venues') return 7;
+    if (category === 'vineyards') return 6;
+    if (category === 'gardens') return 5;
+    if (category === 'beaches') return 4;
+
+    return this.getDefaultDressCodeStrictness(venueType);
+  }
+
+  private extractSeasonalVariations(venueData: any, category: string): VenueSeasonalVariation[] {
+    // Check if elite club with seasonal variations
+    if (this.venueMicrodata?.elite_club_dress_codes?.ultra_elite_clubs?.seasonal_variations) {
+      const seasonal = this.venueMicrodata.elite_club_dress_codes.ultra_elite_clubs.seasonal_variations;
+
+      const variations: VenueSeasonalVariation[] = [];
+
+      if (seasonal.winter_requirements) {
+        variations.push({
+          season: 'winter',
+          adjustments: seasonal.winter_requirements,
+          temperature_considerations: ['Indoor heating', 'Formal layering'],
+          special_requirements: ['Sport coats required']
+        });
+      }
+
+      if (seasonal.summer_allowances) {
+        variations.push({
+          season: 'summer',
+          adjustments: seasonal.summer_allowances,
+          temperature_considerations: ['Heat management', 'Breathability'],
+          special_requirements: ['Lighter fabrics permitted']
+        });
+      }
+
+      if (variations.length > 0) {
+        return variations;
+      }
+    }
+
+    return this.getDefaultSeasonalVariations(category);
+  }
+
+  private extractPhotographyConsiderations(venueData: any, lightingConditions: LightingConditions): PhotographyConsiderations {
+    const considerations: string[] = [];
+
+    // Build photography tips from lighting conditions
+    if (lightingConditions.color_accuracy_impact >= 9) {
+      considerations.push('Excellent for photography');
+      considerations.push('True color representation');
+    } else if (lightingConditions.color_accuracy_impact < 7) {
+      considerations.push('Consider professional lighting setup');
+      considerations.push('Neutral colors photograph best');
+    }
+
+    // Add outfit implications as photo tips
+    const outfitImplications = venueData.outfit_implications || [];
+    outfitImplications.forEach((implication: string) => {
+      if (implication.toLowerCase().includes('photograph') || implication.toLowerCase().includes('showcase')) {
+        considerations.push(implication);
+      }
+    });
+
+    return {
+      camera_flash_impact: lightingConditions.color_accuracy_impact < 7
+        ? 'Significant - use carefully'
+        : 'Minimal with good venue lighting',
+      social_media_optimization: considerations.slice(0, 3),
+      video_call_suitability: lightingConditions.color_accuracy_impact,
+      instagram_performance: considerations.slice(0, 2)
     };
   }
 
