@@ -237,12 +237,42 @@ class FabricPerformanceService {
       reasoning.push('Wrinkle-resistant for professional appearance');
     }
 
-    // Photography considerations
-    if (useCase.photography) {
-      reasoning.push('Fabrics that photograph well selected');
-    }
+    // Section 3.5: Photography considerations - actually filter by photo performance
+    let recommended = await this.getBestFabricsFor(criteria);
 
-    const recommended = await this.getBestFabricsFor(criteria);
+    if (useCase.photography) {
+      // Filter and sort fabrics by photography performance
+      const fabricsWithPhotoScores = recommended
+        .map(fabric => {
+          const photoData = this.photographyPerformance.find(
+            p => p.fabric_type.toLowerCase() === fabric.fabric_type.toLowerCase() ||
+                 fabric.fabric_type.toLowerCase().includes(p.fabric_type.toLowerCase())
+          );
+
+          if (photoData) {
+            // Calculate average photo score across all conditions
+            const avgScore = (
+              photoData.camera_flash +
+              photoData.natural_light +
+              photoData.studio_light +
+              photoData.color_accuracy
+            ) / 4;
+
+            return { fabric, photoScore: avgScore };
+          }
+
+          return { fabric, photoScore: 0 };
+        })
+        .filter(item => item.photoScore >= 6) // Only fabrics with decent photo performance (6+/10)
+        .sort((a, b) => b.photoScore - a.photoScore); // Sort by photo score descending
+
+      if (fabricsWithPhotoScores.length > 0) {
+        recommended = fabricsWithPhotoScores.map(item => item.fabric);
+        reasoning.push(`Filtered for photography: ${fabricsWithPhotoScores.length} fabrics with photo performance score ≥6/10`);
+      } else {
+        reasoning.push('Photography filtering applied (no specific photo performance threshold)');
+      }
+    }
 
     return {
       recommended: recommended.slice(0, 5), // Top 5
