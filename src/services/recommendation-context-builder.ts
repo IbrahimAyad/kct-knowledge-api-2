@@ -14,6 +14,7 @@ import { careerIntelligenceService } from './career-intelligence-service';
 import { culturalAdaptationService } from './cultural-adaptation-service';
 import { customerPsychologyService } from './customer-psychology-service';
 import { seasonalRulesEngine } from './seasonal-rules-engine';
+import { fabricPerformanceService } from './fabric-performance-service';
 
 /**
  * Unified recommendation context - everything needed to make smart recommendations
@@ -342,6 +343,28 @@ class RecommendationContextBuilder {
       performancePriorities.push('wrinkle_resistance', 'packability');
       reasoning.push('For travel: prioritizing wrinkle-resistant and packable fabrics');
       signalsUsed.push('use_case_analysis');
+    }
+
+    // Fabric performance data integration (Section 1.3)
+    try {
+      const fabricContext = await fabricPerformanceService.getFabricRecommendationsFor({
+        occasion: request.occasion as any,
+        climate: request.season === 'summer' ? 'hot' : request.season === 'winter' ? 'cold' : 'mild',
+        photography: request.use_case === 'photography' || request.venue_type?.includes('wedding'),
+      });
+
+      if (fabricContext.recommended.length > 0) {
+        // Add top 3 fabrics from performance data
+        fabricContext.recommended.slice(0, 3).forEach(fabric => {
+          recommended.push(fabric.fabric_type.toLowerCase().replace(/\s+/g, '_'));
+        });
+
+        // Add reasoning from performance analysis
+        fabricContext.reasoning.forEach(r => reasoning.push(r));
+        signalsUsed.push('fabric_performance_analysis');
+      }
+    } catch (error) {
+      logger.warn('Fabric performance service unavailable, using defaults');
     }
 
     return {

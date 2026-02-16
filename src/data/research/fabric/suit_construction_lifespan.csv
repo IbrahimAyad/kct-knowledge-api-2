@@ -1,0 +1,6 @@
+Construction_Type,Expected_Lifespan_Years,Shape_Retention_Over_Time,Breathability_Rating,Alteration_Capability,Cost_Premium_Factor,Dry_Cleaning_Durability,Professional_Wear_Suitability
+Full Canvas,20,9,10,9,3.0,10,10
+Half Canvas,15,8,8,8,2.0,9,9
+Fused (High Quality),8,5,4,6,1.2,6,7
+Fused (Budget),3,2,3,3,1.0,3,4
+Unstructured,5,3,7,5,1.1,7,6
