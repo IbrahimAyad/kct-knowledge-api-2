@@ -21,9 +21,34 @@ export class EnhancedDataLoader {
   private cache: Map<string, any> = new Map();
   private cacheExpiry: Map<string, number> = new Map();
   private readonly CACHE_DURATION = 10 * 60 * 1000; // 10 minutes for enhancement data
+  private readonly MAX_CACHE_ENTRIES = 50;
 
   constructor() {
     this.enhancementDataPath = path.join(__dirname, '../../KCT Knowledge API Enhancement -Update-Info');
+    // Periodic cache cleanup every 5 minutes
+    setInterval(() => this.evictExpiredEntries(), 5 * 60 * 1000);
+  }
+
+  /**
+   * Evict expired cache entries and enforce size cap
+   */
+  private evictExpiredEntries(): void {
+    const now = Date.now();
+    for (const [key, expiry] of this.cacheExpiry.entries()) {
+      if (expiry <= now) {
+        this.cache.delete(key);
+        this.cacheExpiry.delete(key);
+      }
+    }
+    // Enforce size cap — evict oldest entries first
+    if (this.cache.size > this.MAX_CACHE_ENTRIES) {
+      const sorted = Array.from(this.cacheExpiry.entries()).sort((a, b) => a[1] - b[1]);
+      const toRemove = sorted.slice(0, sorted.length - this.MAX_CACHE_ENTRIES);
+      for (const [key] of toRemove) {
+        this.cache.delete(key);
+        this.cacheExpiry.delete(key);
+      }
+    }
   }
 
   /**

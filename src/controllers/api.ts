@@ -14,6 +14,7 @@ import { venueIntelligenceService } from '../services/venue-intelligence-service
 import { productCatalogService } from '../services/product-catalog-service';
 import { createApiResponse } from '../utils/data-loader';
 import { logger } from '../utils/logger';
+import { SCORING_DEFAULTS } from '../config/scoring-defaults';
 import {
   ColorRecommendationRequest,
   StyleProfileRequest,
@@ -78,9 +79,9 @@ export const getColorRelationships = async (req: Request, res: Response) => {
       normalized_color: normalizedColor,
       relationships: complementaryColors,
       confidence_scores: {
-        shirt_matches: 0.85,
-        tie_matches: 0.85,
-        overall_confidence: 0.90
+        shirt_matches: SCORING_DEFAULTS.colorRelationships.shirtMatches,
+        tie_matches: SCORING_DEFAULTS.colorRelationships.tieMatches,
+        overall_confidence: SCORING_DEFAULTS.colorRelationships.overallConfidence
       },
       seasonal_recommendations: {},
       formality_notes: 'versatile',
@@ -129,17 +130,17 @@ export const validateCombinations = async (req: Request, res: Response) => {
       combination_id: `${suit_color}-${shirt_color}-${tie_color}`,
       validation_score: validation.validation?.confidence || 0.85,
       compatibility_matrix: {
-        suit_shirt: 0.90,
-        shirt_tie: 0.85,
-        suit_tie: 0.80
+        suit_shirt: SCORING_DEFAULTS.compatibility.suitShirt,
+        shirt_tie: SCORING_DEFAULTS.compatibility.shirtTie,
+        suit_tie: SCORING_DEFAULTS.compatibility.suitTie
       },
       occasion_appropriateness: {
-        score: validation.validation?.valid ? 0.95 : 0.60,
+        score: validation.validation?.valid ? SCORING_DEFAULTS.appropriateness.occasionValid : SCORING_DEFAULTS.appropriateness.occasionInvalid,
         reasoning: 'General appropriateness assessment'
       },
       seasonal_fit: season ? {
         season: season,
-        appropriateness: 0.85,
+        appropriateness: SCORING_DEFAULTS.appropriateness.seasonalFit,
         notes: `Suitable for ${season} styling`
       } : undefined,
       improvement_suggestions: validation.optimization?.optimization_suggestions || [],
@@ -253,14 +254,14 @@ export const getRecommendations = async (req: Request, res: Response) => {
     const primaryRaw = recommendations.complete_looks?.slice(0, 3).map((outfit: any, index: number) => ({
       ...outfit,
       rank: index + 1,
-      ai_confidence: 0.95 - (index * 0.05),
-      personalization_score: 0.90,
-      trending_factor: 0.85
+      ai_confidence: SCORING_DEFAULTS.recommendations.baseConfidence - (index * SCORING_DEFAULTS.recommendations.rankDecay),
+      personalization_score: SCORING_DEFAULTS.recommendations.personalizationScore,
+      trending_factor: SCORING_DEFAULTS.recommendations.trendingFactor
     })) || [];
 
     const alternativeRaw = recommendations.complete_looks?.slice(3, 8).map((combo: any, index: number) => ({
       ...combo,
-      confidence: 0.80 - (index * 0.03),
+      confidence: SCORING_DEFAULTS.alternatives.baseConfidence - (index * SCORING_DEFAULTS.alternatives.rankDecay),
       reasoning: `Alternative based on ${customer_profile || 'style preferences'}`
     })) || [];
 
@@ -270,7 +271,7 @@ export const getRecommendations = async (req: Request, res: Response) => {
       alternative_options: productCatalogService.enrichRecommendations(alternativeRaw),
       style_insights: {
         detected_profile: customer_profile || 'classic_conservative',
-        confidence: 0.88,
+        confidence: SCORING_DEFAULTS.styleInsights.detectionConfidence,
         key_characteristics: recommendations.style_profile?.characteristics || {},
         personalization_factors: [
           'Color preferences',
@@ -383,7 +384,7 @@ export const getTrending = async (req: Request, res: Response) => {
         timeframe,
         filters_applied: { occasion, season, venue_type, demographic },
         data_points_analyzed: trendingCombinations.length * 1000, // Simulated
-        confidence_level: 0.92,
+        confidence_level: SCORING_DEFAULTS.trending.confidenceLevel,
         last_updated: new Date().toISOString(),
         cache_status: 'fresh'
       },
@@ -392,7 +393,7 @@ export const getTrending = async (req: Request, res: Response) => {
         algorithm: 'Advanced Trend Analysis Engine v2.0',
         update_frequency: 'Real-time',
         api_version: '2.0.0',
-        confidence: 0.92,
+        confidence: SCORING_DEFAULTS.trending.confidenceLevel,
         cacheHint: 900, // seconds - 15 minutes
         processingTimeMs: 0 // Will be calculated
       }
@@ -468,10 +469,10 @@ export const getStyleProfile = async (req: Request, res: Response) => {
       styling_tips: generateStylingTips(profile),
       color_palette: generateColorPalette(profile),
       shopping_guide: styleProfile.bundle_preferences || {},
-      personalization_score: 0.92,
+      personalization_score: SCORING_DEFAULTS.styleInsights.personalizationScore,
       metadata: {
         profile_type: profile,
-        confidence: 0.88,
+        confidence: SCORING_DEFAULTS.styleInsights.profileConfidence,
         last_updated: new Date().toISOString()
       }
     };
@@ -580,7 +581,7 @@ async function generateCompleteOutfits(colors: string[], formalityRange: number[
     shirt_color: 'white',
     tie_color: index === 0 ? 'burgundy' : index === 1 ? 'navy' : 'silver',
     formality_score: formalityRange[0] + index,
-    confidence: 0.90 - (index * 0.05),
+    confidence: SCORING_DEFAULTS.venueOutfits.baseConfidence - (index * SCORING_DEFAULTS.venueOutfits.rankDecay),
     reasoning: `Classic ${suitColor} combination with high versatility`
   }));
 }
@@ -660,7 +661,7 @@ async function validateFashionRules(combination: any, context?: any) {
 
   return {
     validation_passed: passed,
-    overall_score: passed ? 0.95 : Math.max(0.3, 0.95 - (violations.length * 0.15)),
+    overall_score: passed ? SCORING_DEFAULTS.rulesValidation.perfectScore : Math.max(SCORING_DEFAULTS.rulesValidation.minimumScore, SCORING_DEFAULTS.rulesValidation.perfectScore - (violations.length * SCORING_DEFAULTS.rulesValidation.penaltyPerViolation)),
     rule_checks: rules,
     violations: violations,
     recommendations: violations.length > 0 ? generateRuleFixRecommendations(violations) : [],
