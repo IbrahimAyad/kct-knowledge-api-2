@@ -12,6 +12,7 @@ import { trendingAnalysisService } from '../services/trending-analysis-service';
 import { customerPsychologyService } from '../services/customer-psychology-service';
 import { venueIntelligenceService } from '../services/venue-intelligence-service';
 import { productCatalogService } from '../services/product-catalog-service';
+import { recommendationContextBuilder } from '../services/recommendation-context-builder';
 import { createApiResponse } from '../utils/data-loader';
 import { logger } from '../utils/logger';
 import { SCORING_DEFAULTS } from '../config/scoring-defaults';
@@ -192,6 +193,25 @@ export const getRecommendations = async (req: Request, res: Response) => {
       ));
     }
 
+    // Section 4.0: Build intelligence context from all 15 signals
+    let intelligenceContext = null;
+    try {
+      intelligenceContext = await recommendationContextBuilder.buildContext({
+        occasion: occasion,
+        venue_type: venue_type,
+        season: season,
+        age: age ? parseInt(age) : undefined,
+        occupation: occupation,
+        cultural_region: cultural_region,
+        suit_color: suit_color,
+        use_case: customer_profile,
+        session_duration: session_duration,
+        choices_viewed: choices_viewed,
+      });
+    } catch (error) {
+      console.warn('Intelligence context builder failed, using base recommendations:', error);
+    }
+
     // Get comprehensive recommendations from knowledge bank
     const recommendations = await knowledgeBankService.getComprehensiveRecommendations({
       suit_color,
@@ -266,7 +286,7 @@ export const getRecommendations = async (req: Request, res: Response) => {
     })) || [];
 
     // Enrich with real Shopify product links
-    const enhancedRecommendations = {
+    const enhancedRecommendations: any = {
       primary_recommendations: productCatalogService.enrichRecommendations(primaryRaw),
       alternative_options: productCatalogService.enrichRecommendations(alternativeRaw),
       style_insights: {
@@ -314,6 +334,50 @@ export const getRecommendations = async (req: Request, res: Response) => {
         intelligence_features_active: customer_id || venue_type || cultural_region ? true : false
       }
     };
+
+    // Section 4.0: Add intelligence context to the response
+    if (intelligenceContext) {
+      enhancedRecommendations.intelligence_context = {
+        formality_range: intelligenceContext.formality_range,
+        color_filters: intelligenceContext.color_filters,
+        fabric_preferences: intelligenceContext.fabric_preferences,
+        price_tier: intelligenceContext.price_tier,
+        fit_guidance: intelligenceContext.fit_guidance,
+        product_tags: intelligenceContext.product_tags,
+        max_recommendations: intelligenceContext.max_recommendations,
+        reasoning: intelligenceContext.reasoning,
+        confidence: intelligenceContext.confidence,
+        signals_used: intelligenceContext.signals_used,
+      };
+
+      // Override the generic intelligence_insights with real data
+      enhancedRecommendations.intelligence_insights = {
+        ...enhancedRecommendations.intelligence_insights,
+        context_builder: {
+          signals_used: intelligenceContext.signals_used.length,
+          signal_list: intelligenceContext.signals_used,
+          confidence: intelligenceContext.confidence,
+          reasoning_points: intelligenceContext.reasoning.length,
+        },
+        intelligence_adjustments: [
+          ...intelligenceAdjustments,
+          ...intelligenceContext.reasoning
+        ],
+        enhanced_features_used: [
+          ...intelligenceContext.signals_used,
+          customer_id ? 'psychology_analysis' : null,
+        ].filter(Boolean)
+      };
+
+      // Add shop links using intelligence context
+      const links = productCatalogService.enrichRecommendationWithLinks(
+        occasion,
+        undefined  // category determined by recommendations
+      );
+      if (links.shop_url || links.guide_url) {
+        enhancedRecommendations.shop_links = links;
+      }
+    }
 
     res.json(createApiResponse(true, enhancedRecommendations));
   } catch (error) {
