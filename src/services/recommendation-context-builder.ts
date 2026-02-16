@@ -16,6 +16,7 @@ import { customerPsychologyService } from './customer-psychology-service';
 import { seasonalRulesEngine } from './seasonal-rules-engine';
 import { fabricPerformanceService } from './fabric-performance-service';
 import { productTagService } from './product-tag-service';
+import { promAuraService } from './prom-aura-service';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -165,6 +166,11 @@ class RecommendationContextBuilder {
 
       // Step 6: Build product tag filters (Section 2.3: occasion + venue + season)
       const productTags = this.buildProductTagFilters(request, reasoning, signalsUsed);
+
+      // Step 6.5: Prom Aura Enhancement (Section 3.0: only for prom occasions)
+      if (request.occasion?.toLowerCase() === 'prom') {
+        this.enhanceWithPromAura(request, colorFilters, productTags, reasoning, signalsUsed);
+      }
 
       // Step 7: Calculate max recommendations (decision fatigue logic)
       const maxRecommendations = this.calculateMaxRecommendations(request, reasoning);
@@ -608,6 +614,56 @@ class RecommendationContextBuilder {
       all_tags: tagFilters.all_tags,
       prioritized_tags: tagFilters.prioritized_tags
     };
+  }
+
+  /**
+   * Section 3.0: Enhance with prom aura system (only for prom occasions)
+   */
+  private enhanceWithPromAura(
+    request: RecommendationRequest,
+    colorFilters: RecommendationContext['color_filters'],
+    productTags: RecommendationContext['product_tags'],
+    reasoning: string[],
+    signalsUsed: string[]
+  ): void {
+    // Try to detect aura based on request signals
+    const auraResult = promAuraService.detectAura({
+      style_preference: request.use_case, // e.g., "bold", "classic"
+      color_preference: request.suit_color || request.tie_color,
+      personality: undefined // Could be added to request interface in future
+    });
+
+    if (auraResult) {
+      // Boost matching product tags
+      const auraTags = auraResult.aura_details.product_tags;
+      for (const tag of auraTags) {
+        // Add to product tags if not already there
+        if (!productTags.all_tags.includes(tag)) {
+          productTags.all_tags.push(tag);
+        }
+        // Boost priority
+        productTags.prioritized_tags.push({ tag, boost: 2.5 }); // Higher boost for aura match
+      }
+
+      // Add aura colors to preferred colors
+      const auraColors = auraResult.aura_details.recommended_colors;
+      for (const color of auraColors) {
+        if (!colorFilters.preferred.includes(color)) {
+          colorFilters.preferred.push(color);
+        }
+      }
+
+      // Add reasoning and signal
+      reasoning.push(`Prom aura: ${auraResult.aura_details.display_name} ${auraResult.aura_details.emoji} — ${auraResult.aura_details.styling_notes}`);
+      signalsUsed.push('prom_aura_system');
+
+      logger.info('🔥 Prom aura detected', {
+        aura: auraResult.aura_name,
+        confidence: auraResult.confidence,
+        tags_added: auraTags.length,
+        colors_added: auraColors.length
+      });
+    }
   }
 
   /**
