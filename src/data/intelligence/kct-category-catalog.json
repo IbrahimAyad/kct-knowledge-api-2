@@ -1,0 +1,215 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "description": "KCT Menswear complete category catalog with price ranges and counts",
+    "source": "KCT-DATA-MANIFEST.md Part 3.4 - Category analysis from 1,361 Shopify products",
+    "total_products": 1361,
+    "total_categories": 17,
+    "last_updated": "2026-02-16"
+  },
+  "categories": {
+    "Blazer": {
+      "count": 138,
+      "price_min": 149.99,
+      "price_max": 289.99,
+      "price_avg": 223.50,
+      "description": "Sport coats and blazers for versatile styling",
+      "typical_occasions": ["business", "casual_event", "cocktail"],
+      "fit_options": ["slim-fit", "classic-fit", "modern-fit"]
+    },
+    "Suit": {
+      "count": 119,
+      "price_min": 119.99,
+      "price_max": 299.00,
+      "price_avg": 230.64,
+      "description": "Complete two-piece suits for all occasions",
+      "typical_occasions": ["wedding", "business", "formal_event", "interview"],
+      "fit_options": ["slim-fit", "classic-fit", "modern-fit"]
+    },
+    "Tuxedo": {
+      "count": 100,
+      "price_min": 159.99,
+      "price_max": 329.00,
+      "price_avg": 251.42,
+      "description": "Formal tuxedos for black-tie events",
+      "typical_occasions": ["prom", "gala", "formal_event", "wedding"],
+      "fit_options": ["slim-fit", "classic-fit"]
+    },
+    "Tie & Bowtie Collection": {
+      "count": 69,
+      "price_min": 24.99,
+      "price_max": 24.99,
+      "price_avg": 24.99,
+      "description": "Neckwear in 69 colors with matching accessories",
+      "typical_occasions": ["all"],
+      "colors_available": 69,
+      "includes_suspender_sets": 11
+    },
+    "Bundle": {
+      "count": 63,
+      "price_min": 229.99,
+      "price_max": 279.99,
+      "price_avg": 247.61,
+      "description": "Complete outfit packages with coordinated pieces",
+      "typical_occasions": ["wedding", "prom", "formal_event"],
+      "includes": ["suit", "shirt", "tie", "accessories"]
+    },
+    "Dress Shirt": {
+      "count": 62,
+      "price_min": 19.99,
+      "price_max": 69.99,
+      "price_avg": 43.62,
+      "description": "Formal and business dress shirts",
+      "typical_occasions": ["business", "wedding", "formal_event"],
+      "color_options": ["white", "black", "blue", "ivory", "burgundy"]
+    },
+    "Dress Shoes": {
+      "count": 53,
+      "price_min": 9.99,
+      "price_max": 129.99,
+      "price_avg": 97.82,
+      "description": "Formal footwear for all occasions",
+      "typical_occasions": ["all"],
+      "style_options": ["oxford", "derby", "loafer", "monk_strap"]
+    },
+    "Three-Piece Tuxedo": {
+      "count": 42,
+      "price_min": 199.99,
+      "price_max": 229.99,
+      "price_avg": 202.13,
+      "description": "Complete three-piece tuxedo sets with vest",
+      "typical_occasions": ["prom", "gala", "formal_wedding"],
+      "includes": ["jacket", "pants", "vest"]
+    },
+    "Suit Bundle": {
+      "count": 39,
+      "price_min": 249.99,
+      "price_max": 249.99,
+      "price_avg": 249.99,
+      "description": "Pre-packaged suit bundles with shirt and tie",
+      "typical_occasions": ["wedding", "business", "formal_event"],
+      "includes": ["suit", "shirt", "tie"]
+    },
+    "Accessories": {
+      "count": 37,
+      "price_min": 50.00,
+      "price_max": 50.00,
+      "price_avg": 50.00,
+      "description": "Pocket squares, cufflinks, and other accessories",
+      "typical_occasions": ["all"],
+      "items": ["pocket_square", "cufflinks", "tie_bar", "lapel_pin"]
+    },
+    "Suspenders": {
+      "count": 28,
+      "price_min": 28.00,
+      "price_max": 44.99,
+      "price_avg": 32.06,
+      "description": "Suspenders in various colors",
+      "typical_occasions": ["prom", "wedding", "formal_event"],
+      "available_in_sets": true
+    },
+    "Double-Breasted Suit": {
+      "count": 19,
+      "price_min": 199.99,
+      "price_max": 279.99,
+      "price_avg": 217.88,
+      "description": "Classic double-breasted suits",
+      "typical_occasions": ["formal_event", "wedding", "business"],
+      "fit_options": ["classic-fit"]
+    },
+    "Tuxedos (Premium)": {
+      "count": 18,
+      "price_min": 256.00,
+      "price_max": 500.00,
+      "price_avg": 335.17,
+      "description": "Luxury tuxedos with premium fabrics",
+      "typical_occasions": ["prom", "gala", "black_tie"],
+      "fabrics": ["velvet", "jacquard", "satin", "sequin"]
+    },
+    "Vest Set": {
+      "count": 18,
+      "price_min": 44.99,
+      "price_max": 229.99,
+      "price_avg": 144.71,
+      "description": "Vest sets for layering with suits",
+      "typical_occasions": ["wedding", "formal_event"],
+      "includes": ["vest", "tie", "pocket_square"]
+    },
+    "Casual Suit Bundle": {
+      "count": 16,
+      "price_min": 229.99,
+      "price_max": 229.99,
+      "price_avg": 229.99,
+      "description": "Casual suit packages for less formal events",
+      "typical_occasions": ["business_casual", "smart_casual"],
+      "includes": ["suit", "shirt"]
+    },
+    "Boys Suits": {
+      "count": 8,
+      "price_min": 129.99,
+      "price_max": 139.99,
+      "price_avg": 131.24,
+      "description": "Suits sized for boys and youth",
+      "typical_occasions": ["wedding", "formal_event", "quinceanera"],
+      "size_range": "youth"
+    },
+    "Wedding Package": {
+      "count": 6,
+      "price_min": 179.99,
+      "price_max": 329.99,
+      "price_avg": 239.99,
+      "description": "Complete wedding packages for groom and groomsmen",
+      "typical_occasions": ["wedding"],
+      "includes": ["suit", "shirt", "tie", "vest", "accessories"],
+      "group_discounts": true
+    }
+  },
+  "category_hierarchies": {
+    "formal_wear": {
+      "categories": ["Tuxedo", "Three-Piece Tuxedo", "Tuxedos (Premium)"],
+      "price_range": [159.99, 500.00],
+      "total_count": 160
+    },
+    "suits": {
+      "categories": ["Suit", "Double-Breasted Suit"],
+      "price_range": [119.99, 299.00],
+      "total_count": 138
+    },
+    "blazers": {
+      "categories": ["Blazer"],
+      "price_range": [149.99, 289.99],
+      "total_count": 138
+    },
+    "bundles": {
+      "categories": ["Bundle", "Suit Bundle", "Casual Suit Bundle", "Wedding Package"],
+      "price_range": [179.99, 329.99],
+      "total_count": 124
+    },
+    "accessories": {
+      "categories": ["Tie & Bowtie Collection", "Suspenders", "Accessories", "Vest Set"],
+      "price_range": [24.99, 229.99],
+      "total_count": 152
+    },
+    "shirts_shoes": {
+      "categories": ["Dress Shirt", "Dress Shoes"],
+      "price_range": [9.99, 129.99],
+      "total_count": 115
+    }
+  },
+  "pricing_insights": {
+    "overall_avg": 152.36,
+    "overall_median": 139.99,
+    "entry_tier_cutoff": 179.99,
+    "mid_tier_cutoff": 259.00,
+    "premium_tier_cutoff": 400.00,
+    "luxury_tier_start": 400.00
+  },
+  "occasion_category_mapping": {
+    "prom": ["Tuxedo", "Three-Piece Tuxedo", "Tuxedos (Premium)", "Bundle", "Vest Set", "Suspenders"],
+    "wedding": ["Suit", "Tuxedo", "Bundle", "Wedding Package", "Dress Shirt", "Vest Set"],
+    "gala": ["Tuxedo", "Tuxedos (Premium)", "Three-Piece Tuxedo"],
+    "business": ["Suit", "Blazer", "Dress Shirt", "Double-Breasted Suit"],
+    "formal_event": ["Suit", "Tuxedo", "Three-Piece Tuxedo", "Double-Breasted Suit"],
+    "quinceanera": ["Tuxedo", "Three-Piece Tuxedo", "Boys Suits"]
+  }
+}

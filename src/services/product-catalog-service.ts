@@ -44,6 +44,7 @@ class ProductCatalogService {
   private catalog: any = null;
   private colorMap: Map<string, ProductMatch> = new Map();
   private tieColorInventory: any = null;
+  private categoryCatalog: any = null; // Section 2.5: KCT category catalog
 
   async initialize(): Promise<void> {
     // Load tie color inventory
@@ -53,6 +54,16 @@ class ProductCatalogService {
       this.tieColorInventory = JSON.parse(tieRaw);
     } catch (error) {
       logger.warn('Tie color inventory not loaded', { error: error instanceof Error ? error.message : String(error) });
+    }
+
+    // Section 2.5: Load category catalog
+    try {
+      const categoryPath = path.join(__dirname, '../data/intelligence/kct-category-catalog.json');
+      const categoryRaw = fs.readFileSync(categoryPath, 'utf8');
+      this.categoryCatalog = JSON.parse(categoryRaw);
+      logger.info(`📚 Category catalog loaded: ${Object.keys(this.categoryCatalog.categories || {}).length} categories`);
+    } catch (error) {
+      logger.warn('Category catalog not loaded', { error: error instanceof Error ? error.message : String(error) });
     }
 
     try {
@@ -288,6 +299,100 @@ class ProductCatalogService {
     };
 
     return aliasMap[color] || [];
+  }
+
+  /**
+   * Section 2.5: Get category information with price ranges and counts
+   * Validates that recommendations stay within real price boundaries
+   */
+  getCategoryInfo(category: string): {
+    count: number;
+    price_min: number;
+    price_max: number;
+    price_avg: number;
+    description?: string;
+    typical_occasions?: string[];
+    fit_options?: string[];
+    includes?: string[];
+  } | null {
+    if (!this.categoryCatalog?.categories) return null;
+
+    const normalizedCategory = category
+      .toLowerCase()
+      .split(/\s+/)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+
+    // Try direct match
+    let categoryData = this.categoryCatalog.categories[normalizedCategory];
+
+    // Try case-insensitive match
+    if (!categoryData) {
+      for (const [key, value] of Object.entries(this.categoryCatalog.categories)) {
+        if (key.toLowerCase() === category.toLowerCase()) {
+          categoryData = value;
+          break;
+        }
+      }
+    }
+
+    if (!categoryData) return null;
+
+    return {
+      count: categoryData.count,
+      price_min: categoryData.price_min,
+      price_max: categoryData.price_max,
+      price_avg: categoryData.price_avg,
+      description: categoryData.description,
+      typical_occasions: categoryData.typical_occasions,
+      fit_options: categoryData.fit_options,
+      includes: categoryData.includes
+    };
+  }
+
+  /**
+   * Section 2.5: Get categories for an occasion
+   */
+  getCategoriesForOccasion(occasion: string): string[] {
+    if (!this.categoryCatalog?.occasion_category_mapping) return [];
+
+    const normalizedOccasion = occasion.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    return this.categoryCatalog.occasion_category_mapping[normalizedOccasion] || [];
+  }
+
+  /**
+   * Section 2.5: Get all categories in a hierarchy (formal_wear, suits, bundles, etc.)
+   */
+  getCategoryHierarchy(hierarchyName: string): {
+    categories: string[];
+    price_range: [number, number];
+    total_count: number;
+  } | null {
+    if (!this.categoryCatalog?.category_hierarchies) return null;
+
+    const hierarchyData = this.categoryCatalog.category_hierarchies[hierarchyName];
+    if (!hierarchyData) return null;
+
+    return {
+      categories: hierarchyData.categories,
+      price_range: hierarchyData.price_range,
+      total_count: hierarchyData.total_count
+    };
+  }
+
+  /**
+   * Section 2.5: Get pricing insights (overall averages, tier cutoffs)
+   */
+  getPricingInsights(): {
+    overall_avg: number;
+    overall_median: number;
+    entry_tier_cutoff: number;
+    mid_tier_cutoff: number;
+    premium_tier_cutoff: number;
+    luxury_tier_start: number;
+  } | null {
+    if (!this.categoryCatalog?.pricing_insights) return null;
+    return this.categoryCatalog.pricing_insights;
   }
 }
 
