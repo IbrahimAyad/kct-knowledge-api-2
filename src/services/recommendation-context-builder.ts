@@ -537,6 +537,12 @@ class RecommendationContextBuilder {
         const maxAccessoryCost = Math.floor(maxInvestment * kctTier.max_accessory_pct);
         reasoning.push(`Accessory limit: $${maxAccessoryCost} (${Math.floor(kctTier.max_accessory_pct * 100)}% of suit cost)`);
 
+        // Section 3.4: Handle edge case where accessory budget is below minimum shoe price
+        const minShoePrice = kctTier.shoes_range?.[0] || 49;
+        if (maxAccessoryCost < minShoePrice) {
+          reasoning.push(`Note: Entry-tier accessory budget ($${maxAccessoryCost}) is below minimum shoe price ($${minShoePrice}) — recommending entry-tier shoes regardless`);
+        }
+
         signalsUsed.push('kct_price_tiers');
       }
     } else {
