@@ -83,19 +83,56 @@ router.post('/recommendations', validateBody(v2RecommendationsSchema), async (re
       style,
       occasion,
       priceRange,
-      customerId
+      customerId,
+      preferences
     } = req.body;
+
+    // Section 4.4: Build intelligence context
+    let intelligenceContext = null;
+    try {
+      intelligenceContext = await recommendationContextBuilder.buildContext({
+        occasion: occasion || 'business',
+        suit_color: color,
+        season: preferences?.season,
+        venue_type: preferences?.venue_type,
+        age: preferences?.age ? parseInt(preferences.age) : undefined,
+        occupation: preferences?.occupation,
+        use_case: style,
+      });
+    } catch (error) {
+      logger.warn('Intelligence context unavailable for v2 recommendations', { error: error instanceof Error ? error.message : String(error) });
+    }
+
+    // Use intelligence context to derive formality level
+    const formalityLevel = intelligenceContext?.formality_range ?
+      intelligenceContext.formality_range[0] :
+      (style === 'formal' ? 5 : 3);
 
     // Get comprehensive recommendations from Knowledge Bank
     const recommendations = await knowledgeBankService.getComprehensiveRecommendations({
       suit_color: color || 'navy',
       occasion: occasion || 'business',
       customer_profile: customerId,
-      formality_level: style === 'formal' ? 5 : 3
+      formality_level: formalityLevel,
+      season: intelligenceContext?.fabric_preferences ? preferences?.season : undefined
     });
 
     // Transform to frontend expected format
-    const response = transformRecommendations(recommendations);
+    const response: any = transformRecommendations(recommendations);
+
+    // Section 4.4: Add intelligence context and shop links
+    if (intelligenceContext) {
+      response.intelligence = {
+        signals_used: intelligenceContext.signals_used,
+        confidence: intelligenceContext.confidence,
+        color_guidance: intelligenceContext.color_filters,
+        fabric_guidance: intelligenceContext.fabric_preferences,
+        price_tier: intelligenceContext.price_tier,
+        reasoning: intelligenceContext.reasoning,
+        shop_links: productCatalogService.enrichRecommendationWithLinks(occasion, category)
+      };
+    }
+
     res.json(response);
   } catch (error) {
     logger.error('Error in /api/v2/recommendations:', error);
