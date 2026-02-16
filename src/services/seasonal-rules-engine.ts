@@ -75,6 +75,7 @@ class SeasonalRulesEngine {
   private colorSeasonality: any = null;
   private graduationTiming: any[] = [];
   private monthlyPatterns: any[] = [];
+  private eventCalendar: any = null; // Section 2.4: KCT event calendar
 
   // Comprehensive seasonal fabric guidelines
   private readonly SEASONAL_FABRICS = {
@@ -198,6 +199,16 @@ class SeasonalRulesEngine {
       this.monthlyPatterns = await this.loadCSV('research/seasonal/monthly_seasonal_patterns.csv');
     } catch (error) {
       console.warn('monthly_seasonal_patterns.csv not found, monthly pattern insights unavailable');
+    }
+
+    // Section 2.4: Load KCT event calendar
+    try {
+      const calendarPath = path.join(__dirname, '../data/intelligence/kct-event-calendar.json');
+      const raw = fs.readFileSync(calendarPath, 'utf8');
+      this.eventCalendar = JSON.parse(raw);
+      console.log('📅 KCT event calendar loaded successfully');
+    } catch (error) {
+      console.warn('kct-event-calendar.json not found, event calendar features unavailable');
     }
   }
 
@@ -832,6 +843,125 @@ class SeasonalRulesEngine {
       graduation_timing: graduationTiming,
       seasonal_insights: insights
     };
+  }
+
+  /**
+   * Section 2.4.1: Get current events for a given month
+   * Returns primary + secondary events happening right now
+   */
+  getCurrentEvents(month?: number): {
+    primary_event: string;
+    secondary_events: string[];
+    period: string;
+    is_peak_season: boolean;
+  } | null {
+    if (!this.eventCalendar?.monthly_calendar) return null;
+
+    // Use current month if not provided
+    const currentMonth = month !== undefined ? month : new Date().getMonth() + 1;
+    const monthNames = [
+      'january', 'february', 'march', 'april', 'may', 'june',
+      'july', 'august', 'september', 'october', 'november', 'december'
+    ];
+    const monthKey = monthNames[currentMonth - 1];
+
+    const monthData = this.eventCalendar.monthly_calendar[monthKey];
+    if (!monthData) return null;
+
+    return {
+      primary_event: monthData.primary_event,
+      secondary_events: monthData.secondary_events || [],
+      period: monthData.period,
+      is_peak_season: monthData.peak_season === true
+    };
+  }
+
+  /**
+   * Section 2.4.2: Get recommendation focus for a given month
+   * Returns what products/colors/messaging to push based on the calendar
+   */
+  getRecommendationFocus(month?: number): {
+    products: string[];
+    colors: string[];
+    messaging: string;
+    inventory_priority: string[];
+  } | null {
+    if (!this.eventCalendar?.monthly_calendar) return null;
+
+    // Use current month if not provided
+    const currentMonth = month !== undefined ? month : new Date().getMonth() + 1;
+    const monthNames = [
+      'january', 'february', 'march', 'april', 'may', 'june',
+      'july', 'august', 'september', 'october', 'november', 'december'
+    ];
+    const monthKey = monthNames[currentMonth - 1];
+
+    const monthData = this.eventCalendar.monthly_calendar[monthKey];
+    if (!monthData) return null;
+
+    return {
+      products: monthData.recommendation_focus?.products || [],
+      colors: monthData.recommendation_focus?.colors || [],
+      messaging: monthData.recommendation_focus?.messaging || '',
+      inventory_priority: monthData.inventory_priority || []
+    };
+  }
+
+  /**
+   * Section 2.4.3: Get lead time window for an event type
+   * e.g., May weddings → start pushing in March-April (2-3 months before)
+   */
+  getLeadTimeWindow(eventType: string): {
+    event_months: string[];
+    prep_start: string | number;
+    peak_booking: string | number;
+    last_minute: string | number;
+    lead_time_weeks: number;
+    notes?: string;
+  } | null {
+    if (!this.eventCalendar?.lead_time_windows) return null;
+
+    const normalizedEvent = eventType.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const leadTimeData = this.eventCalendar.lead_time_windows[normalizedEvent];
+
+    if (!leadTimeData) {
+      // Try partial match
+      for (const [key, value] of Object.entries(this.eventCalendar.lead_time_windows)) {
+        if (normalizedEvent.includes(key) || key.includes(normalizedEvent)) {
+          return value as any;
+        }
+      }
+      return null;
+    }
+
+    return leadTimeData;
+  }
+
+  /**
+   * Section 2.4.4: Get seasonal color palette
+   * Returns recommended colors for a given season
+   */
+  getSeasonalColorPalette(season: string): string[] {
+    if (!this.eventCalendar?.seasonal_color_palette) return [];
+
+    const normalizedSeason = season.toLowerCase();
+    return this.eventCalendar.seasonal_color_palette[normalizedSeason] || [];
+  }
+
+  /**
+   * Section 2.4.5: Check if current period is peak season
+   */
+  isPeakSeason(month?: number): boolean {
+    if (!this.eventCalendar?.peak_season_flags) return false;
+
+    const currentMonth = month !== undefined ? month : new Date().getMonth() + 1;
+    const monthNames = [
+      'january', 'february', 'march', 'april', 'may', 'june',
+      'july', 'august', 'september', 'october', 'november', 'december'
+    ];
+    const monthKey = monthNames[currentMonth - 1];
+
+    return !!this.eventCalendar.peak_season_flags[monthKey];
   }
 }
 

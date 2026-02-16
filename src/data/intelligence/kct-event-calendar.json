@@ -1,0 +1,198 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "description": "KCT Menswear annual event calendar with seasonality patterns",
+    "source": "KCT-DATA-MANIFEST.md Part 3.7 - Business intelligence from 10+ years of data",
+    "last_updated": "2026-02-16"
+  },
+  "monthly_calendar": {
+    "january": {
+      "period": "Jan-Feb",
+      "primary_event": "prom_prep",
+      "secondary_events": ["valentine", "winter_formal"],
+      "recommendation_focus": {
+        "products": ["prom_bundles", "early_bird_specials"],
+        "colors": ["classic_colors", "bold_accents"],
+        "messaging": "Early bird prom bundles — secure your look before the rush"
+      },
+      "lead_time_events": ["march_prom", "april_prom"],
+      "inventory_priority": ["slim_fit_suits", "prom_accessories", "bowties"]
+    },
+    "february": {
+      "period": "Jan-Feb",
+      "primary_event": "prom_prep",
+      "secondary_events": ["valentine", "winter_formal"],
+      "recommendation_focus": {
+        "products": ["prom_previews", "romantic_colors"],
+        "colors": ["burgundy", "navy", "red", "blush"],
+        "messaging": "Prom season is here — preview the latest styles"
+      },
+      "lead_time_events": ["march_prom", "april_prom", "may_wedding"],
+      "inventory_priority": ["prom_tuxedos", "prom_suits", "red_accessories"]
+    },
+    "march": {
+      "period": "Mar-Apr",
+      "primary_event": "peak_prom",
+      "secondary_events": ["spring_wedding", "easter"],
+      "recommendation_focus": {
+        "products": ["prom_bundles", "bold_colors", "accessories"],
+        "colors": ["royal_blue", "burgundy", "gold", "silver", "bright_colors"],
+        "messaging": "Peak prom season — complete packages with accessories"
+      },
+      "lead_time_events": ["may_wedding", "june_wedding"],
+      "inventory_priority": ["prom_suits", "bold_ties", "suspenders", "pocket_squares"],
+      "peak_season": true
+    },
+    "april": {
+      "period": "Mar-Apr",
+      "primary_event": "peak_prom",
+      "secondary_events": ["spring_wedding", "graduation"],
+      "recommendation_focus": {
+        "products": ["prom_bundles", "spring_wedding_packages"],
+        "colors": ["light_blue", "mint_green", "lavender", "blush", "tan"],
+        "messaging": "Last call for prom — spring wedding season starts now"
+      },
+      "lead_time_events": ["june_wedding", "july_wedding"],
+      "inventory_priority": ["prom_suits", "spring_colors", "lightweight_fabrics"],
+      "peak_season": true
+    },
+    "may": {
+      "period": "May-Jun",
+      "primary_event": "peak_wedding",
+      "secondary_events": ["graduation", "gala", "memorial_day"],
+      "recommendation_focus": {
+        "products": ["wedding_packages", "groomsmen_deals", "lightweight_suits"],
+        "colors": ["navy", "charcoal", "tan", "light_grey"],
+        "messaging": "Peak wedding season — groomsmen packages available"
+      },
+      "lead_time_events": ["august_wedding", "september_wedding"],
+      "inventory_priority": ["wedding_suits", "groomsmen_packages", "dress_shirts"],
+      "peak_season": true
+    },
+    "june": {
+      "period": "May-Jun",
+      "primary_event": "peak_wedding",
+      "secondary_events": ["graduation", "father_day"],
+      "recommendation_focus": {
+        "products": ["wedding_packages", "summer_suits"],
+        "colors": ["tan", "light_grey", "powder_blue", "champagne"],
+        "messaging": "Summer wedding season — lightweight fabrics for outdoor events"
+      },
+      "lead_time_events": ["september_wedding", "october_wedding"],
+      "inventory_priority": ["lightweight_suits", "breathable_fabrics", "summer_colors"],
+      "peak_season": true
+    },
+    "july": {
+      "period": "Jul-Aug",
+      "primary_event": "summer_events",
+      "secondary_events": ["beach_wedding", "outdoor_event"],
+      "recommendation_focus": {
+        "products": ["summer_suits", "beach_wedding_attire"],
+        "colors": ["tan", "light_grey", "powder_blue", "coral"],
+        "messaging": "Summer events — breathable fabrics for hot weather"
+      },
+      "lead_time_events": ["october_wedding", "november_wedding"],
+      "inventory_priority": ["linen_suits", "lightweight_fabrics", "light_colors"]
+    },
+    "august": {
+      "period": "Jul-Aug",
+      "primary_event": "summer_events",
+      "secondary_events": ["beach_wedding", "outdoor_event"],
+      "recommendation_focus": {
+        "products": ["summer_suits", "lightweight_options"],
+        "colors": ["tan", "light_grey", "navy", "white"],
+        "messaging": "End of summer weddings — last chance for lightweight styles"
+      },
+      "lead_time_events": ["november_wedding", "december_wedding"],
+      "inventory_priority": ["summer_clearance", "transition_pieces"]
+    },
+    "september": {
+      "period": "Sep-Oct",
+      "primary_event": "fall_wedding",
+      "secondary_events": ["homecoming", "gala", "corporate_event"],
+      "recommendation_focus": {
+        "products": ["fall_wedding_packages", "rich_tones"],
+        "colors": ["burgundy", "forest_green", "chocolate_brown", "terracotta", "navy"],
+        "messaging": "Fall wedding season — rich tones for autumn celebrations"
+      },
+      "lead_time_events": ["december_holiday", "january_formal"],
+      "inventory_priority": ["fall_colors", "tweed", "wool_blends"]
+    },
+    "october": {
+      "period": "Sep-Oct",
+      "primary_event": "fall_wedding",
+      "secondary_events": ["homecoming", "gala"],
+      "recommendation_focus": {
+        "products": ["fall_wedding_suits", "homecoming_outfits"],
+        "colors": ["burgundy", "hunter_green", "chocolate_brown", "navy", "charcoal"],
+        "messaging": "Peak fall wedding season — warm tones for autumn events"
+      },
+      "lead_time_events": ["january_formal", "february_prom_prep"],
+      "inventory_priority": ["fall_suits", "velvet_accessories", "rich_colors"],
+      "peak_season": true
+    },
+    "november": {
+      "period": "Nov-Dec",
+      "primary_event": "holiday_events",
+      "secondary_events": ["winter_wedding", "thanksgiving", "corporate_party"],
+      "recommendation_focus": {
+        "products": ["holiday_suits", "gift_bundles", "velvet_options"],
+        "colors": ["navy", "burgundy", "hunter_green", "charcoal", "black"],
+        "messaging": "Holiday event season — velvet and darker tones"
+      },
+      "lead_time_events": ["february_prom_prep", "march_prom"],
+      "inventory_priority": ["velvet_jackets", "holiday_accessories", "gift_sets"]
+    },
+    "december": {
+      "period": "Nov-Dec",
+      "primary_event": "holiday_events",
+      "secondary_events": ["winter_wedding", "new_year", "christmas"],
+      "recommendation_focus": {
+        "products": ["holiday_bundles", "formal_tuxedos", "gift_certificates"],
+        "colors": ["black", "burgundy", "hunter_green", "navy", "silver", "gold"],
+        "messaging": "Holiday party season — complete packages and gift bundles"
+      },
+      "lead_time_events": ["march_prom", "april_prom"],
+      "inventory_priority": ["formal_wear", "velvet", "metallic_accessories", "gift_bundles"]
+    }
+  },
+  "lead_time_windows": {
+    "prom": {
+      "event_months": ["march", "april", "may"],
+      "prep_start": "january",
+      "peak_booking": "february",
+      "last_minute": "march",
+      "lead_time_weeks": 8
+    },
+    "wedding": {
+      "event_months": ["may", "june", "september", "october"],
+      "prep_start": 3,
+      "peak_booking": 2,
+      "last_minute": 1,
+      "lead_time_weeks": 12,
+      "notes": "Groomsmen orders need 8-12 weeks lead time"
+    },
+    "formal_event": {
+      "lead_time_weeks": 4,
+      "notes": "Galas, corporate events, black-tie occasions"
+    },
+    "homecoming": {
+      "event_months": ["september", "october"],
+      "prep_start": "august",
+      "lead_time_weeks": 4
+    }
+  },
+  "seasonal_color_palette": {
+    "spring": ["light_blue", "blush", "mint_green", "lavender", "tan", "light_grey"],
+    "summer": ["tan", "light_grey", "powder_blue", "coral", "white", "champagne"],
+    "fall": ["burgundy", "forest_green", "chocolate_brown", "terracotta", "navy", "burnt_orange"],
+    "winter": ["navy", "charcoal", "burgundy", "hunter_green", "black", "silver", "gold"]
+  },
+  "peak_season_flags": {
+    "march": "peak_prom",
+    "april": "peak_prom",
+    "may": "peak_wedding",
+    "june": "peak_wedding",
+    "october": "peak_fall_wedding"
+  }
+}
