@@ -52,7 +52,8 @@
     "**/*.spec.ts",
     "src/tests/**/*",
     "src/services/voice-service.ts",
-    "src/routes/voice-routes.ts"
+    "src/routes/voice-routes.ts",
+    "src/**/_archived/**/*"
   ],
   "ts-node": {
     "require": ["tsconfig-paths/register"]

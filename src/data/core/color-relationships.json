@@ -200,6 +200,23 @@
       "formality": "high",
       "best_for": "formal_evening_weddings",
       "note": "Dark green breaking into top 5"
+    },
+    "royal_blue": {
+      "perfect_matches": {
+        "shirts": ["white", "light_grey"],
+        "ties": ["black", "silver", "burgundy", "gold"],
+        "confidence": 90
+      },
+      "good_matches": {
+        "shirts": ["cream", "light_blue"],
+        "ties": ["navy_pattern", "coral"],
+        "confidence": 82
+      },
+      "trending": "stable",
+      "popularity_score": 78,
+      "formality": "medium_high",
+      "best_for": "prom_standout",
+      "note": "Classic prom color — bolder than navy, more formal than light_blue"
     }
   },
   "universal_rules": {

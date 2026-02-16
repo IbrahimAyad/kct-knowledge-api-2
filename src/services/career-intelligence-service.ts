@@ -20,11 +20,21 @@ import {
   ProfessionalType,
   CareerAdvancementStage
 } from '../types/enhanced-knowledge-bank';
+import * as fs from 'fs';
+import * as path from 'path';
+import csv from 'csv-parser';
+import { logger } from '../utils/logger';
 
 export class CareerIntelligenceService {
   private careerData: any[] | null = null;
   private bodyLanguageData: BodyLanguageFitPreferences | null = null;
   private industryData: Map<string, any> = new Map();
+
+  // Section 1.4: CSV data from career trajectory research
+  private careerStageWardrobe: any[] = [];
+  private ageCareerProgression: any[] = [];
+  private promotionSignals: any[] = [];
+  private wardrobeUpgradeTiming: any[] = [];
 
   /**
    * Initialize the service with career trajectory data
@@ -54,6 +64,17 @@ export class CareerIntelligenceService {
 
       // Build industry-specific data cache
       await this.buildIndustryDataCache();
+
+      // Section 1.4: Load career CSV data
+      try {
+        this.careerStageWardrobe = await this.loadCSV('research/career/career_stage_wardrobe.csv');
+        this.ageCareerProgression = await this.loadCSV('research/career/age_career_progression.csv');
+        this.promotionSignals = await this.loadCSV('research/career/promotion_signals.csv');
+        this.wardrobeUpgradeTiming = await this.loadCSV('research/career/wardrobe_upgrade_timing.csv');
+        logger.info('Career CSV data loaded successfully');
+      } catch (error) {
+        logger.warn('Failed to load career CSV data:', { error: error instanceof Error ? error.message : String(error) });
+      }
     } catch (error) {
       console.warn('Failed to initialize CareerIntelligenceService:', error);
       // Initialize with empty data to prevent service failure
@@ -65,6 +86,27 @@ export class CareerIntelligenceService {
         generational_trends: {}
       };
     }
+  }
+
+  /**
+   * Load and parse CSV file
+   */
+  private async loadCSV(relativePath: string): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const results: any[] = [];
+      const filePath = path.join(__dirname, '../data', relativePath);
+
+      if (!fs.existsSync(filePath)) {
+        reject(new Error(`CSV file not found: ${filePath}`));
+        return;
+      }
+
+      fs.createReadStream(filePath)
+        .pipe(csv())
+        .on('data', (data: any) => results.push(data))
+        .on('end', () => resolve(results))
+        .on('error', (error: Error) => reject(error));
+    });
   }
 
   /**
@@ -442,6 +484,194 @@ export class CareerIntelligenceService {
     }
 
     return signals;
+  }
+
+  /**
+   * Section 1.4: Query methods for career CSV data
+   */
+
+  /**
+   * Get career stage wardrobe investment data
+   */
+  async getCareerStageData(careerStage: string): Promise<{
+    investment: number;
+    quality_level: string;
+    formality_score: number;
+    tailoring_frequency: string;
+  } | null> {
+    if (this.careerStageWardrobe.length === 0) {
+      await this.initialize();
+    }
+
+    const normalized = careerStage.toLowerCase().trim();
+    const match = this.careerStageWardrobe.find(row =>
+      row.Career_Stage?.toLowerCase().includes(normalized) ||
+      normalized.includes(row.Career_Stage?.toLowerCase())
+    );
+
+    if (!match) return null;
+
+    return {
+      investment: parseFloat(match.Average_Wardrobe_Investment?.replace(/[$,]/g, '')) || 0,
+      quality_level: match.Suit_Quality_Level || 'Mid-Range',
+      formality_score: parseInt(match.Style_Formality_Score) || 7,
+      tailoring_frequency: match.Tailoring_Frequency || 'Quarterly'
+    };
+  }
+
+  /**
+   * Get age-based career progression data
+   */
+  async getAgeCareerData(age: number): Promise<{
+    typical_stage: string;
+    years_experience: number;
+    promotion_likelihood: number;
+    investment_trend: string;
+  } | null> {
+    if (this.ageCareerProgression.length === 0) {
+      await this.initialize();
+    }
+
+    const match = this.ageCareerProgression.find(row => {
+      const ageRange = row.Age_Range || '';
+      const [min, max] = ageRange.split('-').map((n: string) => parseInt(n.replace('+', '')));
+      if (ageRange.includes('+')) {
+        return age >= min;
+      }
+      return age >= min && age <= max;
+    });
+
+    if (!match) return null;
+
+    return {
+      typical_stage: match.Typical_Career_Stage || 'Mid-Level',
+      years_experience: parseInt(match.Average_Years_Experience) || 5,
+      promotion_likelihood: parseFloat(match.Promotion_Likelihood?.replace('%', '')) || 50,
+      investment_trend: match.Wardrobe_Investment_Trend || 'Moderate'
+    };
+  }
+
+  /**
+   * Get promotion signal reliability data
+   */
+  async getPromotionSignalData(signalType?: string): Promise<Array<{
+    signal: string;
+    timing: string;
+    reliability: number;
+    spend_increase: number;
+  }>> {
+    if (this.promotionSignals.length === 0) {
+      await this.initialize();
+    }
+
+    let signals = this.promotionSignals;
+
+    if (signalType) {
+      const normalized = signalType.toLowerCase().trim();
+      signals = signals.filter(row =>
+        row.Signal_Type?.toLowerCase().includes(normalized)
+      );
+    }
+
+    return signals.map(row => ({
+      signal: row.Signal_Type || 'Unknown',
+      timing: row.Timing_Relative_to_Promotion || '3-6 months before',
+      reliability: parseFloat(row.Reliability_Score?.replace('%', '')) || 0,
+      spend_increase: parseFloat(row.Average_Spend_Increase?.replace(/[$,%]/g, '')) || 0
+    }));
+  }
+
+  /**
+   * Get wardrobe upgrade timing by event type
+   */
+  async getWardrobeUpgradeTimingData(eventType?: string): Promise<{
+    event: string;
+    average_spend: number;
+    urgency: number;
+    lead_time_days: number;
+  } | null> {
+    if (this.wardrobeUpgradeTiming.length === 0) {
+      await this.initialize();
+    }
+
+    if (!eventType) {
+      // Return generic wardrobe upgrade data if no event specified
+      const generic = this.wardrobeUpgradeTiming.find(row =>
+        row.Event_Type?.toLowerCase().includes('wardrobe upgrade')
+      );
+
+      if (generic) {
+        return {
+          event: generic.Event_Type || 'Wardrobe Upgrade',
+          average_spend: parseFloat(generic.Average_Spend?.replace(/[$,]/g, '')) || 1000,
+          urgency: parseInt(generic.Purchase_Urgency) || 5,
+          lead_time_days: parseInt(generic.Lead_Time_Days) || 30
+        };
+      }
+    }
+
+    const normalized = eventType?.toLowerCase().trim() || '';
+    const match = this.wardrobeUpgradeTiming.find(row =>
+      row.Event_Type?.toLowerCase().includes(normalized)
+    );
+
+    if (!match) return null;
+
+    return {
+      event: match.Event_Type || 'Unknown Event',
+      average_spend: parseFloat(match.Average_Spend?.replace(/[$,]/g, '')) || 0,
+      urgency: parseInt(match.Purchase_Urgency) || 5,
+      lead_time_days: parseInt(match.Lead_Time_Days) || 30
+    };
+  }
+
+  /**
+   * Get comprehensive career context for recommendations
+   */
+  async getCareerContext(params: {
+    age?: number;
+    careerStage?: string;
+    eventType?: string;
+  }): Promise<{
+    stage_data: any;
+    age_data: any;
+    timing_data: any;
+    insights: string[];
+  }> {
+    const insights: string[] = [];
+    let stage_data = null;
+    let age_data = null;
+    let timing_data = null;
+
+    if (params.careerStage) {
+      stage_data = await this.getCareerStageData(params.careerStage);
+      if (stage_data) {
+        insights.push(`${params.careerStage} professionals typically invest $${stage_data.investment.toLocaleString()} in their wardrobe`);
+        insights.push(`${stage_data.quality_level} quality suits recommended for this career stage`);
+      }
+    }
+
+    if (params.age) {
+      age_data = await this.getAgeCareerData(params.age);
+      if (age_data) {
+        insights.push(`At age ${params.age}, typical career stage is ${age_data.typical_stage}`);
+        if (age_data.promotion_likelihood > 60) {
+          insights.push(`High promotion likelihood (${age_data.promotion_likelihood}%) - consider wardrobe upgrade`);
+        }
+      }
+    }
+
+    if (params.eventType) {
+      timing_data = await this.getWardrobeUpgradeTimingData(params.eventType);
+      if (timing_data) {
+        insights.push(`${timing_data.event} typically requires $${timing_data.average_spend.toLocaleString()} investment`);
+        if (timing_data.urgency >= 8) {
+          insights.push(`High urgency event - recommend purchase within ${timing_data.lead_time_days} days`);
+        }
+      }
+    }
+
+    return { stage_data, age_data, timing_data, insights };
   }
 
   /**

@@ -885,13 +885,11 @@ app.use("/api/v2", v2Router);
 
 // Alias routes for frontend compatibility
 // Lovable calls /api/recommendations/complete-look but v2 router has /products/complete-the-look
-app.post("/api/recommendations/complete-look", async (req, res) => {
+app.post("/api/recommendations/complete-look", async (req, res, next) => {
   await initializeServices();
   // Forward to v2 complete-the-look handler
   req.url = '/products/complete-the-look';
-  v2Router.handle(req, res, () => {
-    res.status(404).json({ success: false, error: 'Route not found' });
-  });
+  v2Router(req, res, next);
 });
 
 // Lovable calls /api/style/validate-outfit but server only has /api/v1/validation/outfit

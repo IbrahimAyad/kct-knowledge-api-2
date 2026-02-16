@@ -84,7 +84,7 @@ class ProductCatalogService {
 
       logger.info(`📦 Product catalog loaded: ${this.colorMap.size} colors mapped to Shopify products`);
     } catch (error) {
-      logger.warn('Product catalog not loaded — recommendations will not include product links', error);
+      logger.warn('Product catalog not loaded — recommendations will not include product links', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 
@@ -151,15 +151,17 @@ class ProductCatalogService {
       'burgundy': ['wine', 'dark_red', 'maroon', 'burgundy_wine'],
       'sage_green': ['sage', 'dusty_sage', 'muted_green'],
       'chocolate_brown': ['brown', 'dark_brown', 'cocoa'],
-      'emerald_green': ['emerald', 'dark_green', 'deep_green'],
-      'light_blue': ['powder_blue', 'dusty_blue', 'sky_blue', 'baby_blue'],
-      'navy': ['navy_blue', 'dark_navy'],
+      'emerald_green': ['emerald', 'deep_green'],
+      'light_blue': ['dusty_blue', 'sky_blue', 'baby_blue', 'slate_blue', 'ocean_blue'],
+      'powder_blue': ['powdered_blue'],
+      'royal_blue': ['bright_blue', 'cobalt_blue'],
+      'navy': ['navy_blue', 'dark_navy', 'midnight_blue'],
       'charcoal': ['dark_grey', 'charcoal_grey'],
       'light_grey': ['silver', 'light_gray', 'pale_grey'],
       'black': ['jet_black'],
       'tan': ['khaki', 'beige', 'sand'],
       'hunter_green': ['forest_green', 'dark_green'],
-      'midnight_blue': ['dark_blue', 'deep_blue'],
+      'midnight_blue': ['dark_blue'],
       'white': ['ivory', 'cream', 'off_white'],
       'terracotta': ['rust', 'burnt_orange', 'terra_cotta'],
     };

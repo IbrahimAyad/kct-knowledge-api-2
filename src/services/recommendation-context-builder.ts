@@ -208,14 +208,13 @@ class RecommendationContextBuilder {
       }
     }
 
-    // Adjust for career level (TODO: Wire in Section 1.4)
+    // Adjust for career level (Section 1.4: now uses real career intelligence)
     if (request.role_level || request.occupation) {
-      // Temporary simple mapping until Section 1.4 wires career intelligence
-      const careerFormality = this.getCareerFormality(request.occupation, request.role_level);
+      const careerFormality = await this.getCareerFormality(request.occupation, request.role_level);
       if (careerFormality > 0) {
         minFormality = Math.max(minFormality, careerFormality - 1);
         reasoning.push(`${request.occupation || 'Professional'} role suggests formality level ${careerFormality}/10`);
-        signalsUsed.push('career_heuristic');
+        signalsUsed.push('career_intelligence');
       }
     }
 
@@ -388,17 +387,16 @@ class RecommendationContextBuilder {
     let maxInvestment = 400;
     let qualityLevel = 'professional';
 
-    // Get career-based pricing (TODO: Wire in Section 1.4)
+    // Get career-based pricing (Section 1.4: now uses real career intelligence)
     if (request.age || request.role_level || request.occupation) {
-      // Temporary simple mapping until Section 1.4
-      const careerTier = this.getCareerPricingTier(request.occupation, request.role_level, request.age);
+      const careerTier = await this.getCareerPricingTier(request.occupation, request.role_level, request.age);
       if (careerTier) {
         minInvestment = careerTier.min;
         maxInvestment = careerTier.max;
         range = careerTier.range;
         qualityLevel = careerTier.quality;
         reasoning.push(`Professional level suggests ${range} tier: $${minInvestment}-$${maxInvestment}`);
-        signalsUsed.push('career_heuristic');
+        signalsUsed.push('career_intelligence');
       }
     }
 
@@ -777,13 +775,25 @@ class RecommendationContextBuilder {
   /**
    * Simple career formality heuristic (until Section 1.4 wires full career intelligence)
    */
-  private getCareerFormality(occupation?: string, role_level?: string): number {
+  private async getCareerFormality(occupation?: string, role_level?: string): Promise<number> {
     if (!occupation && !role_level) return 0;
 
-    // Role level mapping
+    // Section 1.4: Try to use real career intelligence data first
+    if (role_level) {
+      try {
+        const careerData = await careerIntelligenceService.getCareerStageData(role_level);
+        if (careerData && careerData.formality_score) {
+          return careerData.formality_score;
+        }
+      } catch (error) {
+        logger.warn('Career intelligence service unavailable, using fallback');
+      }
+    }
+
+    // Fallback to heuristics if service unavailable
     if (role_level) {
       const level = role_level.toLowerCase();
-      if (level.includes('c-level') || level.includes('executive')) return 9;
+      if (level.includes('c-level') || level.includes('executive') || level.includes('c-suite')) return 9;
       if (level.includes('director') || level.includes('vp')) return 8;
       if (level.includes('manager') || level.includes('senior')) return 7;
       if (level.includes('associate') || level.includes('mid')) return 6;
@@ -803,14 +813,14 @@ class RecommendationContextBuilder {
   }
 
   /**
-   * Simple career pricing heuristic (until Section 1.4 wires full career intelligence)
+   * Career pricing tier (Section 1.4: now uses real career intelligence data)
    */
-  private getCareerPricingTier(occupation?: string, role_level?: string, age?: number): {
+  private async getCareerPricingTier(occupation?: string, role_level?: string, age?: number): Promise<{
     min: number;
     max: number;
     range: string;
     quality: string;
-  } | null {
+  } | null> {
     if (!occupation && !role_level && !age) return null;
 
     // Default professional tier
@@ -819,10 +829,58 @@ class RecommendationContextBuilder {
     let range = 'mid';
     let quality = 'professional';
 
-    // Adjust by role level
+    // Section 1.4: Try to use real career intelligence data
+    if (role_level) {
+      try {
+        const careerData = await careerIntelligenceService.getCareerStageData(role_level);
+        if (careerData && careerData.investment) {
+          // Suit is typically 30-40% of total wardrobe investment
+          const suitBudget = careerData.investment * 0.35;
+          min = Math.round(suitBudget * 0.6); // 60% of suit budget
+          max = Math.round(suitBudget * 1.4); // 140% of suit budget
+          quality = careerData.quality_level;
+
+          // Determine range tier based on investment
+          if (suitBudget >= 2000) {
+            range = 'luxury';
+          } else if (suitBudget >= 1000) {
+            range = 'high';
+          } else if (suitBudget >= 500) {
+            range = 'mid';
+          } else {
+            range = 'entry';
+          }
+
+          return { min, max, range, quality };
+        }
+      } catch (error) {
+        logger.warn('Career intelligence service unavailable for pricing, using fallback');
+      }
+    }
+
+    // Age-based data if available
+    if (age) {
+      try {
+        const ageData = await careerIntelligenceService.getAgeCareerData(age);
+        if (ageData && ageData.typical_stage) {
+          // Try to get stage data from age
+          const stageData = await careerIntelligenceService.getCareerStageData(ageData.typical_stage);
+          if (stageData && stageData.investment) {
+            const suitBudget = stageData.investment * 0.35;
+            min = Math.max(min, Math.round(suitBudget * 0.6));
+            max = Math.max(max, Math.round(suitBudget * 1.4));
+            quality = stageData.quality_level;
+          }
+        }
+      } catch (error) {
+        logger.warn('Age-based career data unavailable');
+      }
+    }
+
+    // Fallback to heuristics if service unavailable
     if (role_level) {
       const level = role_level.toLowerCase();
-      if (level.includes('c-level') || level.includes('executive')) {
+      if (level.includes('c-level') || level.includes('executive') || level.includes('c-suite')) {
         min = 600;
         max = 1200;
         range = 'luxury';

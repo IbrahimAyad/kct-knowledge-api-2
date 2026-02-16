@@ -18,15 +18,15 @@
     "avoid": ["dark_heavy_colors", "black_suits", "deep_burgundy"]
   },
   "fall": {
-    "primary": ["burgundy", "brown", "hunter_green", "navy", "charcoal"],
+    "primary": ["burgundy", "chocolate_brown", "hunter_green", "navy", "charcoal", "terracotta"],
     "accent": ["rust", "gold", "burnt_orange", "deep_red", "forest_green"],
     "neutral": ["charcoal", "brown", "grey", "cream"],
-    "trending": ["burgundy", "hunter_green", "rust"],
+    "trending": ["burgundy", "chocolate_brown", "terracotta", "hunter_green"],
     "psychology": "sophistication, warmth, tradition",
     "avoid": ["bright_summer_colors", "pastels", "white_suits"]
   },
   "winter": {
-    "primary": ["black", "charcoal", "navy", "burgundy", "midnight_blue"],
+    "primary": ["black", "charcoal", "navy", "burgundy", "midnight_blue", "emerald_green"],
     "accent": ["silver", "deep_red", "royal_blue", "emerald", "gold"],
     "neutral": ["black", "charcoal", "grey", "white"],
     "trending": ["midnight_blue", "burgundy", "emerald"],

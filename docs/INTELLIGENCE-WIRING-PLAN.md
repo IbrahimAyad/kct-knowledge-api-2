@@ -365,6 +365,33 @@ PERPLEXITY_CACHE_TTL_HOURS=48
 
 ---
 
+## Pre-Sprint Prep (Cowork — Done Before Claude Code Starts)
+
+### Prep A: Color Science Data Cleanup ✅
+Duplicate `_1` files identified. `colorblind_perception_analysis_1.csv` and `video_call_undertones_1.csv` are exact dupes (ignore). `lighting_color_perception_1.csv` has an extra `Overall_Accuracy` column — use this version. See `DATA-CLEANUP-NOTES.md` in the color science folder.
+
+### Prep B: Seasonal Regional Data Gap
+Current seasonal CSVs treat all regions identically. January in Detroit ≠ January in Miami.
+**Action:** Use Perplexity to generate regional seasonal patterns for top KCT shipping metros.
+This can happen in parallel with Sprint 1 — the seasonal service (1.2) should be built to accept regional data when available, with a national-average fallback.
+
+### Prep C: Fabric Tags on Shopify Products ✅
+All 138 products now have `fabric_type` field. 14 fabric types mapped: polyester_blend, velvet, satin_poly, stretch_poly_blend, sequin_poly, patterned_poly_blend, jacquard_poly, wool_tweed, linen_blend, wool_blend, leather, satin, cotton_blend, polyester.
+
+### Prep D: Product Catalog Cleanup ✅
+Full audit completed. Fixed 21 misplaced products (14 non-burgundy items removed from burgundy bucket), deduplicated navy↔midnight_blue, added `type` field to 80 untyped products (ties, accessories, shirts). Added `royal_blue` color category. Catalog reduced from 157 → 138 accurate products. See `product-catalog-audit-report.md`.
+
+### Prep E: Occasion-Specific Product Mappings ✅
+All 4 occasions populated with recommended colors, seasonal overrides, formality ranges, budget tiers, and key product handles: wedding (7 colors, 6 products), prom (5 colors, 7 products), black_tie (4 colors, 5 products), business (4 colors, 6 products). Also added 10 recommended_combinations and 2 wedding_party_packages.
+
+### Prep F: Core Data Consistency Fixes ✅
+- Added `royal_blue` to `color-relationships.json` (was missing from all core files)
+- Added `chocolate_brown` and `terracotta` to fall primary colors in `color-seasonality.json`
+- Added `emerald_green` to winter primary colors in `color-seasonality.json`
+- Created validation test script: `tests/validate-intelligence-wiring.ts`
+
+---
+
 ## Implementation Order
 
 ### Sprint 1 (Claude Code): Phase 1 — Build the intelligence engine

@@ -1027,7 +1027,7 @@ class AIScoringSystem {
   }
 
   private calculateStylePreferenceMatch(bundle: OutfitBundle, customer?: any): number {
-    const seed = bundle.pieces?.map(p => p.type).join('_') || 'default';
+    const seed = bundle.pieces?.map(p => p.item_type).join('_') || 'default';
     return stableScore(seed + '_spm', 0.6, 1.0);
   }
 
